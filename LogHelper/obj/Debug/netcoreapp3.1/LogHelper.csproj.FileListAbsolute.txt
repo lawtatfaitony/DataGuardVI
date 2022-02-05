@@ -1,8 +1,0 @@
-F:\STAR\DataGuardIII\LogHelper\bin\Debug\netcoreapp3.1\LogHelper.deps.json
-F:\STAR\DataGuardIII\LogHelper\bin\Debug\netcoreapp3.1\LogHelper.dll
-F:\STAR\DataGuardIII\LogHelper\obj\Debug\netcoreapp3.1\LogHelper.AssemblyInfoInputs.cache
-F:\STAR\DataGuardIII\LogHelper\obj\Debug\netcoreapp3.1\LogHelper.AssemblyInfo.cs
-F:\STAR\DataGuardIII\LogHelper\bin\Debug\netcoreapp3.1\LogHelper.pdb
-F:\STAR\DataGuardIII\LogHelper\obj\Debug\netcoreapp3.1\LogHelper.csproj.CoreCompileInputs.cache
-F:\STAR\DataGuardIII\LogHelper\obj\Debug\netcoreapp3.1\LogHelper.dll
-F:\STAR\DataGuardIII\LogHelper\obj\Debug\netcoreapp3.1\LogHelper.pdb

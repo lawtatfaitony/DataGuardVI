@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "AttendanceBussiness": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}
