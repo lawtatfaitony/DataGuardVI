@@ -1,0 +1,11 @@
+﻿{
+  "Account": "cw911",
+  "Password": "paktin911",
+  "Roles": "ContractsAdmin",
+  "ContractorId": "1322",
+  "Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IkNXOTExIiwicm9sZSI6IkNvbnRyYWN0c0FkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy91c2VyZGF0YSI6IjEwLjEwMC4xMzAuMTAwIiwiaXNzIjoiaGtjaWMiLCJhdWQiOiJodHRwOi8vY3dyZy5oa2NpYy5vcmciLCJleHAiOjE2MjY4MDUwNDQsIm5iZiI6MTYyNjc3NjI0NH0.k4GHvSE5hOtas8CnGOGWbMjGYL6eSWedeTR0LtkfV3I",
+  "Name": "CW911",
+  "RefreshToken": "",
+  "TokenExpiryDate": "2021-07-21T02:17:24Z",
+  "WebRootFolder": "F:\\STAR\\DataGuard\\DataGuard\\"
+}

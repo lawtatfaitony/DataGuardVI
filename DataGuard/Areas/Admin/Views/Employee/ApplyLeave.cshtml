@@ -1,0 +1,139 @@
+﻿@using LanguageResource
+@using Common
+@using AttendanceBussiness
+@using DataGuard.Utilities
+@model DataGuard.Areas.LeaveView
+@{
+    Layout = null;
+}
+
+<div ng-controller="ApplyLeavePanel" >
+    @using (Ajax.BeginForm("ApplyLeaveAddNew", "Employee", new AjaxOptions { HttpMethod = "post", OnSuccess = "handleApplyLeaveAddNew", OnBegin = "onBeginSubmit", OnFailure = "errApplyLeaveAddNew", LoadingElementId = "Loading" }, new { @class = "form-horizontal", name = "form_ApplyLeaveAddNew", id = "form_ApplyLeaveAddNew" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.LeaveId)
+        @Html.TextBox("MainComId", ViewBag.MainComId as string, new { @readonly = "readonly", @class = "hide" })
+        <div class="form-group">
+            <label class="control-label col-12" for="ZhHk">@Lang.Leave_EmployeeId</label>
+            <div class="input-group">
+                @Html.TextBoxFor(model => model.EmployeeId, new { list = "List_SelectEmployeeListJson", id = "EmployeeId", Name = "EmployeeId", @class = "AddNewEmployeeId border-right-0 form-control form-control-sm bold col-sm-9", placeholder = Lang.LeaveView_EmployeeId_Tips })
+                <datalist id="List_SelectEmployeeListJson">
+                    <option ng-repeat="x in searchEmployeeListJson" value="{{x.EmployeeId}}">{{x.Name }}</option>
+                </datalist>
+
+                <div class="input-group-append input-group-sm small">
+                    <span class="input-group-text border-left-0 " style="background-color:#faf9eb" data-toggle="tooltip" title="@Lang.LeaveView_EmployeeId_Tips">
+                        <i class="fa fa-asterisk"  style="color:red;font-size:11px"></i>
+                    </span>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger", data_valmsg_for = "EmployeeId" })
+        </div>
+        <div class="form-group">
+            <label class="control-label col-12" for="ZhHk">@Lang.Leave_LeaveDateTimeRange</label>
+            <div class="input-group">
+                @Html.TextBoxFor(model => model.LeaveDateTimeRange, new { id = "LeaveDateTimeRange", Name = "LeaveDateTimeRange", Value = ViewBag.LeaveDateTimeRange, @class = "AddNewLeaveDateTimeRange  border-right-0 form-control form-control-sm bold col-sm-9", data_toggle = "title", title = Lang.Leave_LeaveDateTimeRange_Tips })
+                <div class="input-group-append input-group-sm">
+                    <span class="input-group-text border-left-0" style="background-color:#faf9eb;cursor:help;" data-toggle="tooltip" title="@Lang.Leave_LeaveDateTimeRange_Tips">
+                        <i class="fa fa-asterisk" style="color:red;font-size:11px"></i>
+                    </span>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(model => model.LeaveDateTimeRange, "", new { @class = "DateTimeRange text-danger" })
+            <label for="LeaveDateTimeRange" class="label label-warning badge badge-warning small mb-1 fa fa-circle-o"> @Lang.Leave_LeaveDateTimeRange_Tips2</label>
+            <label for="LeaveDateTimeRange" class="label label-warning badge badge-warning small mt-0 fa fa-circle-o"> @Lang.Leave_LeaveDateTimeRange_Tips</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-12" for="ZhHk">@Lang.Leave_Reason</label>
+            <div class="input-group">
+                @Html.TextBoxFor(model => model.Reason, new { id = "Reason", Name = "Reason", @class = "AddNewReason  border-right-0 form-control form-control-sm bold col-sm-9" })
+                <div class="input-group-append input-group-sm">
+                    <span class="input-group-text border-left-0" style="background-color:#faf9eb" data-toggle="tooltip" title="@Lang.Leave_Reason">
+                        <i class="fa fa-asterisk"  style="color:red;font-size:11px"></i>
+                    </span>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group ">
+            <label class="control-label col-5" for="LeaveType">@Lang.Leave_LeaveType </label>  <label class="control-label col-5 pl-2" for="LeavePaidType"> @Lang.Leave_LeavePaidType</label>
+            <div class="row pl-2 pr-1 d-line">
+                @Html.DropDownList("LeaveType", ViewBag.LeaveType as IEnumerable<SelectListItem>, Lang.GeneralUI_Select, new { Name = "LeaveType", Id = "LeaveType", @class = "AddNewLeaveType form-control form-control-sm col-5 mr-2 pull-left selectpicker", data_toggle = "tooltip", title = Lang.Leave_LeaveType })
+
+                @Html.ValidationMessageFor(model => model.LeaveType, "", new { @class = "text-danger" })
+
+                @Html.DropDownList("LeavePaidType", ViewBag.LeavePaidType as IEnumerable<SelectListItem>, Lang.GeneralUI_Select, new { Name = "LeavePaidType", Id = "LeavePaidType", @class = "AddNewLeavePaidType form-control form-control-sm col-5 ml-2 selectpicker", data_toggle = "tooltip", title = Lang.Leave_LeavePaidType })
+
+                @Html.ValidationMessageFor(model => model.LeavePaidType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group float-right">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" id="AddNewComfirmed" class="btn btn-primary"> @Lang.GeneralUI_AddNew </button>
+        </div>
+    }
+</div>
+
+<script>
+    var layer_index = 0;
+
+    function handleApplyLeaveAddNew(result) {
+        layer.close(layer.index);
+        if (result.meta.Success === false) {
+
+            if (result.meta.ErrorCode == 10006) {
+                $("#LeaveDateTimeRange").val(result.data.LeaveDateTimeRange);
+            }
+
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: result.meta.Message
+                , btn: '@Lang.GeneralUI_OK'
+            });
+        } else {
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: result.meta.Message
+                , btn:'@Lang.GeneralUI_OK'
+            });
+        }
+    }
+    function errApplyLeaveAddNew(data) {
+        layer.close(layer.index);
+        console.log(JSON.stringify(data));
+        alert('@Lang.GeneralUI_ServerError' + "--client AddNew");
+        layer.clear();
+    }
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        DateTimeRangeMultiLanguage.dateLimit = 30;
+        DateTimeRangeMultiLanguage.showCustomRangeLabel = true;
+        DateTimeRangeMultiLanguage.timePicker = true;
+        $('#LeaveDateTimeRange').daterangepicker(DateTimeRangeMultiLanguage);
+         
+    });
+</script>
+<script> 
+    app.controller('ApplyLeavePanel', function ($scope, $http) {
+        $http({
+                method: 'GET',
+                url: '/'+'@LangUtilities.LanguageCode'+'/Admin/Employee/SelectEmployeeListJson'
+            }).then(function successCallback(response) {
+                $scope.searchEmployeeListJson = response.data; //searchEmployeeListJson
+            }, function errorCallback(response) {
+                console.log("/en-US/Admin/Employee/SelectEmployeeListJson : \n\r" + response.data);
+            });
+        //------------------------------------------------------------------------------
+       $http({
+                method: 'GET',
+           url: '/' + '@LangUtilities.LanguageCode' +'/Admin/Employee/SelectUserListJson'
+            }).then(function successCallback(response) {
+                $scope.serchingUserListJson = response.data; 
+            }, function errorCallback(response) {
+                console.log("/en-US/Admin/Employee/SelectEmployeeListJson : \n\r" + response.data);
+            });
+    }); 
+</script>

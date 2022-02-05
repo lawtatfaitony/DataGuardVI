@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Exceptionless.DateTimeExtensions</name>
+    </assembly>
+    <members>
+        <member name="T:Exceptionless.DateTimeExtensions.BusinessDay">
+            <summary>
+            A class defining a business day.
+            </summary>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.BusinessDay.#ctor(System.DayOfWeek)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exceptionless.DateTimeExtensions.BusinessDay"/> class.
+            </summary>
+            <param name="dayOfWeek">The day of week this business day represents.</param>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.BusinessDay.#ctor(System.DayOfWeek,System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exceptionless.DateTimeExtensions.BusinessDay"/> class.
+            </summary>
+            <param name="dayOfWeek">The day of week this business day represents.</param>
+            <param name="startTime">The start time of the business day.</param>
+            <param name="endTime">The end time of the business day.</param>
+        </member>
+        <member name="P:Exceptionless.DateTimeExtensions.BusinessDay.DayOfWeek">
+            <summary>
+            Gets the day of week this business day represents..
+            </summary>
+            <value>The day of week.</value>
+        </member>
+        <member name="P:Exceptionless.DateTimeExtensions.BusinessDay.StartTime">
+            <summary>
+            Gets the start time of the business day.
+            </summary>
+            <value>The start time of the business day.</value>
+        </member>
+        <member name="P:Exceptionless.DateTimeExtensions.BusinessDay.EndTime">
+            <summary>
+            Gets the end time of the business day.
+            </summary>
+            <value>The end time of the business day.</value>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.BusinessDay.IsBusinessDay(System.DateTime)">
+            <summary>
+            Determines whether the specified date falls in the business day.
+            </summary>
+            <param name="date">The date to check.</param>
+            <returns>
+            	<c>true</c> if the specified date falls in the business day; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:Exceptionless.DateTimeExtensions.BusinessWeek">
+            <summary>
+            A class representing a business week.
+            </summary>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.BusinessWeek.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exceptionless.DateTimeExtensions.BusinessWeek"/> class.
+            </summary>
+        </member>
+        <member name="P:Exceptionless.DateTimeExtensions.BusinessWeek.BusinessDays">
+            <summary>
+            Gets the business days for the week.
+            </summary>
+            <value>The business days for the week.</value>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.BusinessWeek.IsBusinessDay(System.DateTime)">
+            <summary>
+            Determines whether the specified date falls on a business day.
+            </summary>
+            <param name="date">The date to check.</param>
+            <returns>
+            	<c>true</c> if the specified date falls on a business day; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.BusinessWeek.GetBusinessTime(System.DateTime,System.DateTime)">
+            <summary>
+            Gets the business time between the start date and end date.
+            </summary>
+            <param name="startDate">The start date.</param>
+            <param name="endDate">The end date.</param>
+            <returns>
+            A TimeSpan of the amount of business time between the start and end date.
+            </returns>
+            <remarks>
+            Business time is calculated by adding only the time that falls inside the business day range.
+            If all the time between the start and end date fall outside the business day, the time will be zero.
+            </remarks>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.BusinessWeek.GetBusinessEndDate(System.DateTime,System.TimeSpan)">
+            <summary>
+            Gets the business end date using the specified time.
+            </summary>
+            <param name="startDate">The start date.</param>
+            <param name="businessTime">The business time.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.BusinessWeek.Validate(System.Boolean)">
+            <summary>
+            Validates the business week.
+            </summary>
+            <param name="throwExcption">if set to <c>true</c> throw excption if invalid.</param>
+            <returns><c>true</c> if valid; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="P:Exceptionless.DateTimeExtensions.BusinessWeek.DefaultWeek">
+            <summary>
+            Gets the default BusinessWeek.
+            </summary>
+        </member>
+        <member name="T:Exceptionless.DateTimeExtensions.BusinessWeek.Nested">
+            <summary>
+            Nested class to lazy-load singleton.
+            </summary>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.BusinessWeek.Nested.#cctor">
+            <summary>
+            Initializes the Nested class.
+            </summary>
+            <remarks>
+            Explicit static constructor to tell C# compiler not to mark type as beforefieldinit.
+            </remarks>
+        </member>
+        <member name="F:Exceptionless.DateTimeExtensions.BusinessWeek.Nested.Current">
+            <summary>
+            Current singleton instance.
+            </summary>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.DateTimeOffsetExtensions.ChangeOffset(System.DateTimeOffset,System.TimeSpan)">
+            <summary>
+            Changes an existing Offset without modifying the time
+            </summary>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.DateTimeRange.Parse(System.String)">
+            <summary>
+            Parses the date range from the passed in content.
+            </summary>
+            <param name="content">String date range</param>
+        </member>
+        <member name="M:Exceptionless.DateTimeExtensions.DateTimeRange.Parse(System.String,System.DateTimeOffset)">
+            <summary>
+            Parses the date range from the passed in content.
+            </summary>
+            <param name="content">String date range</param>
+            <param name="relativeBaseTime">Relative dates will be base on this time.</param>
+        </member>
+    </members>
+</doc>

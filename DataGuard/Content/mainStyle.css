@@ -1,0 +1,255 @@
+﻿html, body, address, blockquote, div, dl, form, h1, h2, h3, h4, h5, h6, ol, p, pre, table, ul,dd, dt, li, tbody, td, tfoot, th, thead, tr, button, del, ins, map, object,
+a, abbr, acronym, b, bdo, big, br, cite, code, dfn, em, i, img, kbd, q, samp, small, span,strong, sub, sup, tt, legend, fieldset,menu{
+	margin: 0;
+	padding: 0; 
+}
+@media(min-width:768px) {
+    .InfoListUnit-max-height {
+        max-height: 120px;
+        min-height: 120px;
+        overflow-y: hidden;
+        overflow: hidden;
+    }
+}
+
+@font-face {
+    font-family: "Microsoft YaHei", simhei,Verdana, Arial, Helvetica, sans-serif;
+}
+html, body { 
+    height: 100%;
+}
+body {
+    padding-top: 50px;
+    padding-bottom: 1px;
+}
+label,span{
+     font-weight:500;
+     font-size:1em; 
+     font-family: Microsoft YaHei, simhei,Verdana, Arial, Helvetica, sans-serif;
+} 
+
+input[type="radio"] {margin: 3px 3px 0px 5px;display: none;}
+ 
+.dropdawn_txtbox{
+    background-color:white;
+    border-color:white;
+    border-width:0px;
+    color:#ffffff;width:90px;
+}
+.treemenucls{
+    width:100%;
+    height:auto;
+    max-width:280px;
+    overflow-y:scroll;
+    font-size:1em;
+}
+.footer-fixed-bottom {
+    position: fixed;
+    bottom: 0;
+} 
+ 
+/* Site.css */  
+/* Set padding to keep content from hitting the edges */
+.body-content { 
+    padding-left: 0px;
+    padding-right: 0px;
+}
+ 
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea 
+{
+    max-width: 280px;
+}
+ /*Info Module*/
+.text-omit
+{  
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+ .text-omit-defined
+{
+            overflow : hidden;
+            text-overflow: ellipsis;  /*display: -webkit-box;*/ 
+            display:block; 
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;/*for IE edge*/
+}
+.iph-infolist-img1
+{  
+    display: block !important; 
+    z-index:0;
+    top:0px;
+    opacity:1;
+    width:100%; 
+    position:relative; 
+    margin:3px;
+    padding-bottom:3px;
+    background-color: transparent !important;  
+}
+.iph-infolist-img1 img{
+    vertical-align:top;  
+}
+.iph-Cartlist-img1 {
+    display: block !important;
+    z-index: 0;
+    top: 0px;
+    opacity: 1;
+    width: 100%;
+    position: relative;
+    margin: 3px;
+    padding-bottom: 3px;
+    background-color: transparent !important;
+} 
+.iph-Cartlist-img1 img {
+        vertical-align: top;
+}
+ .text-primary{
+     color:#666; 
+     line-height:1.1em;
+ }
+.iph-text-omit2{  
+	        word-break:break-all;
+	        display:-webkit-box;
+	        -webkit-line-clamp:2;
+	        -webkit-box-orient:vertical;
+            line-height:1.3em;
+	        text-overflow:ellipsis;
+            overflow:hidden; 
+}
+ 
+ .wrapper-info-unit { 
+  position:relative;
+  overflow: hidden;
+} 
+.iph-infobox
+{  
+    padding:0px;
+    margin:0px; 
+}
+.iph-infobox-unit 
+{  
+    position:relative;
+    display: inline-block;  
+    background-color:transparent !important; 
+    border-bottom:1px solid #e5e5e5;
+}
+
+.iph-Cartbox-unit {
+    position: relative;
+    display: inline-block;
+    background-color: transparent !important;
+    border-bottom: 1px solid #e5e5e5;
+}
+.BtmFunLayer { 
+    max-width: 350px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    align-content: center;
+    padding-top:6px;
+    padding-bottom:6px;
+}
+.BtmFunLayerMyShoppingCart {
+    max-width:240px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    align-content: center;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+.floatFooter {
+    left: 0;
+    position: fixed;
+    bottom: 8px;
+    width: 100%;
+    z-index: 0;
+    text-align: center;
+    float:none;
+}
+.footer {
+    width: 100%;
+    text-align: center;
+}
+.no-margin{
+    margin:0px;
+}
+.margin-top5 {
+    margin-top: 5px;
+}
+.margin-top10 {
+    margin-top: 10px;
+}
+.no-padding {
+    padding:0px;
+}
+.padding-top10 {
+    padding-top: 10px;
+}
+.padding-bottom10{
+    padding-bottom: 10px;
+}
+.padding-top5 {
+    padding-top: 5px;
+}
+.padding-bottom5 {
+    padding-bottom: 5px;
+}
+.padding-left5 {
+    padding-left: 5px;
+}
+.padding-left10 {
+    padding-left: 10px;
+}
+padding-right15 {
+    padding-left: 15px;
+}
+.padding-left15 {
+    padding-left: 15px;
+}
+.padding-right5 {
+    padding-right: 5px;
+}
+.padding-10 {
+    padding: 10px;
+}
+.margin-left5 {
+    margin-left: 5px;
+}
+
+.margin-right5 {
+    margin-right: 5px;
+}
+.margin-right10 {
+    margin-right: 10px;
+}
+.margin-bottom-10 {
+    margin-right: -10px;
+}
+.radius5{
+    border-radius:5px;
+}
+ /*footer Module*/ 
+#footer { padding-top: 15px; padding-bottom: 10px; color: #fff; background: #2e2e2e; border-top:5px solid #ed1b23; font-size:0.725em;}
+#footer a {  color: #fff;}
+#footer a:hover { color: #c52d2f;}
+#footer ul { list-style: none; padding: 0; margin: 0;}
+#footer ul > li { overflow:hidden; margin-bottom:3px;}
+#footer ul > li.copyright{ border-bottom:1px solid #4d4d4d; padding-bottom:10px;}
+#footer ul > li h3{ font-size:1.5em;}
+#footer ul > li h5{ padding-top:5px;padding-bottom:5px;}
+#footer ul > li a{ white-space:nowrap; padding:0 5px; line-height:1.1em;}
+#footer .zwm{ max-width:14%; text-align:center; line-height:18px; float:right;}
+#footer .zwm img{ margin-bottom:12px; }                                           

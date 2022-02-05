@@ -1,0 +1,83 @@
+﻿@using DataGuard.Models
+@using LanguageResource
+@model RegisterViewModel
+@{
+    ViewBag.Title = Lang.RegisterViewModel_Title;
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    @Styles.Render("~/Content/bootstrap3.7")
+    @Styles.Render("~/AdminLTE3/dist/css")
+    @Styles.Render("~/Content/mainStyle")
+    @Scripts.Render("~/bundles/modernizr")
+     
+    
+</head>
+<body class="hold-transition register-page">
+    <div class="register-box">
+        <div class="register-logo">
+            <a href='@Url.Action("Index","Dashbord",new { Language =ViewBag.Language,area ="Admin"})'>
+                @Lang.RegisterViewModel_Welcome
+            </a>  
+        </div>
+        <div class="register-box-body">
+            <p class="register-box-msg h3  align-content-center">@Lang.RegisterViewModel_RegisterAsNewMember</p>
+            <div class="row ">
+                <div class="center-block">
+                    @using (Html.BeginForm("Register", "Account", new { returnUrl = ViewBag.returnUrl }, FormMethod.Post, new { role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group has-feedback"  title = "@Lang.RegisterViewModel_LoginNameTooltip" >
+                            @Html.TextBoxFor(m => m.EmailPhoneAndName, new { @class = "form-control form-control-lg", data_toggle = "tooltip", data_placement = "bottom", title= Lang.RegisterViewModel_LoginNameTooltip, placeholder = Lang.RegisterViewModel_EmailPhoneOrName})
+                            <span class="glyphicon glyphicon-envelope form-control-feedback" style="padding-right:5px;"></span>
+                            <span class="glyphicon glyphicon-phone form-control-feedback" style="padding-left:20px;"></span>
+                            @Html.ValidationMessageFor(m => m.EmailPhoneAndName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-lg", placeholder = Lang.AspNetUser_Password })
+                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control form-control-lg", placeholder = Lang.RegisterViewModel_ConfirmPassword })
+                            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @if (ViewBag.AccountFormatError != null)
+                            {
+                                <p class="alert alert-danger">@ViewBag.AccountFormatError </p><br />
+                            }
+
+                            <button type="submit" class="btn btn-primary btn-flat mt-1">@Lang.Views_GeneralUI_Register</button>
+                        </div>
+                        <div class="social-auth-links  text-left">
+                            <a href="@Url.Action("Login", "Account",new { returnUrl = ViewBag.returnUrl })" class="text-center">@Lang.RegisterViewModel_HasRegistedToLogin</a>
+                        </div>
+                    }
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap3.7")
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+</body>
+</html>

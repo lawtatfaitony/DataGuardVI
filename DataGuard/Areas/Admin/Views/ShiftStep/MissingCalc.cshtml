@@ -1,0 +1,250 @@
+﻿@using LanguageResource
+@{
+    ViewBag.Title = string.Format("{0} {1}", Lang.EmployeeQuickAdd_Title, ViewBag.Operation);
+}
+@using AttApiViewModal.ShiftModule
+@model AttApiViewModal.ShiftModule.ShiftMissingCalc
+@{
+    ViewBag.Title = Lang.ShiftSetting_Title;
+    string oper = (bool)ViewBag.IsUpdateStatus == true ? Lang.GeneralUI_Update : Lang.GeneralUI_Create;
+}
+<!--Plugin CSS file with desired skin-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css" />
+<!--Plugin JavaScript file-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js"></script>
+<!--jscolor Picker-->
+<script src="~/AdminLTE3/plugins/jscolor-2.0.5/jscolor.js"></script>
+
+<!-- Main Content  Begin-->
+
+@using (Ajax.BeginForm("MissingCalc", null, new { ShiftId = Model.ShiftId }, new AjaxOptions { HttpMethod = "post", OnBegin = "onBeginSubmit", OnSuccess = "HandleDetailsAddUpdateSuccDialog", OnFailure = "errDetailsAddUpdate", LoadingElementId = "Loading" }, new { @class = "form-horizontal form-inline" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.ShiftId) 
+
+    <!-- Main content --> 
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            @{
+                Html.RenderAction("HeaderState", "ShiftStep", new { ShiftId = Model.ShiftId, intShiftBusinessMode = ViewBag.IntShiftBusinessMode, step = (int)ShiftHeaderStep.SHIFT_MISSING_CALC_SETTING });
+            }
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title"> @Lang.GeneralUI_System -Shift Setting</h5>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-wrench"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <a href="@Url.Action("Basic", "ShiftStep")" class="dropdown-item">@Lang.Shift_SimpleCalc</a>
+                                    <a href="@Url.Action("Work", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingNight</a>
+                                    <a href="@Url.Action("ShiftSettingOverTime", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingOverTime</a>
+                                    <a href="@Url.Action("ShiftSettingWeekDay", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingWeekDay</a>
+                                    <a href="@Url.Action("Lunch", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingLunch</a>
+                                    <a href="#" class="dropdown-item">@Lang.Shift_ShiftSettingBreak</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body  text-right">
+                        <div class="row">
+                            <div class="container">
+                                <!--ShiftBrief-->
+                                @{
+                                    Html.RenderAction("ShiftBrief", "ShiftStep", new { ShiftId = Model.ShiftId });
+                                }
+
+                                @Html.HiddenFor(model => model.ShiftId)
+
+                                <!--IsAutoCalcMissing  Focibly to close the auto missing calc-->
+                                <div class="form-group hide  pb-3">
+                                    <label class="col-md-3 control-label" for="IsAutoCalcMissing">@Lang.Shift_IsAutoCalcMissing</label>
+                                    <div class="col-md-9">
+                                        <div class="col-3 d-flex flex-row">
+                                            @Html.CheckBoxFor(model => model.IsAutoCalcMissing, new { @class = "form-control form-control-sm pl-0" }) 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--MissingWorkTime-->
+                                <div class="form-group pb-2 IsAutoCalcMissingClick">
+                                    <div class="col-md-3">
+                                        <label class="control-label" for="MissingWorkOn">@Lang.Shift_IsMissingWork</label>
+                                    </div> 
+                                    <div class="col-md-9  pl-0 ml-0">
+                                        <div id="rw_AutoCalc" class="row d-flex flex-row pl-0 ml-0">
+                                            <div class="col-6">
+                                                <div class="d-flex flex-column">
+                                                    @Html.DropDownList("MissingWorkOn", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm dropdown show", data_toggle = "tooltip", title = Lang.AutoCalcMissingType_AutoMissingWorkOn })
+                                                    <label class="small  justify-content-end  pr-3">@Lang.AutoCalcMissingType_AutoMissingWorkOn</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="d-flex flex-column justify-content-end">
+                                                    @Html.DropDownList("MissingWorkOff", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm dropdown show", data_toggle = "tooltip", title = Lang.AutoCalcMissingType_AutoMissingWorkOff })
+                                                    <label class="small  justify-content-end  pr-3">@Lang.AutoCalcMissingType_AutoMissingWorkOff</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+                                </div>
+
+                                <!--MissingLunchTime-->
+                                <div class="form-group  pb-2  IsAutoCalcMissingClick">
+                                    <div class="col-md-3">
+                                        <label class="col-md-3 control-label" for="MissingLunchStart">@Lang.Shift_IsMissingLunchTime</label>
+                                    </div> 
+                                    <div class="col-md-9 pl-0 ml-0">
+                                        <div id="rw_AutoCalc" class="d-flex flex-row pl-0 ml-0">
+                                            <div class="col-6 d-flex flex-column">
+                                                @Html.DropDownList("MissingLunchStart", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm dropdown show", data_toggle = "tooltip", title = Lang.AutoCalcMissingType_AutoMissingWorkOn })
+                                                <label class="small  justify-content-end  pr-3">@Lang.AutoCalcMissingType_AutoMissingLunchStart</label>
+                                            </div>
+                                            <div class="col-6 d-flex flex-column justify-content-end">
+                                                @Html.DropDownList("MissingLunchEnd", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm dropdown show", data_toggle = "tooltip", title = Lang.AutoCalcMissingType_AutoMissingWorkOff })
+                                                <label class="small  justify-content-end  pr-3">@Lang.AutoCalcMissingType_AutoMissingLunchEnd</label>
+                                            </div>
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+                                </div>
+
+                                <!--MissingOverTime-->
+                                <div class="form-group  pb-2  IsAutoCalcMissingClick"> 
+                                    <div class="col-md-3">
+                                        <label class="col-md-3 control-label" for="MissingOverTimeStart">@Lang.Shift_IsMissingOverTime</label>
+                                    </div>
+                                    <div class="col-md-9 pl-0 ml-0">
+                                        <div id="rw_AutoCalc" class="d-flex flex-row pl-0 ml-0">
+                                            <div class="col-6 d-flex flex-column">
+                                                @Html.DropDownList("MissingOverTimeStart", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm dropdown show", data_toggle = "tooltip", title = Lang.AutoCalcMissingType_AutoMissingWorkOn })
+                                                <label class="small  justify-content-end pr-3">@Lang.AutoCalcMissingType_AutoMissingOverTimeStart</label>
+                                            </div>
+                                            <div class="col-6 d-flex flex-column justify-content-end">
+                                                @Html.DropDownList("MissingOverTimeEnd", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm dropdown show", data_toggle = "tooltip", title = Lang.AutoCalcMissingType_AutoMissingWorkOff })
+                                                <label class="small  justify-content-end  pr-3">@Lang.AutoCalcMissingType_AutoMissingOverTimeEnd</label>
+                                            </div>
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./card-body -->
+                    <div class="card-footer">
+                        <div class="d-flex bd-highlight">
+                            <div class="p-2 flex-grow-1 bd-highlight">
+                                @Html.ActionLink(Lang.GeneralUI_Return, "ShiftList", "SysBusinessSetting", null, new { @class = "btn btn-primary padding-left15 margin-left5" })
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                @if (string.IsNullOrEmpty(Model.ShiftId) == false)
+                                {
+                                    <button type="button" id="btnDel" class="hide btn btn-danger padding-left15 margin-left5">@Lang.GeneralUI_Delete</button>
+                                }
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                @if ((bool)ViewBag.IsUpdateStatus)
+                                {
+                                    <a href="@Url.Action("Logic","ShiftStep",new { ShiftId= Model.ShiftId })" target="_self" class="btn btn-sm btn-warning flat mr-3">@Lang.GeneralUI_Skip ,@Lang.GeneralUI_Next</a>
+                                }
+                                <button type="submit" id="btnaddnew" class="btn  btn-sm btn-success padding-left15 margin-left5">
+                                    @Lang.GeneralUI_Update
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+
+            </div>
+            <!-- /.col -->
+        </div>
+
+    </div><!--/. container-fluid -->
+
+    <!-- /.content -->
+
+    <!--//////////////////////////////////////////////////////////////////////////////////////////////-->
+}
+
+<script>
+    var dt = new Date();
+    const year = dt.getFullYear();
+    const month = dt.getMonth() + 1;
+    const day = dt.getDate();
+    const hour = dt.getHours();
+    const mins = dt.getMinutes() + 1;
+    const formatdate = [year, month, day].join('-');
+    const formattime = [hour, mins, day].join(':'); 
+</script>
+ 
+<script>
+    function HandleDetailsAddUpdateSuccDialog(result)
+   {
+       if (result.meta.Success)
+       {
+           layer.close(layer.index);
+           //-------------------------------------------------------------- coonfirmed begin
+           var ShiftId = result.data.ShiftId;
+           var successIndex = layer.confirm(result.meta.Message + " , ID = " + result.data.ShiftId, {      //'@Lang.GeneralUI_ReturnResult',
+                btn: ['@Lang.GeneralUI_OK , 成功完成,Return to List', '@Lang.GeneralUI_NO']
+           }, function () {
+                     
+                   toastr["success"]("Waiting for redirect to list");
+
+                    setTimeout(function () {
+                        var redirectShiftListUrl = "@Html.Raw(Url.Action("ShiftList", "SysBusinessSetting", new { Area = "Admin", searchString = Model.ShiftId }))";
+                        redirectShiftListUrl = redirectShiftListUrl ;
+                        window.location = redirectShiftListUrl;
+                    } , 3000);
+
+           }, function () {
+                  
+                   toastr["success"](result.meta.Message); 
+           });
+           //-------------------------------------------------------------- coonfirmed end
+           return;
+
+       } else
+       {
+           layer.close(layer.index);
+
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: result.meta.Message
+            });
+
+        }
+    }
+    function golist(redirectUrl) {
+        window.location = redirectUrl;
+    }
+    function errDetailsAddUpdate(data) {
+        layer.close(layer.index);
+        console.log(JSON.stringify(data));
+        alert(result.meta.ErrorCode + ":" + data.meta.Message);
+    }
+
+</script>
+
+ 

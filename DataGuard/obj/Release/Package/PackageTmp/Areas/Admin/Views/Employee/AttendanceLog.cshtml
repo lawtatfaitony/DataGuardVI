@@ -1,0 +1,220 @@
+﻿@using LanguageResource
+@using Common
+@using AttendanceBussiness
+@using DataGuard.Utilities
+@using X.PagedList
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Bootstrap4
+@using DataGuard.Models.BusinessDataModel
+@model IEnumerable<AttendanceBussiness.Public.AttendanceView>
+
+@{
+    ViewBag.Title = Lang.AttendanceLog_Title;
+}
+<script>
+
+    function AttendanceLogChkDataRecruitment(AttendanceLogId) {
+        var path = "/" + "@LangUtilities.LanguageCode" + "/Admin/Employee/AttendanceLogChkDataRecruitment/"+ AttendanceLogId;
+
+        $.ajax({
+            url: path,
+            type: "get",
+            success: function (data) {
+
+                if (data.MsgCode == '0') {
+                    AttendanceLogId = "#td" + AttendanceLogId;
+                    $(AttendanceLogId).attr("title", data.Message);
+                    layer.open({
+                        title: '@Lang.GeneralUI_Warning'
+                        , content: data.Message
+                        , btn: ['OK']
+                    });
+                } else {
+                    AttendanceLogId = "#td" + AttendanceLogId;
+                    $(AttendanceLogId).attr("title", data.Message);
+                    layer.msg( data.Message);
+                }
+            }
+        });
+       AttChkDataRecruitmentLoading(AttendanceLogId);
+    }
+
+    function AttChkDataRecruitmentLoading(AttendanceLogId) {
+        var path = "/" + "@LangUtilities.LanguageCode" + "/Admin/Employee/AttendanceLogChkDataRecruitment/"+ AttendanceLogId;
+
+        $.ajax({
+            url: path,
+            type: "get",
+            success: function (data) {
+                console.log(data);
+                sp_AttendanceLogId = "#sp" + AttendanceLogId;
+
+                $(sp_AttendanceLogId).removeClass("badge");
+                $(sp_AttendanceLogId).removeClass("badge-danger");
+                $(sp_AttendanceLogId).removeClass("badge-dark");
+                $(sp_AttendanceLogId).removeClass("badge-warning");
+
+                $(sp_AttendanceLogId).addClass("badge");
+                $(sp_AttendanceLogId).addClass("badge-warning");
+
+                setTimeout(function () {
+                    if (data.MsgCode == '1')
+                    {
+
+                        $(sp_AttendanceLogId).addClass("badge");
+                        $(sp_AttendanceLogId).addClass("badge-danger");
+
+                    } else {
+                        $(sp_AttendanceLogId).addClass("badge");
+                        $(sp_AttendanceLogId).addClass("badge-dark");
+                    }
+                }, 400);
+
+
+            }
+        });
+    }
+</script>
+
+@using (Html.BeginForm("AttendanceLog", "Employee", FormMethod.Get, new { @class = "form-inline " }))
+{
+    <div class="row padding-bottom10">
+        <div class="col-12">
+            <div class="input-group input-group-sm">
+                @Html.TextBox("occurDateTimeRange", ViewBag.CurrentOccurDateTimeRange as string, new { @class = "DateTimeRange form-control bg-gray-light", style = "width:300px;border-right-width:0;", title = Lang.AttendanceLog_occurDateTimeRangeTips, @data_toggle = "tooltip", placeholder = Lang.AttendanceLog_occurDateTimeRange, autocomplete = "off" })
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control form-control-navbar", style = "border-left-width:0;", onclick = "javascript:this.value='';", placeholder = "Search" })
+                <span class="input-group-append">
+                    <button type="submit" class="btn btn-primary btn-flat"><i class="fa fa-search"></i> Go!</button>
+                </span>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="box-body  table-responsive" style="min-height:600px;">
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>
+                <div class="text-nowrap " title="@Lang.AttendanceLog_AttendanceLogId" data-toggle="tooltip">
+                    <span><i class="fa fa-id-card-o" style="color:mediumslateblue"> </i>@Lang.AttendanceLog_AttendanceLogId </span> <!--fa-caret-right-->
+                </div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.AttendanceLog_DeviceName" data-toggle="tooltip"><span><i class="fa fa-cog" style="color:mediumslateblue"> </i>@Lang.AttendanceLog_DeviceName </span></div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.AttendanceLog_DeviceEntryMode" data-toggle="tooltip" style="max-width:65px;overflow-x:hidden"><span><i class="fa fa-external-link" style="color:mediumslateblue"> </i>@Lang.AttendanceLog_DeviceEntryMode </span></div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.AttendanceLog_EmployeeId" data-toggle="tooltip" style="max-width:90px;overflow-x:hidden"><span><i class="far fa-user" style="color:mediumslateblue"> </i>@Lang.AttendanceLog_EmployeeId </span></div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.GeneralUI_Name" data-toggle="tooltip" style="max-width:80px;overflow-x:hidden"><span><i class="far fa-id-card" style="color:mediumslateblue"> </i>@Lang.GeneralUI_Name </span></div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.AttendanceLog_SiteName" data-toggle="tooltip" style="max-width:100x;overflow-x:hidden"><span><i class="fa fa-sitemap" style="color:mediumslateblue"> </i>@Lang.AttendanceLog_SiteName </span></div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.AttendanceLog_DepartmentName" data-toggle="tooltip" style="max-width:90px;overflow-x:hidden"><span><i class="fa fa-users" style="color:mediumslateblue"> </i>@Lang.AttendanceLog_DepartmentName </span></div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.AttendanceLog_CatchPictureFileName" data-toggle="tooltip"><span><i class="fa fa-picture-o" style="color:mediumslateblue"> </i>@Lang.AttendanceLog_CatchPictureFileName </span></div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.AttendanceLog_OccurDateTime" data-toggle="tooltip">
+                    <span><i class="fa fa-user" style="color:mediumslateblue"> </i>@Lang.AttendanceLog_OccurDateTime </span>
+                    @Html.ActionLink(" ", "AttendanceLog", "Employee", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, occurDateTimeRange = ViewBag.CurrentOccurDateTimeRange }, htmlAttributes: new { @class = "fa fa-sort pull-right margin-top5", title = Lang.GeneralUI_OrderByDatetime })
+                </div>
+            </th>
+        </tr>
+        @{int x = 0;}
+        @foreach (var item in Model)
+        {
+            x++;
+            <tr>
+                <td id="@string.Format("td{0}",item.AttendanceLogId)" class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.AttendanceLogId)">
+                    <div id="@string.Format("div{0}",item.AttendanceLogId)" class="text-nowrap d-flex flex-row" style="cursor:pointer;">
+                        <div class="mr-1" data-toggle="tooltip" title="@Lang.GeneralUI_CheckDataSecurity">
+                            <span id="@string.Format("sp{0}",item.AttendanceLogId)" class="badge badge-dark" onclick="javascript:AttendanceLogChkDataRecruitment('@item.AttendanceLogId')" data-toggle="tooltip" style="cursor:pointer;">@x</span>
+                        </div>
+                        <div id="@string.Format("CLIDBOARD{0}",item.AttendanceLogId)" class="p-0 text-dark clipboard" style="cursor:pointer;" title="@Lang.GeneralUI_ClickToCopy" onclick="getClipboardText()" data-clipboard-text="@item.AttendanceLogId">@CommonBase.Substr2(item.AttendanceLogId.ToString(), 6, 5)</div>
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            setTimeout(function () { AttChkDataRecruitmentLoading('@item.AttendanceLogId'); },@x * 600);
+                        });
+                    </script>
+                </td>
+                <td class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.DeviceName)">
+                    @Html.DisplayFor(modelItem => item.DeviceName)
+                </td>
+                <td data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.DeviceEntryMode)">
+                    <span class="small"> @LangUtilities.GetStringReflectKeyName(EnumHelperX.GetEnumDescription((ShiftBusiness.DeviceEntryMode)item.DeviceEntryMode)) </span>: @Html.DisplayFor(modelItem => item.DeviceEntryMode)
+                </td>
+                <td class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.EmployeeId)">
+                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                </td>
+                <td class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.CnName)">
+                    @CommonBase.Substr(item.CnName, 6)
+                </td>
+                <td class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.SiteName)">
+                    @CommonBase.Substr(item.SiteName, 5)
+                </td>
+                <td class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.DepartmentName)">
+                    @CommonBase.Substr(item.DepartmentName, 10)
+                </td>
+                <td data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.CatchPictureFileName)">
+                    <div class="text-nowrap" style="max-width:60px;max-height:60px;overflow:hidden">
+                        @if (!string.IsNullOrEmpty(item.CatchPictureFileName))
+                        {
+                            <a href="@Url.Content(string.Format("{0}",item.CatchPictureFileName))" target="_blank"><img src="@string.Format("{0}s60X60.jpg",item.CatchPictureFileName)" width="50" /></a>
+                        } 
+                    </div>
+                </td>
+                <td>
+                    <div class="text-nowrap" data-toggle="tooltip" title="@item.OccurDateTime">
+                        <span><i class="fa fa-calendar" style="color:mediumslateblue"> </i> </span>@string.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTimePubBusiness.ConvertIntDateTime(item.OccurDateTime))
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div class="btn-xs">
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("AttendanceLog", "Employee", new { sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, occurDateTimeRange = ViewBag.CurrentOccurDateTimeRange, page = page }), new PagedListRenderOptions
+    {
+        ContainerDivClasses = new[] { "pagination pagination-sm" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        MaximumPageNumbersToDisplay = 5
+    }) 
+
+</div>
+
+<script>
+
+    function getClipboardText(id) {
+        var btn = document.getElementById(id);
+        var clipboard = new Clipboard(btn);
+
+        clipboard.on('success', function (e) {
+            console.log(e);
+            idx = "#" + id;
+            $(idx).removeClass("text-dark");
+            $(idx).addClass("text-info");
+        });
+        clipboard.on('error', function (e) {
+            console.log(e);
+        });
+    };
+</script>
+
+<script>
+    $(document).ready(function () {
+        DateTimeRangeMultiLanguage.dateLimit = 180;
+        $('#occurDateTimeRange').daterangepicker(DateTimeRangeMultiLanguage);
+    });
+</script>
+
+

@@ -1,0 +1,303 @@
+﻿@using LanguageResource
+@using DataGuard.Areas
+@{
+    ViewBag.Title = string.Format("{0} {1}", Lang.EmployeeQuickAdd_Title, ViewBag.Operation);
+}
+@using AttApiViewModal.ShiftModule
+@model AttApiViewModal.ShiftModule.LogicOfSpecialAndExclude
+@{
+    ViewBag.Title = Lang.ShiftSetting_Title;
+    string oper = (bool)ViewBag.IsUpdateStatus == true ? Lang.GeneralUI_Update : Lang.GeneralUI_Create;
+}
+<!--Plugin CSS file with desired skin-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css" />
+<!--Plugin JavaScript file-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js"></script>
+<!--jscolor Picker-->
+<script src="~/AdminLTE3/plugins/jscolor-2.0.5/jscolor.js"></script>
+
+<!-- Main Content  Begin-->
+
+@using (Ajax.BeginForm("Logic", null, new { ShiftId = Model.ShiftId }, new AjaxOptions { HttpMethod = "post", OnBegin = "onBeginSubmit", OnSuccess = "HandleDetailsAddUpdateSuccDialog", OnFailure = "errDetailsAddUpdate", LoadingElementId = "Loading" }, new { @class = "form-horizontal form-inline" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.ShiftId) 
+
+    <!-- Main content --> 
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            @{
+                Html.RenderAction("HeaderState", "ShiftStep", new { ShiftId = Model.ShiftId, intShiftBusinessMode = ViewBag.IntShiftBusinessMode, step = (int)ShiftHeaderStep.SHIF_LOGIC_OF_SPECIAL_AND_EXCLUDE_SETTING });
+            }
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title"> @Lang.GeneralUI_System -Shift Setting</h5>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-wrench"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <a href="@Url.Action("Basic", "ShiftStep")" class="dropdown-item">@Lang.Shift_SimpleCalc</a>
+                                    <a href="@Url.Action("Work", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingNight</a>
+                                    <a href="@Url.Action("OverTime", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingOverTime</a>
+                                    <a href="@Url.Action("Logic", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingWeekDay</a>
+                                    <a href="@Url.Action("Lunch", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingLunch</a>
+                                    <a href="#" class="dropdown-item">@Lang.Shift_ShiftSettingBreak</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body  text-right">
+                        <div class="row">
+                            <div class="container">
+                                <!--ShiftBrief-->
+                                @{
+                                    Html.RenderAction("ShiftBrief", "ShiftStep", new { ShiftId = Model.ShiftId });
+                                }
+
+                                <!--SpecialWeekDays-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="SpecialWeekDays" title="@Lang.Shift_Shift_SpecialWeekDaysTips" data-toggle="tooltip">@Lang.Shift_SpecialWeekDays</label>
+                                    <div class="col-md-9  mb-3  pt-3">
+                                        <div class="row padding-top10 padding-left10">
+
+                                            @{
+                                                List<SpecialWeekDayModal> specialWeekDayLists = ViewBag.SpecialWeekDayList;
+                                                foreach (var item in specialWeekDayLists)
+                                                {
+                                                    string badge = " bg-success-gradient";
+                                                    if (item.WeekDayTypeId == "0")
+                                                    {
+                                                        badge = "bg-danger";
+                                                    }
+                                                    <input type="checkbox" id="SpecialWeekDays" class="form-check-input" name="SpecialWeekDays"
+                                                           value="@item.WeekDayTypeId"
+                                                           @(Html.Raw(item.Assigned ? "checked=\"checked\"" : "")) />
+                                                    <label class="badge @badge mb-2">@item.WeekDayTypeName</label> @:&nbsp;&nbsp;&nbsp;
+                                                }
+                                            }
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.SpecialWeekDaysWorkStart, "", new { @class = "text-danger" }) @Html.ValidationMessageFor(model => model.SpecialWeekDaysWorkEnd, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!--SpecialWeekDaysWorkStart and SpecialWeekDaysWorkEnd-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="WorkStartBuffer" title="@Lang.Shift_Shift_SpecialWeekDaysTips" data-toggle="tooltip">@Lang.Shift_SpecialWeekDays_WorkTime</label>
+                                    <div class="col-md-9  mb-3">
+                                        <div class="row hide">
+                                            <div class="col-5" id="div_SpecialWeekDaysWorkStart">
+                                                @Html.TextBoxFor(model => model.SpecialWeekDaysWorkStart, new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-5" id="div_SpecialWeekDaysWorkEnd">
+                                                @Html.TextBoxFor(model => model.SpecialWeekDaysWorkEnd, new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                        <div class="row padding-left10">
+                                            <div class="container no-padding no-margin">
+                                                <input type="text" class="SpecialWeekDaysWorkTimeRange" name="SpecialWeekDaysWorkTimeRange" id="SpecialWeekDaysWorkTimeRange" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--ExcludeWeekDay-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="WorkStartBuffer" title="@Lang.Shift_ExcludeWeekDayTips" data-toggle="tooltip">@Lang.Shift_ExcludeWeekDay</label>
+                                    <div class="col-md-9  mb-3 pt-3">
+                                        <div class="row padding-top10 padding-left10">
+                                            @{
+                                                List<SpecialWeekDayModal> excludeWeekDayList = ViewBag.ExcludeWeekDayList;
+                                                foreach (var item in excludeWeekDayList)
+                                                {
+                                                    string badge_ExcludeWeekDay = "  bg-warning-gradient ";
+                                                    if (item.WeekDayTypeId == "0")
+                                                    {
+                                                        badge_ExcludeWeekDay = "bg-danger";
+                                                    }
+                                                    <input type="checkbox" id="ExcludeWeekDay" class="form-check-input" name="ExcludeWeekDay"
+                                                           value="@item.WeekDayTypeId"
+                                                           @(Html.Raw(item.Assigned ? "checked=\"checked\"" : "")) />
+                                                    <label class="badge @badge_ExcludeWeekDay mb-2 ">@item.WeekDayTypeName</label> @:&nbsp;&nbsp;&nbsp;
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--ExcludeOverTime-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="WorkStartBuffer" title=@Lang.Shift_ExcludeOverTime_Desc data-toggle="tooltip">@Lang.Shift_ExcludeOverTime</label>
+                                    <div class="col-md-9  mb-3 pt-3">
+                                        <div class="row padding-top10 padding-left10">
+
+                                            @{
+                                                List<SpecialWeekDayModal> excludeOverTimeList = ViewBag.ExcludeOverTimeList;
+                                                foreach (var item in excludeOverTimeList)
+                                                {
+                                                    string badge_ExcludeOverTime = "  bg-primary-gradient ";
+                                                    if (item.WeekDayTypeId == "0")
+                                                    {
+                                                        badge_ExcludeOverTime = "bg-danger";
+                                                    }
+                                                    <input type="checkbox" id="ExcludeOverTime" class="form-check-input" name="ExcludeOverTime"
+                                                           value="@item.WeekDayTypeId"
+                                                           @(Html.Raw(item.Assigned ? "checked=\"checked\"" : "")) />
+                                                    <label class="badge @badge_ExcludeOverTime mb-2 ">@item.WeekDayTypeName</label> @:&nbsp;&nbsp;&nbsp;
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./card-body -->
+                    <div class="card-footer">
+                        <div class="d-flex bd-highlight">
+                            <div class="p-2 flex-grow-1 bd-highlight">
+                                @Html.ActionLink(Lang.GeneralUI_Return, "ShiftList", "SysBusinessSetting", null, new { @class = "btn btn-primary padding-left15 margin-left5" })
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                @if (string.IsNullOrEmpty(Model.ShiftId) == false)
+                                {
+                                    <button type="button" id="btnDel" class="hide btn btn-danger padding-left15 margin-left5">@Lang.GeneralUI_Delete</button>
+                                }
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                @if ((bool)ViewBag.IsUpdateStatus)
+                                {
+                                    <a href="@Url.Action("Logic","ShiftStep",new { ShiftId= Model.ShiftId })" target="_self" class="btn btn-sm btn-warning flat mr-3">@Lang.GeneralUI_Skip ,@Lang.GeneralUI_Next</a>
+                                }
+                                <button type="submit" id="btnaddnew" class="btn  btn-sm btn-success padding-left15 margin-left5">
+                                    @Lang.GeneralUI_Update
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+
+            </div>
+            <!-- /.col -->
+        </div>
+
+    </div><!--/. container-fluid -->
+
+    <!-- /.content -->
+
+    <!--//////////////////////////////////////////////////////////////////////////////////////////////-->
+}
+
+<script>
+    var dt = new Date();
+    const year = dt.getFullYear();
+    const month = dt.getMonth() + 1;
+    const day = dt.getDate();
+    const hour = dt.getHours();
+    const mins = dt.getMinutes() + 1;
+    const formatdate = [year, month, day].join('-');
+    const formattime = [hour, mins, day].join(':'); 
+</script>
+
+<script>
+    var ShiftBusinessMode = @ViewBag.IntShiftBusinessMode;  
+    var custom_values = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840, 870, 900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1170, 1200, 1230, 1260, 1290, 1320, 1350, 1380, 1410, 1440];
+    if (ShiftBusinessMode == 2) {
+        custom_values = [720, 750, 780, 810, 840, 870, 900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1170, 1200, 1230, 1260, 1290, 1320, 1350, 1380, 1410, 1440, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690, 719];
+    }
+
+    //--SpecialWeekDaysWorkTime
+    var SpecialWeekDays_from = MinsScaleIndex($("#SpecialWeekDaysWorkStart").val());
+    var SpecialWeekDays_to = MinsScaleIndex($("#SpecialWeekDaysWorkEnd").val()); //
+    $("#SpecialWeekDaysWorkTimeRange").ionRangeSlider({
+
+        onChange: function (data) {
+            $("#SpecialWeekDaysWorkStart").val(my_prettify(data.from_value));
+            console.log(data.to_value);
+            $("#SpecialWeekDaysWorkEnd").val(my_prettify(data.to_value));
+        },
+        skin: "sharp",
+        type: "double",
+        grid: true,
+        from: SpecialWeekDays_from,
+        to: SpecialWeekDays_to,
+        values: custom_values,
+        prettify: my_prettify
+    });
+     
+</script>
+
+<script>
+    function HandleDetailsAddUpdateSuccDialog(result)
+   {
+       if (result.meta.Success)
+       {
+           //-------------------------------------------------------------- coonfirmed begin
+           var ShiftId = result.data.ShiftId;
+           var successIndex = layer.confirm(result.meta.Message + " , ID = " + result.data.ShiftId, {      //'@Lang.GeneralUI_ReturnResult',
+                btn: ['@Lang.GeneralUI_OK , @Lang.GeneralUI_Next', '@Lang.GeneralUI_NO']
+           }, function () {
+
+                   toastr["success"](result.meta.Message);
+                   setTimeout(function () {
+                       layer.close(successIndex);
+                       var redirectMissingCalcUrl = "@Html.Raw(Url.Action("MissingCalc", "ShiftStep"))";
+                        if (ShiftId != undefined) {
+                            redirectMissingCalcUrl = redirectMissingCalcUrl + "?ShiftId=" + ShiftId;
+                        }
+                       window.location = redirectMissingCalcUrl;
+                    } , 300);
+
+           }, function () {
+
+                   toastr["success"]("Waiting for redirect to list");
+
+                    setTimeout(function () {
+                        var redirectShiftListUrl = "@Html.Raw(Url.Action("ShiftList", "SysBusinessSetting", new { Area = "Admin", searchString = Model.ShiftId }))";
+                        redirectShiftListUrl = redirectShiftListUrl ;
+                        window.location = redirectShiftListUrl;
+                    } , 3000);
+           });
+           //-------------------------------------------------------------- coonfirmed end
+           return;
+
+       } else
+       {
+           layer.close(layer.index);
+
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: result.meta.Message
+            });
+
+        }
+    }
+    function golist(redirectUrl) {
+        window.location = redirectUrl;
+    }
+    function errDetailsAddUpdate(data) {
+        layer.close(layer.index);
+        console.log(JSON.stringify(data));
+        alert(result.meta.ErrorCode + ":" + data.meta.Message);
+    }
+
+</script>
+
+ 

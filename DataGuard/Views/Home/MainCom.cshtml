@@ -1,0 +1,31 @@
+﻿@using LanguageResource
+@{
+    ViewBag.Title = Lang.GeneralUI_HomePage;
+} 
+
+<div class="jumbotron">
+    <h1>星安科技工程有限公司</h1>
+    <p class="lead"> STAR ON ENGEERING LTD. <br>STAR ON SYSTEM LTD.</p>
+    <p><a href="@Url.Action("about",new { Language = ViewBag.Language })" class="btn btn-primary btn-lg"> more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Contact us</h2>
+        <p>
+            <span><i class="fa fa-phone-square"></i> (852) 23761414</span>
+        </p>
+        <p><a class="btn btn-default" href="@Url.Action("about",new { Language = ViewBag.Language })"> more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Technology supports Service</h2>
+        <p>Makes it easy to add, update libraries and d can easily find a web hosting company applications.</p>
+        <p><a class="btn btn-default" href="https://starind.com.hk/web/Star_Industries/shou_ye.html">More &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>DataGuard Web Hosting</h2>
+        <p>Update libraries and d can easily find a web hosting company update libraries and d can easily find a web hosting company applications.</p>
+        <p><a class="btn btn-default" href="https://starind.com.hk/web/Star_Industries/shou_ye.html">More &raquo;</a></p>
+    </div>
+</div>
+

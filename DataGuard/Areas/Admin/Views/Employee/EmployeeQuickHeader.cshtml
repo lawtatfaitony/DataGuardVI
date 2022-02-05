@@ -1,0 +1,60 @@
+﻿@using LanguageResource
+@{
+    Layout = null;
+}
+<div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box @ViewBag._BG_EmployeeQuickAdd"> 
+        <div class="info-box-content">
+            <a href="@Url.Action("EmployeeQuickAdd", "Employee", new {EmployeeId = ViewBag.EmployeeId,Step = 1})" class="info-box-text">
+                <i class="fa fa-user fa-1x"></i>
+                <span class="h4 ml-1 @ViewBag._TX_EmployeeQuickAdd"><strong>新工人基本資料</strong></span>
+            </a>
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+</div>
+<!-- /.col -->
+<div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box mb-3 @ViewBag._BG_QuickReco">
+        
+        <div class="info-box-content">
+            <a href="@Url.Action("EmployeeQuickReco", "Employee", new {EmployeeId = ViewBag.EmployeeId,Step = 2})" class="info-box-text">
+                <i class="fa fa-user fa-1x"></i><span class="h4 ml-1 @ViewBag._TX_QuickReco"><strong>地盤卡號登記</strong></span>
+            </a>
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+</div>
+<!-- /.col -->
+<!-- fix for small devices only -->
+<div class="clearfix hidden-md-up"></div>
+
+<div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box @ViewBag._BG_QuickAddOganization">
+        
+        <div class="info-box-content">
+            <a href="@Url.Action("QuickAddOganization", "Employee", new {EmployeeId = ViewBag.EmployeeId,Step = 3})" class="info-box-text">
+                <i class="fa fa-user fa-1x"></i><span class="h4 ml-1 @ViewBag._TX_QuickAddOganization"><strong>工種部門職位</strong></span>
+            </a>
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+</div>
+<!-- /.col --> 
+<div class="col-12 col-sm-6 col-md-3 ">
+    <div class="info-box mb-3 @ViewBag._BG_QuickAddIdNumber">
+        
+
+        <div class="info-box-content">
+            <a href="@Url.Action("QuickAddIdNumber", "Employee", new {EmployeeId = ViewBag.EmployeeId,Step = 4})" class="info-box-text">
+                <i class="fa fa-user fa-1x"></i><span class="h4 ml-1 @ViewBag._TX_QuickAddIdNumber"><strong>身份號碼出生</strong></span>
+            </a>
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+</div>
+<!-- /.col -->

@@ -1,0 +1,12 @@
+S:\NetCore31API\FastConnector\EnumCode\bin\Release\netstandard2.0\EnumCode.deps.json
+S:\NetCore31API\FastConnector\EnumCode\bin\Release\netstandard2.0\EnumCode.dll
+S:\NetCore31API\FastConnector\EnumCode\bin\Release\netstandard2.0\EnumCode.pdb
+S:\NetCore31API\FastConnector\EnumCode\bin\Release\netstandard2.0\LangResouceLib.dll
+S:\NetCore31API\FastConnector\EnumCode\bin\Release\netstandard2.0\LangResouceLib.pdb
+S:\NetCore31API\FastConnector\EnumCode\obj\Release\netstandard2.0\EnumCode.csprojAssemblyReference.cache
+S:\NetCore31API\FastConnector\EnumCode\obj\Release\netstandard2.0\EnumCode.csproj.CoreCompileInputs.cache
+S:\NetCore31API\FastConnector\EnumCode\obj\Release\netstandard2.0\EnumCode.AssemblyInfoInputs.cache
+S:\NetCore31API\FastConnector\EnumCode\obj\Release\netstandard2.0\EnumCode.AssemblyInfo.cs
+S:\NetCore31API\FastConnector\EnumCode\obj\Release\netstandard2.0\EnumCode.csproj.CopyComplete
+S:\NetCore31API\FastConnector\EnumCode\obj\Release\netstandard2.0\EnumCode.dll
+S:\NetCore31API\FastConnector\EnumCode\obj\Release\netstandard2.0\EnumCode.pdb

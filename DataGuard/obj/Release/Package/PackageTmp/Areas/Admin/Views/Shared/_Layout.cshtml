@@ -1,0 +1,307 @@
+﻿@using LanguageResource
+<!DOCTYPE html>
+<html ng-app="layout_app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.CompanyName @ViewBag.Title V2</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- jQuery -->
+    <script src="~/AdminLTE3/plugins/jquery/jquery.min.js"></script>
+    <!--angularJS 1.75 To Top-->
+    <script src="~/Scripts/angular.js"></script>
+    <!-- moment-->
+    <script src="~/Scripts/moment.min.js"></script>
+    <!-- Bootstrap v4.1.0 -->
+    <link href="~/AdminLTE3/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <!--morris-->
+    <link href="~/AdminLTE3/plugins/morris/morris.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/AdminLTE3/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link href="~/AdminLTE3/dist/css/adminlte.min.css" rel="stylesheet" />
+    <!--picker -->
+    <link href="~/AdminLTE3/plugins/colorpicker/bootstrap-colorpicker.css" rel="stylesheet" />
+    <link href="~/AdminLTE3/plugins/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="~/AdminLTE3/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/AdminLTE3/plugins/datepicker/datepicker3.css" rel="stylesheet" />
+    <link href="~/AdminLTE3/plugins/timepicker/bootstrap-timepicker.css" rel="stylesheet" />
+
+    <!--ion.rangeSlider-->
+    <link href="~/AdminLTE3/plugins/ion.rangeSlider/css/ion.rangeSlider.min.css" rel="stylesheet" />
+    <script src="~/AdminLTE3/plugins/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+
+    <!--toastr-->
+    <link href="~/AdminLTE3/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <script src="~/AdminLTE3/plugins/toastr/toastr.min.js"></script>
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        .modal-backdrop {
+            z-index: 0;
+        }
+        /* Set width on the form input elements since they're 100% wide by default */
+        input,
+        select,
+        textarea {
+            max-width: 280px;
+        }
+    </style>
+
+    <script>
+        var app = angular.module('layout_app', []);
+    </script>
+
+    @Scripts.Render("~/JS")
+    <script>
+
+        //$.fn.datepicker.defaults.format = "@Lang.GeneralUI_DateFormate";
+        //-----------------------------------------------------------------------------
+        //statement
+        function synchronizeGetStatementPanel() {
+            app.controller('leave_state_controller', function ($scope, $http) {
+                    $http({
+                        method: 'GET',
+                        url: '/' + '@LangUtilities.LanguageCode' +'/Admin/Base/GetStatementPanel'
+                    }).then(function successCallback(response) {
+                        $scope.CurrentLeaveApproval = response.data.CurrentLeaveApproval;
+                        $scope.CurrentLeaveWaitForApproval = response.data.CurrentLeaveWaitForApproval;
+                        $scope.CurrentTotalEmployee = response.data.CurrentTotalEmployee;
+                    }, function errorCallback(response) {
+                        console.log("Layout_App.Layout_Controller Error");
+                    });
+            });
+        }
+        var StatementData_Global = synchronizeGetStatementPanel();
+    </script>
+    <script>
+
+    var DateTimeRangeMultiLanguage = {
+        format: '@Lang.GeneralUI_DateTimeRangeFormatJS',
+        language: '@LangUtilities.LanguageCode',
+        timePicker: false,
+        timePicker24Hour: true,
+        showCustomRangeLabel:true,
+        separator: '-',
+        ranges: {
+            //'最近1小时': [moment().subtract('hours',1), moment()],
+            '@Lang.GeneralUI_DateTime_Today': [moment().add(3,"hours",), moment(17, "HH")],
+            '@Lang.GeneralUI_DateTime_Tomorrow': [moment(9, "HH").add(1,"days"), moment(17, "HH").add(1,'days')],
+            '@Lang.GeneralUI_DateTime_NextWeek': [moment(9, "HH").add(1,"days"), moment(17, "HH").add(1,"days").add(1,"week")],
+            '@Lang.GeneralUI_DateTime_NextTwoWeek': [moment(9, "HH").add(1,"days"), moment(17, "HH").add(1,"days").add(2,"week")]
+        },
+        locale: {
+            format:  '@Lang.GeneralUI_DateTimeRangeFormatJS',
+            applyLabel: '@Lang.GeneralUI_Comfirmed',
+            cancelLabel: '@Lang.GeneralUI_Cancel',
+            fromLabel: '@Lang.GeneralUI_DateTime_StartTime',
+            toLabel: '@Lang.GeneralUI_DateTime_EndTime',
+            customRangeLabel: '@Lang.GeneralUI_DateTime_CustomDate',
+            daysOfWeek: ['@Lang.GeneralUI_DayOfWeekAbbr_Sunday', '@Lang.GeneralUI_DayOfWeekAbbr_Monday', '@Lang.GeneralUI_DayOfWeekAbbr_Tuesday', '@Lang.GeneralUI_DayOfWeekAbbr_Wednesday', '@Lang.GeneralUI_DayOfWeekAbbr_Thursday', '@Lang.GeneralUI_DayOfWeekAbbr_Friday', '@Lang.GeneralUI_DayOfWeekAbbr_Saturday'],
+            monthNames: ['@Lang.GeneralUI_Month_January', '@Lang.GeneralUI_Month_February', '@Lang.GeneralUI_Month_March', '@Lang.GeneralUI_Month_April', '@Lang.GeneralUI_Month_May', '@Lang.GeneralUI_Month_June',
+                '@Lang.GeneralUI_Month_July', '@Lang.GeneralUI_Month_August', '@Lang.GeneralUI_Month_September', '@Lang.GeneralUI_Month_October', '@Lang.GeneralUI_Month_November', '@Lang.GeneralUI_Month_December'
+            ],
+            firstDay: 1
+        },
+        //dateLimit: {
+        //    days: 365
+        //},
+    };
+    </script>
+    @RenderSection("scripts", required: false)
+
+</head>
+
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" id="pushmenuLeft" data-widget="pushmenu" href="#"><i class="fa fa-bars fa-2x"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="@Url.Action("MainCom", "Home", new { Language = LangUtilities.LanguageCode, area = "" })" class="nav-link">Help</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="@Url.Action("Index", "Dashbord", new { Language = LangUtilities.LanguageCode, Area = "Admin" })" class="nav-link">@Lang.Dashbord_Index_Title </a>
+                </li>
+            </ul>
+            <!-- Apply Leave -->
+            <div class="ml-3">
+                <div class="no-border no-gutters" data-toggle="modal" data-target="#ApplyLeavePanel"><a><i class="fa fa-calendar-plus-o"></i></a></div>
+            </div>
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Messages Dropdown Menu -->
+                
+                <!-- Notifications Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="fas fa-bell-o"></i> <i class="fa fa-envelope mr-2"></i>
+                        <span class="badge badge-warning navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-item dropdown-header">15 Notifications</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-envelope mr-2"></i> 4 new messages
+                            <span class="float-right text-muted text-sm">3 mins</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-users mr-2"></i> 8 friend requests
+                            <span class="float-right text-muted text-sm">12 hours</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-file mr-2"></i> 3 new reports
+                            <span class="float-right text-muted text-sm">2 days</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+                        <i class="fa fa-th-large fa-2x"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <div id="#ProviderLink" class="active hidden">
+                <a href="@string.Format("/{0}/Home/Index",LangUtilities.LanguageCode)" class="brand-link">
+                    <img src="/AdminLTE3/dist/img/AdminLTELogo.png" class="brand-image img-circle elevation-3"
+                         style="opacity: .8">
+                    <span class="brand-text font-weight-light">STAR ON</span>
+                </a>
+            </div>
+            <!-- Sidebar leftmenu-->
+            <div class="sidebar" id="sidebar-leftmenu">
+                @{Html.RenderAction("LeftMenu", "dashbord", new { area = "Admin", Language = ViewBag.Language != null ? ViewBag.Language : "en-US" });}
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header p-2">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="d-flex flex-row">
+                                <div class="bd-highlight"><h5 class="m-0 text-dark">@ViewBag.Title</h5></div>
+                                <div class="ml-2 bd-highlight"> <span id="SubTitle" class="h5 m-0 text-dark SubTitle"></span></div>
+                            </div>
+
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index","DashBord",new { Language = LangUtilities.LanguageCode,area="Admin"})">Home</a></li>
+                                <li class="breadcrumb-item active">@ViewBag.Title</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <div class="content">
+                @RenderBody()
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer p-1 small">
+            <strong>Copyright &copy; @DateTime.Now.Year <a href="http://www.staron.com.hk">Data Guard</a></strong>
+            All rights reserved.
+            <div class="float-right d-none d-xl-inline-block">
+                <b>Version</b> 3.0.0-alpha
+            </div>
+        </footer>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- modernizr-2.8.3 -->
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <!--popper 1.14.3 -->
+    <script src="~/AdminLTE3/plugins/popper/umd/popper.min.js"></script>
+    <!-- layer-v3.1.1 -->
+    <script src="~/AdminLTE3/plugins/layer-v3.1.1/layer/layer.js"></script>
+
+    <!--morris-->
+    <script src="~/AdminLTE3/plugins/morris/morris.js"></script>
+
+    <!-- Bootstrap v4.1.0 -->
+    <script src="~/AdminLTE3/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--picker -->
+    <script src="~/AdminLTE3/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+    <script src="~/AdminLTE3/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/AdminLTE3/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/AdminLTE3/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/AdminLTE3/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <!--fastclick-->
+    <script src="~/AdminLTE3/plugins/fastclick/fastclick.js"></script>
+    <!--jquery-validation-->
+    <script src="~/AdminLTE3/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/AdminLTE3/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <!--clipboard-->
+    <script src="~/AdminLTE3/plugins/clipboard/dist/clipboard.min.js"></script>
+    <!--layer-v3.1.1-->
+    <script src="~/AdminLTE3/plugins/layer-v3.1.1/layer/layer.js"></script>
+    <!--slimscroll-->
+    <script src="~/AdminLTE3/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- AdminLTE3-->
+    <script src="~/AdminLTE3/dist/js/adminlte.js"></script>
+    <script src="~/JS/Main.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            setTimeout("$('#ProviderLink').addClass('hidden')", 6000);
+
+            $("#pushmenuLeft").click();
+        });
+    </script>
+    <script>
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+
+        //#sidebar-leftmenu
+        $(".sidebar").slimscroll({
+            disableFadeOut: false,
+            height: window.innerHeight - 15
+        });
+
+        // wheel event
+        window.addEventListener("touchmove", function (event) {
+            event.preventDefault();
+        }, { passive: true });
+
+
+        var bootstrapButton = $.fn.button.noConflict(); // return $.fn.button to previously assigned value
+        $.fn.bootstrapBtn = bootstrapButton;            // give $().bootstrapBtn the Bootstrap functionality
+    </script>
+
+    @RenderSection("scriptsX", required: false)
+
+</body>
+</html>

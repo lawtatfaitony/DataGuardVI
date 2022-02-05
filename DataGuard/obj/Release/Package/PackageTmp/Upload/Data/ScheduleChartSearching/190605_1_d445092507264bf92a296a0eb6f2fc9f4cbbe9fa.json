@@ -1,0 +1,1 @@
+﻿{"scheduleEmployee":{"dimensions":["EmployeeId","Gender","Name","RecordIndex"],"data":[]},"scheduleShift":{"dimensions":["RecIndex","WorkStart","WorkEnd","ShiftAbbrId","ShiftId","ShiftName","Name","IsApproved"],"data":[]}}

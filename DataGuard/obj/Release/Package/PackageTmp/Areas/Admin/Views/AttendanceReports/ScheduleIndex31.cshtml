@@ -1,0 +1,274 @@
+﻿@using LanguageResource
+@using Common
+@using AttendanceBussiness
+@using AttendanceBussiness.DbFirst
+@using DataGuard.Utilities
+@using X.PagedList
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Bootstrap4
+@using DataGuard.Models.BusinessDataModel
+@model IEnumerable<AttendanceBussiness.ScheduleBusiness.ScheduleMonth31>
+
+@{
+    ViewBag.Title = Lang.ScheduleIndex_Title;
+} 
+
+@using (Html.BeginForm("ScheduleIndex", "AttendanceReports", FormMethod.Get, new { @class = "form-inline " }))
+{
+    <div class="row padding-bottom10">
+        <div class="col-8"> 
+            <div class="input-group input-group-sm">
+                @Html.TextBox("scheduleDateRange", ViewBag.CurrentOccurDateTimeRange as string, new { @class = "form-control  bg-light-gradient", style = "width:300px;border-right-width:0;", @data_toggle = "tooltip", placeholder = Lang.GeneralUI_DateTimeRange, autocomplete = "off" })
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control form-control-navbar", style = "border-left-width:0;", onclick = "javascript:this.value='';", placeholder = "Search" })
+                <span class="input-group-append">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        More <i class="fa fa-angle-down font-weight-bold"></i>
+                    </button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Go!</button>
+                </span>
+            </div> 
+
+            <div class="collapse" id="collapseExample">
+                <div class="padding-top5">
+                    @Html.DropDownList("ContractorId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_ContractorId, title = Lang.Employee_ContractorId })
+                    @Html.DropDownList("SiteId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_SiteId, title = Lang.Employee_SiteId })
+                    @Html.DropDownList("DepartmentId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_Department, title = Lang.Employee_Department })
+                    @Html.DropDownList("PositionId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_Position, title = Lang.Employee_Position })
+                    @Html.DropDownList("JobId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_JobId, title = Lang.Employee_JobId })
+                </div>
+            </div>
+        </div>
+        <div class="col-4 d-inline">
+            @Html.ActionLink(" PDF", "ScheduleIndexRpt", "AttendanceReports", new { scheduleDateRange = ViewBag.CurrentScheduleDateRange, SearchString = ViewBag.CurrentFilter, ContractorId = ViewBag.CurrentContractorId, SiteId = ViewBag.CurrentSiteId, DepartmentId = ViewBag.CurrentDepartmentId, PositionId = ViewBag.CurrentPositionId, JobId = ViewBag.CurrentJobId, intExportFormatType = 5 }, new { @class = "btn btn-warning btn-sm text-white ml-1 fa fa-file-pdf-o font-weight-bold" })
+            @Html.ActionLink(" EXCEL", "ScheduleIndexRpt", "AttendanceReports", new { scheduleDateRange = ViewBag.CurrentScheduleDateRange, SearchString = ViewBag.CurrentFilter, ContractorId = ViewBag.CurrentContractorId, SiteId = ViewBag.CurrentSiteId, DepartmentId = ViewBag.CurrentDepartmentId, PositionId = ViewBag.CurrentPositionId, JobId = ViewBag.CurrentJobId, intExportFormatType = 4 }, new { @class = "btn btn-warning btn-sm text-white ml-1 fa fa-file-excel-o font-weight-bold" })
+            @Html.ActionLink(" CHART", "ScheduleChartSearching", "AttendanceReports", new { scheduleDateRange = ViewBag.CurrentScheduleDateRange, SearchString = ViewBag.CurrentFilter, ContractorId = ViewBag.CurrentContractorId, SiteId = ViewBag.CurrentSiteId, DepartmentId = ViewBag.CurrentDepartmentId, PositionId = ViewBag.CurrentPositionId, JobId = ViewBag.CurrentJobId }, new { @class = "btn btn-danger btn-sm text-white ml-1 fa fa-area-chart font-weight-bold" })
+        </div>
+    </div>
+}
+
+<!--list-->
+<div class="box-body  table-responsive" style="min-height:600px;">
+    <table class="table table-striped table-hover">
+        <tr>
+            @{
+                <th>
+                    <div class="text-nowrap cell-border border-light" title="@Lang.GeneralUI_Name" data-toggle="tooltip">
+                        <span>@Lang.GeneralUI_Name</span>
+                    </div>
+                </th>
+                List<MonthHeader> monthHeaders = ViewBag.monthHeaders;
+                foreach (var item in monthHeaders)
+                {
+                    <th>
+                        <div class="text-nowrap cell-border border-light no-padding text-center" title="@string.Format("{1}.{0:yyyy-MM-dd}", DateTimeHelp.ConvertLongToDateTime(item.ScheduleDate), item.DayIndex)" data-ticks="@item.ScheduleDate" data-toggle="tooltip">
+                            <span class="no-padding "> @String.Format(" {0}", item.Day) </span><br />
+                            @if (item.DayOfWeekIndex == 0)
+                            {
+                                <span class="badge bg-danger  padding-top0 no-margin no-padding text-capitalize"> @item.DayOfWeekName.ToString().Substring(0, 3)</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning-gradient padding-top0 no-margin no-padding text-capitalize" title="@item.DayOfWeekName"> @item.DayOfWeekName.ToString().Substring(0, 3)</span>
+                            }
+                        </div>
+                    </th>
+                }
+            }
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div class="text-nowrap cell-border border-light" title="@string.Format("{0} {1}  {2}= {3}", item.CnName, item.EnName, Lang.Employee_EmployeeId, item.EmployeeId)" data-toggle="tooltip">
+                        <span class="small">@CommonBase.Substr(string.Format("{0} {1}", item.CnName, item.EnName), 6)  </span>
+                    </div>
+                </td>
+                <td data-toggle="tooltip" title=' @CommonBase.TransHtmlBr(item.Day1.ToString(),",")'>
+                    <span class="label label-inverse">@Html.Raw(item.Day1)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day2.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day2)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day3.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day3)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day4.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day4)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day5.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day5)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day6.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day6)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day7.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day7)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day8.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day8)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day9.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day9)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day10.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day10)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day11.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day11)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day12.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day12)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day13.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day13)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day14.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day14)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day15.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day15)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day16.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day16)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day17.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day17)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day18.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day18)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day19.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day19)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day20.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day20)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day21.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day21)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day22.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day22)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day23.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day23)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day24.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day24)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day25.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day25)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day26.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day26)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day27.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day27)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day28.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day28)</span>
+                </td>
+                <td data-toggle="tooltip" title="@item.Day29">
+                    <span class="label label-inverse">@Html.Raw(item.Day29)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day30.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day30)</span>
+                </td>
+                <td data-toggle="tooltip" title="@CommonBase.TransHtmlBr(item.Day31.ToString(),",")">
+                    <span class="label label-inverse">@Html.Raw(item.Day31)</span>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+
+
+<div class="btn-xs inline">
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("scheduleindex", "AttendanceReports", new { sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, occurDateTimeRange = ViewBag.CurrentOccurDateTimeRange, page = page }), new PagedListRenderOptions
+{
+    ContainerDivClasses = new[] { "pagination pagination-sm" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    MaximumPageNumbersToDisplay = 5
+})
+    <button class="btn btn-primary btn-sm padding-left10 padding-top10" type="button" data-toggle="collapse" data-target="#shiftList1" aria-expanded="false" aria-controls="#shiftList1">
+        @Lang.GeneralUI_Remarks <i class="fa fa-angle-down font-weight-bold"></i>
+    </button>
+</div>
+
+<div class="box-body  table-responsive padding-10 collapse" id="shiftList1" style="min-height:600px;">
+    <table class="table table-striped table-hover table-bordered table-responsive table-sm small">
+        <tr>
+            <th>
+                <div class="text-nowrap" title="@Lang.Shift_ShiftId" data-toggle="tooltip">
+                    <span>@Lang.Shift_ShiftId</span>
+                </div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.Shift_ShiftName" data-toggle="tooltip">
+                    <span>@Lang.Shift_ShiftName</span>
+                </div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.Shift_ShiftAbbrId" data-toggle="tooltip">
+                    <span>@Lang.Shift_ShiftAbbrId</span>
+                </div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.Shift_WorkStart" data-toggle="tooltip">
+                    <span>@Lang.Shift_WorkStart</span>
+                </div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.Shift_WorkStart" data-toggle="tooltip">
+                    <span>@Lang.Shift_WorkEnd</span>
+                </div>
+            </th>
+        </tr>
+        @if (ViewBag.ShiftList != null)
+            {
+                List<AttendanceBussiness.DbFirst.Shift> shiftList = ViewBag.ShiftList;
+                foreach (var item in shiftList)
+                {
+                    <tr>
+                        <th>
+                            <div class="text-nowrap" title="@item.ShiftId" data-toggle="tooltip">
+                                <span class="small">@item.ShiftId</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="text-nowrap" title="@item.ShiftName" data-toggle="tooltip">
+                                <span  class="small">@item.ShiftName</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="text-nowrap" title="@Lang.Shift_ShiftAbbrId" data-toggle="tooltip">
+                                <span class="small">@item.ShiftAbbrId</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="text-nowrap" title="@Lang.Shift_WorkStart" data-toggle="tooltip">
+                                <span class="small">@String.Format("{0}", item.WorkStart)</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="text-nowrap" title="@item.WorkStart" data-toggle="tooltip">
+                                <span class="small">@String.Format("{0}", item.WorkEnd)</span>
+                            </div>
+                        </th>
+                    </tr>
+                }
+            }  
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        DateTimeRangeMultiLanguage.dateLimit = 31; 
+        $('#scheduleDateRange').daterangepicker(DateTimeRangeMultiLanguage);
+    });
+</script>
+
+
+

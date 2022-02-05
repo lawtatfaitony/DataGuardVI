@@ -1,0 +1,286 @@
+﻿@using LanguageResource
+@{
+    ViewBag.Title = string.Format("{0} {1}", Lang.EmployeeQuickAdd_Title, ViewBag.Operation);
+}
+@using AttApiViewModal.ShiftModule
+@model AttApiViewModal.ShiftModule.ShiftOverTime
+@{
+    ViewBag.Title = Lang.ShiftSetting_Title;
+    string oper = (bool)ViewBag.IsUpdateStatus == true ? Lang.GeneralUI_Update : Lang.GeneralUI_Create;
+}
+<!--Plugin CSS file with desired skin-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css" />
+<!--Plugin JavaScript file-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js"></script>
+<!--jscolor Picker-->
+<script src="~/AdminLTE3/plugins/jscolor-2.0.5/jscolor.js"></script>
+
+<!-- Main Content  Begin-->
+
+@using (Ajax.BeginForm("OverTime", null, new { ShiftId = Model.ShiftId }, new AjaxOptions { HttpMethod = "post", OnBegin = "onBeginSubmit", OnSuccess = "HandleDetailsAddUpdateSuccDialog", OnFailure = "errDetailsAddUpdate", LoadingElementId = "Loading" }, new { @class = "form-horizontal form-inline" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.ShiftId) 
+
+    <!-- Main content --> 
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            @{
+                Html.RenderAction("HeaderState", "ShiftStep", new { ShiftId = Model.ShiftId, intShiftBusinessMode = ViewBag.IntShiftBusinessMode, step = (int)ShiftHeaderStep.SHIFT_OVERTIME_SETTING });
+            }
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title"> @Lang.GeneralUI_System -Shift Setting</h5>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-wrench"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <a href="@Url.Action("Basic", "ShiftStep")" class="dropdown-item">@Lang.Shift_SimpleCalc</a>
+                                    <a href="@Url.Action("Work", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingNight</a>
+                                    <a href="@Url.Action("ShiftSettingOverTime", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingOverTime</a>
+                                    <a href="@Url.Action("ShiftSettingWeekDay", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingWeekDay</a>
+                                    <a href="@Url.Action("Lunch", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingLunch</a>
+                                    <a href="#" class="dropdown-item">@Lang.Shift_ShiftSettingBreak</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body  text-right">
+                        <div class="row">
+                            <div class="container">
+                                <!--ShiftBrief-->
+                                @{
+                                    Html.RenderAction("ShiftBrief", "ShiftStep", new { ShiftId = Model.ShiftId });
+                                }
+
+                                @Html.HiddenFor(model => model.OverTimeSpan)
+
+                                <!--Attendance OverTime OverTimeStart OverTimeEnd -->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="WorkStartBuffer" title="@Lang.Shift_OverTimeStartEndTips" data-toggle="tooltip">@Lang.Shift_OverTimeStartEnd</label>
+                                    <div class="col-md-9  mb-3">
+                                        <div class="row hide ">
+                                            <div class="col-5" id="div_OverTimeStart">
+                                                @Html.TextBoxFor(model => model.OverTimeStart, new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-5" id="div_OverTimeEnd">
+                                                @Html.TextBoxFor(model => model.OverTimeEnd, new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                        <div class="row padding-left10">
+                                            <div class="container no-padding no-margin">
+                                                <input type="text" class="OverTimeStartEnd" name="OverTimeStartEnd" id="OverTimeStartEnd" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--Attendance OverTime Buffer -->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="WorkStartBuffer" title="@Lang.Shift_OverTimeBufferTips" data-toggle="tooltip">@Lang.Shift_OverTimeBuffer</label>
+                                    <div class="col-md-9  mb-3">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="pull-right text-dark" title="@Lang.Shift_OverTimeStartBuffer" data-toggle="tooltip"><i class="fa fa-moon-o"></i></span>
+                                            </div>
+                                            <div class="col-5" id="div_OverTimeStartBuffer">
+                                                @Html.TextBoxFor(model => model.OverTimeStartBuffer, new { @class = "form-control form-control-sm OverTimeBuffer" })
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="pull-right text-warning" title="@Lang.Shift_OverTimeEndBuffer" data-toggle="tooltip"><i class="fa fa-sun-o"></i></span>
+                                            </div>
+                                            <div class="col-5" id="div_OverTimeEndBuffer">
+                                                @Html.TextBoxFor(model => model.OverTimeEndBuffer, new { @class = "form-control form-control-sm OverTimeBuffer" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./card-body -->
+                    <div class="card-footer">
+                        <div class="d-flex bd-highlight">
+                            <div class="p-2 flex-grow-1 bd-highlight">
+                                @Html.ActionLink(Lang.GeneralUI_Return, "ShiftList", "SysBusinessSetting", null, new { @class = "btn btn-primary padding-left15 margin-left5" })
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                @if (string.IsNullOrEmpty(Model.ShiftId) == false)
+                                {
+                                    <button type="button" id="btnDel" class="hide btn btn-danger padding-left15 margin-left5">@Lang.GeneralUI_Delete</button>
+                                }
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                @if ((bool)ViewBag.IsUpdateStatus)
+                                {
+                                    <a href="@Url.Action("Logic","ShiftStep",new { ShiftId= Model.ShiftId })" target="_self" class="btn btn-sm btn-warning flat mr-3">@Lang.GeneralUI_Skip ,@Lang.GeneralUI_Next</a>
+                                }
+                                <button type="submit" id="btnaddnew" class="btn  btn-sm btn-success padding-left15 margin-left5">
+                                    @Lang.GeneralUI_Update
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+
+            </div>
+            <!-- /.col -->
+        </div>
+
+    </div><!--/. container-fluid -->
+
+    <!-- /.content -->
+
+    <!--//////////////////////////////////////////////////////////////////////////////////////////////-->
+}
+
+<script>
+    var dt = new Date();
+    const year = dt.getFullYear();
+    const month = dt.getMonth() + 1;
+    const day = dt.getDate();
+    const hour = dt.getHours();
+    const mins = dt.getMinutes() + 1;
+    const formatdate = [year, month, day].join('-');
+    const formattime = [hour, mins, day].join(':'); 
+</script>
+
+<script>
+    var ShiftBusinessMode = @ViewBag.IntShiftBusinessMode;  
+    var custom_values = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840, 870, 900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1170, 1200, 1230, 1260, 1290, 1320, 1350, 1380, 1410, 1440];
+    if (ShiftBusinessMode == 2) {
+        custom_values = [720, 750, 780, 810, 840, 870, 900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1170, 1200, 1230, 1260, 1290, 1320, 1350, 1380, 1410, 1440, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600, 630, 660, 690, 719];
+    }
+
+    //--OverTimeStartEnd
+    var OverTimeStart_from = MinsScaleIndex($("#OverTimeStart").val());
+    var OverTimeEnd_to = MinsScaleIndex($("#OverTimeEnd").val()); //
+    $("#OverTimeStartEnd").ionRangeSlider({
+
+        onChange: function (data) {
+            $("#OverTimeStart").val(my_prettify(data.from_value));
+            $("#OverTimeEnd").val(my_prettify(data.to_value));
+            console.log("OverTimeStartEnd : " + data.from_value + "-" + data.to_value);
+        },
+        skin: "sharp",
+        type: "double",
+        grid: true,
+        from: OverTimeStart_from,
+        to: OverTimeEnd_to,
+        values: custom_values,
+        drag_interval: true,
+        prettify: my_prettify
+    });
+
+    //--OverTimeBuffer---------------------------------------
+    var custom_OverTimeBuffer_values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180];
+
+    var OverTimeStartBuffer_from = $("#OverTimeStartBuffer").val();
+    var OverTimeStartBuffer_to = custom_OverTimeBuffer_values.indexOf(30);
+    $("#OverTimeStartBuffer").ionRangeSlider(
+        {
+            onChange: function (data) {
+                console.log(data.from_value + "minutes");
+                $("#OverTimeStartBuffer").val(data.from_value);
+            },
+            skin: "flat",
+            grid: true,
+            min: 0,
+            max: OverTimeStartBuffer_to,
+            from: OverTimeStartBuffer_from,
+            values: custom_OverTimeBuffer_values
+        });
+    var OverTimeEndBuffer_from = $("#OverTimeEndBuffer").val();
+    var OverTimeEndBuffer_to = custom_OverTimeBuffer_values.indexOf(30);
+    $("#OverTimeEndBuffer").ionRangeSlider(
+        {
+            onChange: function (data) {
+                console.log(data.from_value + "minutes");
+                $("#OverTimeEndBuffer").val(data.from_value);
+            },
+            skin: "flat",
+            grid: true,
+            min: 0,
+            max: OverTimeEndBuffer_to,
+            from: OverTimeEndBuffer_from,
+            values: custom_OverTimeBuffer_values
+        });
+</script>
+
+<script>
+    function HandleDetailsAddUpdateSuccDialog(result)
+   {
+       if (result.meta.Success)
+       {
+           //-------------------------------------------------------------- coonfirmed begin
+           var ShiftId = result.data.ShiftId;
+           var successIndex = layer.confirm(result.meta.Message + " , ID = " + result.data.ShiftId, {      //'@Lang.GeneralUI_ReturnResult',
+                btn: ['@Lang.GeneralUI_OK , @Lang.GeneralUI_Next', '@Lang.GeneralUI_NO']
+           }, function () {
+
+                   toastr["success"](result.meta.Message);
+                   setTimeout(function () {
+                       layer.close(successIndex);
+                        var redirectWorkUrl = "@Html.Raw(Url.Action("Logic", "ShiftStep"))";
+                        if (ShiftId != undefined) {
+                            redirectQuickRecoUrl = redirectWorkUrl + "?ShiftId=" + ShiftId;
+                        }
+                        window.location = redirectWorkUrl;
+                    } , 300);
+
+           }, function () {
+
+                   toastr["success"]("Waiting for redirect to list");
+
+                    setTimeout(function () {
+                        var redirectShiftListUrl = "@Html.Raw(Url.Action("ShiftList", "SysBusinessSetting", new { Area = "Admin", searchString = Model.ShiftId }))";
+                        redirectShiftListUrl = redirectShiftListUrl ;
+                        window.location = redirectShiftListUrl;
+                    } , 3000);
+           });
+           //-------------------------------------------------------------- coonfirmed end
+           return;
+
+       } else
+       {
+           layer.close(layer.index);
+
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: result.meta.Message
+            });
+
+        }
+    }
+    function golist(redirectUrl) {
+        window.location = redirectUrl;
+    }
+    function errDetailsAddUpdate(data) {
+        layer.close(layer.index);
+        console.log(JSON.stringify(data));
+        alert(result.meta.ErrorCode + ":" + data.meta.Message);
+    }
+
+</script>
+
+ 

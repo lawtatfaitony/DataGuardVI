@@ -1,0 +1,111 @@
+﻿@using LanguageResource
+@using DataGuard
+@model DataGuard.Models.ApplicationUser
+
+@{
+    ViewBag.Title = Lang.UserRolesAssignList_Title;  
+}
+@using (Ajax.BeginForm("UserRolesAssignedList", "User", new { UserId = Model.Id }, new AjaxOptions { HttpMethod = "post", OnSuccess = "OpenRolesAssignedResult", OnFailure = "errUserRolesAssignedUpdateAddUpdate" }, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label for="UserId" class="col-sm-2 control-label">
+                <i class="icon-user" style="color:mediumslateblue">  </i>@Html.DisplayNameFor(model => model.Id)</label>
+<div class="col-sm-10">
+<div class="input-group">
+<input type="text" readonly="readonly" class="form-control" id="UserId" placeholder="UserId" style="border-right-width:0px;" value="@Html.DisplayFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })">
+<div class="input-group-append">
+<span class="input-group-text"><i class="fa fa-square"></i></span>
+</div>
+</div>
+<small>@Html.DisplayFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } }) </small>
+</div>
+</div>
+<div class="form-group">
+<label for="UserName" class="col-sm-2 control-label"><i class="icon-user" style="color:mediumslateblue">  </i>UserName</label>
+<div class="col-sm-10">
+<div class="input-group">
+<input type="text" readonly="readonly" class="form-control" id="UserId" placeholder="UserName" style="border-right-width:0px;" value="@Html.DisplayFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })">
+<div class="input-group-append">
+<span class="input-group-text"><i class="fa fa-square"></i></span>
+</div>
+</div>
+<small>@Html.DisplayFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } }) </small>
+</div>
+</div>
+<div class="form-group">
+<label for="UserId" class="col-sm-2 control-label"><i class="icon-check" style="color:mediumslateblue">  </i>@Lang.UserRolesAssignList_RolesAssign</label>
+</div>
+</div>
+
+<div class="form-group">
+
+<div class="col-md-offset-2 col-md-10">
+<table>
+<tr>
+@{
+            int cnt = 0;
+            List<DataGuard.Identity.Models.AssignedRoles> userRoles = ViewBag.UserRoles;
+
+            foreach (var item in userRoles)
+            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                            @:</tr><tr>
+                                }
+
+                                <td>
+                                    <input type = "checkbox"
+                                            name="selectedRoles"
+                                            value="@item.RoleId"
+                                            @(Html.Raw(item.Assigned? "checked=\"checked\"" : "")) />
+                                    <label class="badge bg-warning">@item.Name</label> <div class="alert alert-secondary margin-left5 ">@ChineseStringUtility.ToAutoTraditional(item.Description.ToString().Replace("|", "\n\r"))</div>
+                                </td>
+            }
+            @: </tr>
+} <!--代码段-->
+                </table>
+                <br />
+</div>
+            <div class="col-md-offset-2 col-md-10">
+                @if (ViewBag.Result == true)
+                {
+                    <label>OK!</label>
+                }
+                <button type="submit" id="btnRoleAssignedUpd" onclick="javascript:return confirm('@Lang.GeneralUI_Comfirmed');" class="btn btn-primary btn-flat">@Lang.GeneralUI_Submit</button>
+            </div>
+        </div>
+}  <!--BeginForm-->
+<br />
+<br />
+<div class="col-lg-offset-2">
+    @Html.ActionLink(Lang.GeneralUI_ReturnToList, "userlist", new { Area = "Admin" }, new { @class = "badge Label" })
+</div>
+
+<script>
+    
+    //弹出角色授权
+    function OpenRolesAssignedResult(data) {
+        if (data.MsgCode != "0") {
+            console.log(data);
+            layer.msg('@ViewBag.Title' + '<br>' + data.Message, { time: 5000, icon: 6 });
+
+            $("#btnRoleAssignedUpd").attr("disabled", "disabled");
+            setTimeout('window.location = "@Url.Action("userlist", "User",new { SearchString = ViewBag.UserId })"', 6000);
+
+        } else {
+            layer.msg(data.Message, { icon: 1 });
+        } 
+    }
+
+    function errUserRolesAssignedUpdateAddUpdate(data)
+    {
+        layer.msg(data.Message, { icon: 1 });
+    }
+   
+</script>
+
+
+
+

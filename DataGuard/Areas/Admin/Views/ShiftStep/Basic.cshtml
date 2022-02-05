@@ -1,0 +1,342 @@
+﻿@using LanguageResource
+@using AttApiViewModal.ShiftModule
+@{
+    ViewBag.Title = string.Format("{0} {1}", Lang.EmployeeQuickAdd_Title, ViewBag.Operation);
+}
+
+@model AttApiViewModal.ShiftModule.ShiftBasic
+
+@{
+    ViewBag.Title = Lang.ShiftSetting_Title;
+    string oper = (bool)ViewBag.IsUpdateStatus == true ? Lang.GeneralUI_Update : Lang.GeneralUI_Create; 
+}
+<!--Plugin CSS file with desired skin-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css" />
+<!--Plugin JavaScript file-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js"></script>
+<!--jscolor Picker-->
+<script src="~/AdminLTE3/plugins/jscolor-2.0.5/jscolor.js"></script>
+
+<!-- Main Content  Begin-->
+
+@using (Ajax.BeginForm("Basic", null, new { ShiftId = Model.ShiftId }, new AjaxOptions { HttpMethod = "post", OnBegin = "onBeginSubmit", OnSuccess = "HandleDetailsAddUpdateSuccDialog", OnFailure = "errDetailsAddUpdate", LoadingElementId = "Loading" }, new { @class = "form-horizontal form-inline" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.ShiftId)
+    @Html.HiddenFor(model => model.ShiftBusinessMode)
+    <!-- Main content -->
+
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            @{
+                Html.RenderAction("HeaderState", "ShiftStep", new { ShiftId = Model.ShiftId, intShiftBusinessMode = ViewBag.IntShiftBusinessMode, step = (int)ShiftHeaderStep.SHIFT_BASIC_INFO_SETTING });
+            }
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title"> @Lang.GeneralUI_System -Shift Setting</h5>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-wrench"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <a href="@Url.Action("Basic", "ShiftStep")" class="dropdown-item">@Lang.Shift_SimpleCalc</a>
+                                    <a href="@Url.Action("Work", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingNight</a>
+                                    <a href="@Url.Action("ShiftSettingOverTime", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingOverTime</a>
+                                    <a href="@Url.Action("ShiftSettingWeekDay", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingWeekDay</a>
+                                    <a href="@Url.Action("Lunch", "ShiftStep")" class="dropdown-item">@Lang.Shift_ShiftSettingLunch</a>
+                                    <a href="#" class="dropdown-item">@Lang.Shift_ShiftSettingBreak</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body  text-right">
+                        <div class="row">
+                            <div class="container">
+                                <!--Shift_ShiftName-->
+                                <div class="form-group mb-3">
+                                    <label class="col-md-3 control-label" for="ShiftName">@Lang.Shift_ShiftName</label>
+                                    <div class="col-md-9">
+                                        <div class="d-flex flex-row bd-highlight">
+                                            <div class="input-group date mb-2 pl-0">
+                                                @Html.TextBoxFor(model => model.ShiftAbbrId, new { @class = "form-control form-control-sm border-right-0", style = "max-width:60px", placeholder = Lang.Shift_ShiftAbbrId })
+                                                @Html.TextBoxFor(model => model.ShiftName, new { @class = "form-control form-control-sm border-right-0", style = "border-right-0;border-left-style:dotted;border-left-color:#ffd800;border-left-width:3px;", placeholder = Lang.Shift_ShiftName })
+                                                @Html.TextBoxFor(model => model.IconColor, new { @class = "form-control form-control-sm input jscolor border-secondary", title = @Lang.Shift_IconColor, data_toggle = "tooltip", style = "max-width:80px;border-color:#eeecec;cursor:pointer;", placeholder = Lang.Shift_ShiftAbbrId })
+                                                <div class="input-group-append border-right-0">
+                                                    <span class="input-group-text border-left-0"><i class="fas fa-asterisk" style="color:red;font-size:10px;"></i></span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="float-left">
+                                            @Html.ValidationMessageFor(model => model.ShiftAbbrId, "", new { @class = "text-danger" })
+                                            @Html.ValidationMessageFor(model => model.ShiftName, "", new { @class = "text-danger" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--ShiftBusinessMode-->
+                                <div class="form-group text-left">
+                                    <label class="col-md-3 control-label text-right" for="ShiftBusinessMode">@Lang.Shift_ShiftBusinessMode</label>
+                                    <div class="col-md-9  mb-3">
+                                        @if ((bool)ViewBag.IsUpdateStatus)
+                                        {
+                                            @Html.DropDownList("ShiftBusinessMode", null, new { @class = "form-control form-control-sm", disabled = "disabled", data_toggle = "tooltip", title = Lang.Shift_ShiftBusinessMode, onchange = "this.options.removeAttr(selected);this.options[this.options.selectedIndex].setAttribute('selected', 'selected');" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DropDownList("ShiftBusinessMode", null, new { @class = "form-control form-control-sm", data_toggle = "tooltip", title = Lang.Shift_ShiftBusinessMode })
+                                        } 
+                                    </div>
+                                </div>
+
+                                <!--ShiftAppliedMode-->
+                                <div class="form-group text-left">
+                                    <label class="col-md-3 control-label text-right" for="ShiftAppliedMode">@Lang.Shift_ShiftAppliedMode</label>
+                                    <div class="col-md-9  mb-3">
+                                        @Html.DropDownList("ShiftAppliedMode", null, new { @class = "form-control form-control-sm", data_toggle = "tooltip", title = Lang.Shift_ShiftAppliedMode })
+                                    </div>
+                                </div>
+
+                                <!--Shift_AppliedStartDate-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label text-right" for="AppliedStartDate" title="@Lang.Shift_AppliedStartDate" data-toggle="tooltip">@Lang.Shift_AppliedStartDate</label>
+                                    <div class="col-md-9 mb-3">
+                                        <div class="row">
+                                            <div class="d-flex flex-row bd-highlight">
+                                                <div class="p-2 bd-highlight">
+                                                    @Html.TextBoxFor(model => model.AppliedStartDate, new { @class = "form-control form-control-sm", data_toggle = "tooltip", title = Lang.Shift_AppliedStartDate, autocomplete = "off", Value = String.Format("{0:yyyy-MM-dd}", Model.AppliedStartDate), placeholder = Lang.Shift_AppliedStartDate })
+                                                    @Html.ValidationMessageFor(model => model.AppliedStartDate, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="p-2 bd-highlight">
+                                                    <label id="lbl_AppliedEndDate" class="control-label" for="AppliedEndDate"><b><i class="fa fa-arrows-h fa-2x"></i></b></label>
+                                                </div>
+                                                <div class="p-2 bd-highlight" id="div_AppliedEndDate">
+                                                    @Html.TextBoxFor(model => model.AppliedEndDate, new { @class = "form-control form-control-sm", data_toggle = "tooltip", title = Lang.Shift_AppliedEndDate, autocomplete = "off", Value = String.Format("{0:yyyy-MM-dd}", Model.AppliedEndDate), placeholder = Lang.Shift_AppliedEndDate })
+                                                    @Html.ValidationMessageFor(model => model.AppliedEndDate, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--Attendance Allowance-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="WorkStartAllowance" title="@Lang.Shift_AttendanceAllowanceTips" data-toggle="tooltip">@Lang.Shift_AttendanceAllowance</label>
+                                    <div class="col-md-9  mb-3">
+                                        <div class="row">
+                                            <div class="col-1 align-middle">
+                                                <span class="pull-right text-warning" title="@Lang.Shift_WorkStartAllowance" data-toggle="tooltip"><i class="fas fa-sun"></i></span>
+                                            </div>
+                                            <div class="col-5" id="div_WorkStartAllowance">
+                                                @Html.TextBoxFor(model => model.WorkStartAllowance, new { @class = "form-control form-control-sm hide", placeholder = Lang.Shift_WorkEndAllowance })
+                                                <input type="text" name="Slider_WorkStartAllowance" id="Slider_WorkStartAllowance" value="" title="@Lang.Shift_WorkStartAllowance" data-toggle="tooltip" />
+                                                @Html.ValidationMessageFor(model => model.WorkStartAllowance, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="pull-right text-dark" title="@Lang.Shift_WorkEndAllowance" data-toggle="tooltip"><i class="fas fa-moon"></i></span>
+                                            </div>
+                                            <div class="col-5" id="div_WorkEndAllowance">
+                                                @Html.TextBoxFor(model => model.WorkEndAllowance, new { @class = "form-control form-control-sm hide", placeholder = Lang.Shift_WorkEndAllowance })
+                                                <input type="text" name="Slider_WorkEndAllowance" id="Slider_WorkEndAllowance" value="" />
+                                                @Html.ValidationMessageFor(model => model.WorkEndAllowance, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--RuleDescription-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="RuleDescription" title="@Lang.Shift_RuleDescription" data-toggle="tooltip">@Lang.Shift_RuleDescription</label>
+                                    <div class="col-md-9 pl-1">
+                                        <div class="row padding-left10">
+                                            @Html.TextAreaFor(model => model.RuleDescription, new { @class = "form-control form-control-sm col-12", rows = "3" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./card-body -->
+                    <div class="card-footer">
+                        <div class="d-flex bd-highlight">
+                            <div class="p-2 flex-grow-1 bd-highlight">
+                                @Html.ActionLink(Lang.GeneralUI_Return, "ShiftList", "SysBusinessSetting", null, new { @class = "btn btn-primary padding-left15 margin-left5" })
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                @if (string.IsNullOrEmpty(Model.ShiftId) == false)
+                                {
+                                    <button type="button" id="btnDel" class="hide btn btn-danger padding-left15 margin-left5">@Lang.GeneralUI_Delete</button>
+                                }
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                @if ((bool)ViewBag.IsUpdateStatus)
+                                {
+                                    <a href="@Url.Action("Work","ShiftStep",new { ShiftId= Model.ShiftId })" target="_self" class="btn btn-sm btn-warning flat mr-3">@Lang.GeneralUI_Skip ,@Lang.GeneralUI_Next</a>
+                                }
+                                <button type="submit" id="btnaddnew" class="btn  btn-sm btn-success padding-left15 margin-left5">
+                                    @oper
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+
+            </div>
+            <!-- /.col -->
+        </div>
+
+    </div><!--/. container-fluid -->
+
+    <!-- /.content -->
+
+    <!--//////////////////////////////////////////////////////////////////////////////////////////////-->
+}
+
+<script>
+    var dt = new Date();
+    const year = dt.getFullYear();
+    const month = dt.getMonth() + 1;
+    const day = dt.getDate();
+    const hour = dt.getHours();
+    const mins = dt.getMinutes() + 1;
+    const formatdate = [year, month, day].join('-');
+    const formattime = [hour, mins, day].join(':');
+
+    $(document).ready(function () {
+
+        //if not create via to other step then redirect to Basic page  and pop up a message.
+        var message = GetQueryVariable("Message");
+        if (message != false) {
+            layer.open({
+                title: 'Friendly tips'
+                , content: decodeURI(message)
+            });
+        }
+
+        //datepicker
+        $('#AppliedStartDate').datepicker({
+            format: 'yyyy-mm-dd',
+            timePicker: false
+        });
+        $('#AppliedEndDate').datepicker({
+            format: 'yyyy-mm-dd',
+            timePicker: false
+        });
+        $('#AppliedEndDate').datepicker({
+            format: 'yyyy-mm-dd',
+            timePicker: false
+        });
+    });
+
+
+    //--WorkStartAllowance---------------------------------------
+    var custom_Slider_WorkStartAllowance_values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+
+    var WorkStartAllowance_from = $("#WorkStartAllowance").val(); //custom_Slider_WorkStartAllowance_values.indexOf(5);
+    var WorkStartAllowance_to = custom_Slider_WorkStartAllowance_values.indexOf(30);
+    $("#Slider_WorkStartAllowance").ionRangeSlider(
+        {
+            onChange: function (data) {
+                $("#WorkStartAllowance").val(data.from_value);
+            },
+            skin: "flat",
+            grid: true,
+            min: 0,
+            max: WorkStartAllowance_to,
+            from: WorkStartAllowance_from,
+            values: custom_Slider_WorkStartAllowance_values
+        });
+    //--WorkEndAllowance---------------------------------------
+    var WorkEndAllowance_from = $("#WorkEndAllowance").val(); //custom_Slider_WorkStartAllowance_values.indexOf(5);
+    var WorkEndAllowance_to = custom_Slider_WorkStartAllowance_values.indexOf(30);
+    $("#Slider_WorkEndAllowance").ionRangeSlider(
+        {
+            onChange: function (data) {
+                $("#WorkEndAllowance").val(data.from_value);
+            },
+            skin: "flat",
+            grid: true,
+            min: 0,
+            max: WorkEndAllowance_to,
+            from: WorkEndAllowance_from,
+            values: custom_Slider_WorkStartAllowance_values
+        });
+
+</script>
+
+<script>
+    function HandleDetailsAddUpdateSuccDialog(result)
+    {
+        console.log(result);
+       if (result.meta.Success)
+       {
+           //-------------------------------------------------------------- coonfirmed begin
+           var ShiftId = result.data.ShiftId;
+          
+           var successIndex = layer.confirm(result.meta.Message + " , ID = " + result.data.ShiftId, {      //'@Lang.GeneralUI_ReturnResult',
+                btn: ['@Lang.GeneralUI_OK ， @Lang.GeneralUI_Next', '@Lang.GeneralUI_NO']
+           }, function () {
+
+                   toastr["success"](result.meta.Message);
+                   setTimeout(function () {
+                       layer.close(successIndex);
+                        var redirectWorkUrl = "@Html.Raw(Url.Action("Work", "ShiftStep"))";
+                       redirectWorkUrl = redirectWorkUrl + "?ShiftId=" + ShiftId; 
+                      
+                        window.location = redirectWorkUrl;
+                    } , 300);
+
+           }, function () {
+
+                   toastr["success"]("Waiting for redirect to list");
+
+                    setTimeout(function () {
+                        var redirectShiftListUrl = "@Html.Raw(Url.Action("ShiftList", "SysBusinessSetting"))"; 
+                        window.location = redirectShiftListUrl;
+                    } , 2000);
+           });
+           //-------------------------------------------------------------- coonfirmed end
+           return;
+
+       } else
+       {
+           layer.close(layer.index);
+
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: result.meta.Message
+            });
+
+        }
+    }
+    function golist(redirectUrl) {
+        window.location = redirectUrl;
+    }
+    function errDetailsAddUpdate(data) {
+        layer.close(layer.index);
+        console.log(JSON.stringify(data));
+        alert(result.meta.ErrorCode + ":" + data.meta.Message);
+    }
+
+</script>
+
+<!--Main Content End-->
