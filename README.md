@@ -1,5 +1,5 @@
 # Attendance and Salary System Bisic on Cloud 
-  
+                                              Architecture by Tony Law
   #Demo as the follows
   
   ![image](sample/sampleData.jpg)
@@ -7,6 +7,8 @@
   ![image](sample/sampleData2.jpg)
  
   ![image](sample/sampleData3.jpg)
+  
+  ![image](sample/sampleData4.jpg)
   
  ### It can be applied to all of Industies.
 
@@ -127,3 +129,4 @@ Provide a list of financial details.
 
 ### Personal financial overview
 Personal financial accounts and all detailed items are clear at a glance.
+
