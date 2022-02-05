@@ -1,5 +1,5 @@
 # Attendance and Salary System Bisic on Cloud 
-  
+                                              Architecture by Tony Law
   #Demo as the follows
   
   ![image](sample/sampleData.jpg)
@@ -129,3 +129,5 @@ Provide a list of financial details.
 
 ### Personal financial overview
 Personal financial accounts and all detailed items are clear at a glance.
+
+# Architecture by Tony
