@@ -1,0 +1,193 @@
+﻿@using LanguageResource
+@{
+    ViewBag.Title = Lang.QuickAddOganization_Title;
+}
+@model DataGuard.Areas.EmployeeStep3
+<!-- Main content -->
+
+<div class="container-fluid">
+    <!-- Info boxes -->
+    <div class="row">
+        @{
+            Html.RenderAction("EmployeeQuickHeader", "Employee", new { EmployeeId = ViewBag.EmployeeId, Step = 3 });
+        }
+    </div>
+    <!-- /.row -->
+    <div class="row center-block">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><i class="fas fa-user" style="color:forestgreen;font-weight:bold"></i> @Html.DisplayFor(model => model.FullName) <span class="h5 bg-light-gradient pl-2" style="border:dashed;border-color:beige;border-width:thin"> @Lang.QuickAddOganization_Title &nbsp;</span></h5>
+                    <a href="" name="reco"></a>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="container pl-lg-5 pl-md-5  col-lg-offset-6 col-md-offset-6">
+                        <div class="col-lg-5 col-md-5 col-sm-12  ">
+                            <!--STEP1 BEGIN-->
+                            @using (Ajax.BeginForm("QuickAddOganization", "Employee", new AjaxOptions { HttpMethod = "post", OnSuccess = "handleQuickAddOganization", OnBegin = "onBeginSubmit", OnFailure = "errQuickAddOganization", LoadingElementId = "Loading" }, new { @class = "form-horizontal", name = "form_EmployeeQuickReco", id = "form_QuickAddOganization" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(model => model.EmployeeId)
+
+                                <div class="form-group  mb-3">
+                                    <label class="control-label col-12" for="ContractorId"><i class="fas fa-users-cog" style="color:forestgreen"></i> @Lang.Employee_ContractorName </label>
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(model => model.ContractorId,null, Lang.GeneralUI_Select, new { @class = "border-right-0 form-control form-control-sm bold col-sm-9" })
+                                        <div class="input-group-append input-group-sm">
+                                            <span class="input-group-text border-left-0" style="background-color:#faf9eb" data-toggle="tooltip" title="@Lang.Employee_ContractorName @Lang.GeneralUI_Optional">
+                                                <i class="fas fa-angle-double-right" style="color:forestgreen;font-size:11px"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  mb-3">
+                                    <label class="control-label col-12" for="SiteId"><i class="fas  fa-map-marker-alt" style="color:forestgreen"></i> @Lang.Employee_SiteName</label>
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(model => model.SiteId,null, Lang.GeneralUI_Select, new { @class = "border-right-0 form-control form-control-sm bold col-sm-9" })
+                                        <div class="input-group-append input-group-sm">
+                                            <span class="input-group-text border-left-0" style="background-color:#faf9eb" data-toggle="tooltip" title="@Lang.Employee_SiteName  @Lang.GeneralUI_Optional">
+                                                <i class="fas fa-angle-double-right" style="color:forestgreen;font-size:11px"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  mb-3">
+                                    <label class="control-label col-12" for="DepartmentId"><i class="fas fa-sitemap" style="color:forestgreen"></i> @Lang.Employee_DepartmentName</label>
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(model => model.DepartmentId,null , Lang.GeneralUI_Select, new { @class = "border-right-0 form-control form-control-sm bold col-sm-9" })
+                                        <div class="input-group-append input-group-sm">
+                                            <span class="input-group-text border-left-0" style="background-color:#faf9eb" data-toggle="tooltip" title="@Lang.Employee_DepartmentName @Lang.GeneralUI_Optional">
+                                                <i class="fas fa-angle-double-right" style="color:forestgreen;font-size:11px"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  mb-3">
+                                    <label class="control-label col-12" for="JobId"><i class="fas fa-seedling" style="color:forestgreen"></i> @Lang.Employee_JobName</label>
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(model => model.JobId, null, Lang.GeneralUI_Select, new { @class = "border-right-0 form-control form-control-sm bold col-sm-9" })
+                                        <div class="input-group-append input-group-sm">
+                                            <span class="input-group-text border-left-0" style="background-color:#faf9eb" data-toggle="tooltip" title="@Lang.Employee_JobName  @Lang.GeneralUI_Optional">
+                                                <i class="fas fa-angle-double-right" style="color:forestgreen;font-size:11px"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  mb-3">
+                                    <label class="control-label col-12" for="PositionId"><i class="fas fa-user-tie" style="color:forestgreen"></i> @Lang.Employee_PositionTitle</label>
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(model => model.PositionId,null, Lang.GeneralUI_Select, new { @class = "border-right-0 form-control form-control-sm bold col-sm-9" })
+                                        <div class="input-group-append input-group-sm">
+                                            <span class="input-group-text border-left-0" style="background-color:#faf9eb" data-toggle="tooltip" title="@Lang.Employee_PositionTitle  @Lang.GeneralUI_Optional">
+                                                <i class="fas fa-angle-double-right" style="color:forestgreen;font-size:11px"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3"> 
+                                    <div class="d-flex bd-highlight">
+                                        <div class="pl-0 flex-grow-1 bd-highlight">
+                                            <a href="@Url.Action("EmployeeList","Employee")" target="_self" class="btn btn-sm btn-success flat mr-2 ">@Lang.GeneralUI_Return @Lang.EmployeeList_Title</a>
+                                        </div>
+                                        <div class="bd-highlight"></div>
+                                        <div class="bd-highlight">
+                                            <a href="@Url.Action("QuickAddIdNumber","Employee",new { EmployeeId= ViewBag.EmployeeId,step=4 })" target="_self" class="btn btn-sm btn-success flat mr-2">@Lang.GeneralUI_Skip ,@Lang.GeneralUI_Next</a>
+                                            <button type="submit" id="btnupdate" class="btn btn-sm btn-primary mr-2"> @Lang.GeneralUI_Update </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <!--STEP1 END-->
+                        </div>
+                    </div>
+                </div>
+                <!-- ./card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+</div><!--/. container-fluid -->
+<!-- /.content -->
+<script>
+    function handleQuickAddOganization(result) {
+        console.log(result);
+        layer.close(layer.index);
+        if (result.meta.Success === false) {
+
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: result.meta.Message
+                , btn: '@Lang.GeneralUI_OK'
+            });
+        } else {
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: result.meta.Message
+                , btn:'@Lang.GeneralUI_OK'
+            });
+           var redirectQuickAddIdNumberUrl = "@Html.Raw(Url.Action("QuickAddIdNumber", "Employee", new { Area = "Admin",EmployeeId = ViewBag.EmployeeId ,Step = 4}))";
+            setTimeout(
+                function() {
+                    window.location = redirectQuickAddIdNumberUrl ;
+                }
+            , 1000);
+        }
+    }
+    function errQuickAddOganization(data) {
+        layer.close(layer.index);
+        console.log(JSON.stringify(data));
+        alert('@Lang.GeneralUI_ServerError' + "--client AddNew");
+        //layer.clear();
+    }
+</script>
+<script>
+    $("#uploadPicResult1").click(function () {
+        $("#file_uploadPic1").click();
+    }); // In Mainjs
+    $("#uploadPicResult2").click(function () {
+        $("#file_uploadPic2").click();
+    }); // In Mainjs
+    $("#uploadPicResult3").click(function () {
+        $("#file_uploadPic3").click();
+    }); // In Mainjs
+
+    $(".UploadPicChange").change(function uploadPicFun() {
+        onBeginSubmit();
+        var DialogInputId = $(this).attr('id');
+        var fileInfo = document.getElementById(DialogInputId).files[0];
+        var SrvUrl = $(this).attr('SrvUrl');
+        var form = new FormData();
+        form.append("file", fileInfo);
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", SrvUrl, false);
+        xhr.send(form);
+        if (xhr.responseText === "0") {
+            alert("Error \n\r Server has no any file recieve \n" + xhr.responseText);
+        }
+        else {
+            var json1 = JSON.parse(xhr.responseText);
+
+            var InputboxId = $(this).attr('InputboxId');
+            InputboxId = "#" + InputboxId;
+            var PictureId = $(this).attr('PictureId');
+            PictureId = "#" + PictureId;
+
+            $(InputboxId).val(json1.filePathName);
+            $(PictureId).attr("src", json1.filePathName);
+            console.log("InputboxId value::{0}", $(InputboxId).val());
+        }
+        if (layer !== undefined) {
+            setTimeout(
+                function () {
+                    layer.close(layer.index);
+                }, 1000);
+        }
+    });
+</script>

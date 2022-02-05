@@ -1,0 +1,55 @@
+﻿@using LanguageResource
+@{
+    Layout = null;
+    ViewBag.Title = string.Format("{0} {1}", Lang.EmployeeQuickAdd_Title, ViewBag.Operation);
+}
+@using AttApiViewModal.ShiftModule
+@model AttApiViewModal.ShiftModule.ShiftBrief
+
+
+<!--Shift_ShiftName-->
+<div class="form-group">
+    <label class="col-md-3 control-label" for="ShiftName">@Lang.Shift_ShiftName</label>
+    <div class="col-md-9">
+        <div class="d-flex flex-row bd-highlight">
+            <div class="input-group date mb-2 pl-0">
+                @Html.TextBoxFor(model => model.ShiftAbbrId, new { @class = "form-control form-control-sm border-right-0", disabled = "disabled", style = "max-width:60px", placeholder = Lang.Shift_ShiftAbbrId })
+                @Html.TextBoxFor(model => model.ShiftName, new { @class = "form-control form-control-sm border-right-0", disabled = "disabled", style = "border-right-0;border-left-style:dotted;border-left-color:#ffd800;border-left-width:3px;", placeholder = Lang.Shift_ShiftName })
+                @Html.TextBoxFor(model => model.IconColor, new { @class = "form-control form-control-sm input jscolor border-secondary", disabled = "disabled", title = @Lang.Shift_IconColor, data_toggle = "tooltip", style = "max-width:80px;border-color:#eeecec;cursor:pointer;", placeholder = Lang.Shift_ShiftAbbrId })
+                <div class="input-group-append border-right-0">
+                    <span class="input-group-text border-left-0"><i class="fas fa-asterisk" style="color:red;font-size:10px;"></i></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="float-left">
+            @Html.ValidationMessageFor(model => model.ShiftAbbrId, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.ShiftName, "", new { @class = "text-danger" })
+        </div>
+        <div class="float-left small-box pl-1 pr-1">
+            <p class="h6 lead pt-1"><span class="hidden-xs small">@Model.AppliedStartDate.ToString("yyyy-MM-dd")</span><span class="pl-2 pr-2"> ─ </span><span class="hidden-xs small">@Model.AppliedEndDate.ToString("yyyy-MM-dd")</span></p>
+        </div>
+    </div>
+</div>
+ 
+<!--ShiftBusinessMode-->
+<div class="form-group text-left">
+    <label class="col-md-3 control-label text-right" for="ShiftBusinessMode">@Lang.Shift_ShiftBusinessMode</label>
+    <div class="col-md-9  mb-3">
+        @Html.DropDownList("ShiftBusinessMode", null, new { @class = "form-control form-control-sm selectpicker", disabled = "disabled", data_toggle = "tooltip", title = Lang.Shift_ShiftBusinessMode })
+    </div>
+</div>
+<!--ShiftAppliedMode-->
+<div class="form-group text-left">
+    <label class="col-md-3 control-label text-right" for="ShiftAppliedMode">@Lang.Shift_ShiftAppliedMode</label>
+    <div class="col-md-9  mb-3">
+        @Html.DropDownList("ShiftAppliedMode", null, new { @class = "form-control form-control-sm selectpicker", disabled = "disabled", data_toggle = "tooltip", title = Lang.Shift_ShiftAppliedMode })
+    </div>
+</div>
+
+<div class="form-group p-1">
+    <label class="col-md-3 small text-warning" for="hr1">BUSINESS CALC</label>
+    <div class="col-md-7">
+        <hr id="hr1"class="mb-3 border-warning ">
+    </div>
+</div>

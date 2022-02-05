@@ -1,0 +1,9 @@
+D:\STARON\DataGuardIII\StarGateway\TaskStarGateWay\bin\Release\netcoreapp3.1\publish\2\TaskStarGateWay.pdb
+D:\STARON\DataGuardIII\StarGateway\TaskStarGateWay\bin\Release\netcoreapp3.1\publish\2\AttDataSupport.pdb
+D:\STARON\DataGuardIII\StarGateway\TaskStarGateWay\bin\Release\netcoreapp3.1\publish\2\CommonBase.pdb
+D:\STARON\DataGuardIII\StarGateway\TaskStarGateWay\bin\Release\netcoreapp3.1\publish\2\StarGateway.pdb
+D:\STARON\DataGuardIII\StarGateway\TaskStarGateWay\bin\Release\netcoreapp3.1\publish\2\AttApiViewModal.pdb
+D:\STARON\DataGuardIII\StarGateway\TaskStarGateWay\bin\Release\netcoreapp3.1\publish\2\AttEnumCode.pdb
+D:\STARON\DataGuardIII\StarGateway\TaskStarGateWay\bin\Release\netcoreapp3.1\publish\2\ConnectionService.pdb
+D:\STARON\DataGuardIII\StarGateway\TaskStarGateWay\bin\Release\netcoreapp3.1\publish\2\LanguageResource.pdb
+D:\STARON\DataGuardIII\StarGateway\TaskStarGateWay\bin\Release\netcoreapp3.1\publish\2\TaskStarGateWay.exe

@@ -1,0 +1,119 @@
+﻿@using LanguageResource
+@model DataGuard.Models.RegisterUserViewModel 
+@{
+    ViewBag.Title = Lang.UserRegister_Title;
+} 
+
+<div class="container">
+    <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+         
+            @using (Ajax.BeginForm("UserRegister", null, new { NewUserId = ViewBag.CurrentCreateNewUserId }, new AjaxOptions { HttpMethod = "post", OnSuccess = "HandleUserRegisterSuccDialog", OnFailure = "errUserRegister", LoadingElementId = "Loading" }, new { @class = "form-horizontal" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.AntiForgeryToken()
+
+                <div id="Loading" class=""><i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div>
+
+                <div class="card card-primary" style="max-width:500px;"> 
+                    <div class="card-body offset-1">
+
+                        <div class="form-group">
+                            <label class="control-label">@Lang.AspNetUsers_Email</label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control form-control-sm max-height", data_toggle = "tooltip", placeHolder = Lang.GeneralUI_Email, title = Lang.GeneralUI_Email })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">@Lang.AspNetUsers_PhoneNumber</label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control form-control-sm", data_toggle = "tooltip", placeHolder = Lang.GeneralUI_PhoneNumber, title = Lang.GeneralUI_PhoneNumber })
+                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <label class="control-label">@Lang.AspNetUsers_UserName</label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control form-control-sm", data_toggle = "tooltip", placeHolder = Lang.GeneralUI_UserName, title = Lang.GeneralUI_UserName })
+                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                                <label for="UserName" class="label label-warning badge badge-warning small mt-0 fa fa-circle-o"> @Lang.GeneralUI_LoginAccountNo</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">@Lang.GeneralUI_Password</label>
+                            <div class="col-md-9">
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control form-control-sm", data_toggle = "tooltip", placeHolder = Lang.GeneralUI_Password, title = Lang.GeneralUI_Password })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">@Lang.GeneralUI_ConfirmPassword</label>
+                            <div class="col-md-9">
+                                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control form-control-sm", data_toggle = "tooltip", placeHolder = Lang.GeneralUI_ConfirmPassword, title = Lang.GeneralUI_ConfirmPassword })
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="card-footer ">
+                        <div class=" offset-1 pl-1">
+                            <button type="submit" id="btnUserRegister" class="btn btn-primary btn-flat btn-xs">
+                                @Lang.GeneralUI_Register
+                            </button>
+                        </div>
+                       
+                    </div>
+                </div>
+             }
+    
+</div>
+             
+
+<script>
+    
+    $(document).ready(function () {
+        
+        setTimeout(function () {
+            $("#Loading").addClass("hide");
+            $(".overlay").addClass("hide");
+        }, 1000)
+
+    });
+
+    function HandleUserRegisterSuccDialog(data) { 
+
+        console.log(data);
+        if (data.MsgCode != "0") { 
+
+            UserId = data.MsgCode;
+
+            layer.confirm('@Lang.UserRegister_RegistedSuccess \n\r @Lang.UserRegister_NeedToAddEmployee ', {
+                btn: ['@Lang.GeneralUI_Yes', '@Lang.GeneralUI_NO'] //btn
+            }, function () {
+                    window.location = "@Url.Action("EmployeeDetails","Employee",new { Area = "Admin" , AssociateUserid = ViewBag.CurrentCreateNewUserId })";
+                }, function () { 
+                    layer.msg('@Lang.UserRegister_RefuseUserRegisterTips', { icon: 1 }, {
+                        time: 80000, // after 20s , auto to close this tips. 
+                        btn: ['@Lang.GeneralUI_Isee']
+                    });
+                     setTimeout('window.location = "@Url.Action("userlist", "User")"', 8000);  
+                });
+        }
+        else {
+            console.log(data.Message);
+            layer.msg(data.Message, { icon: 1 });
+        } 
+    }
+
+    function errUserRegister(data) {
+
+        alert("Failure");
+    }
+</script>
+

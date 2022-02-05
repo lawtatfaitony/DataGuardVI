@@ -1,0 +1,115 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <Table1>
+    <synchronizeMode>0</synchronizeMode>
+    <The3rdPartyEmployeeId> The3rd</The3rdPartyEmployeeId>
+    <FullName>李大文0 BRUCE LEE0</FullName>
+    <CnName>李大文0</CnName>
+    <FirstName>LEE0</FirstName>
+    <LastName>BRUCE</LastName>
+    <PhoneNumber>12312321</PhoneNumber>
+    <IdNumber>P23424(A)</IdNumber>
+    <AccessCardId>AAAA123123</AccessCardId>
+    <ContractorId>Con002</ContractorId>
+    <SiteId>S004</SiteId>
+    <DepartmentId>007</DepartmentId>
+    <JobId>J000110</JobId>
+    <PositionId>001</PositionId>
+  </Table1>
+  <Table1>
+    <synchronizeMode>0</synchronizeMode>
+    <The3rdPartyEmployeeId> The3rd1</The3rdPartyEmployeeId>
+    <FullName>李中階1 BRUCE LEE1</FullName>
+    <CnName>李中階1</CnName>
+    <FirstName>LEE1</FirstName>
+    <LastName>BRUCE</LastName>
+    <PhoneNumber>12312321</PhoneNumber>
+    <IdNumber>P23424(A)</IdNumber>
+    <AccessCardId>433223123</AccessCardId>
+    <ContractorId>Con002</ContractorId>
+    <SiteId>S004</SiteId>
+    <DepartmentId>007</DepartmentId>
+    <JobId>J000110</JobId>
+    <PositionId>001</PositionId>
+  </Table1>
+  <Table1>
+    <synchronizeMode>0</synchronizeMode>
+    <The3rdPartyEmployeeId> The3rd2</The3rdPartyEmployeeId>
+    <FullName>李嘉誠2 CHACHUENG LEE2</FullName>
+    <CnName>李嘉誠2</CnName>
+    <FirstName>LEE2</FirstName>
+    <LastName>CHACHUENG</LastName>
+    <PhoneNumber>121121</PhoneNumber>
+    <IdNumber>P234214(A)</IdNumber>
+    <AccessCardId>444123123</AccessCardId>
+    <ContractorId>Con002</ContractorId>
+    <SiteId>S004</SiteId>
+    <DepartmentId>007</DepartmentId>
+    <JobId>J000110</JobId>
+    <PositionId>001</PositionId>
+  </Table1>
+  <Table1>
+    <synchronizeMode>0</synchronizeMode>
+    <The3rdPartyEmployeeId> The3rd3</The3rdPartyEmployeeId>
+    <FullName>劉德華3 ANDY3 LAU3</FullName>
+    <CnName>劉德華3</CnName>
+    <FirstName>LAU3</FirstName>
+    <LastName>ANDY3</LastName>
+    <PhoneNumber>1211261</PhoneNumber>
+    <IdNumber>P234233(A)</IdNumber>
+    <AccessCardId>22232123</AccessCardId>
+    <ContractorId>Con002</ContractorId>
+    <SiteId>S004</SiteId>
+    <DepartmentId>007</DepartmentId>
+    <JobId>J000110</JobId>
+    <PositionId>001</PositionId>
+  </Table1>
+  <Table1>
+    <synchronizeMode>0</synchronizeMode>
+    <The3rdPartyEmployeeId> The3rd3</The3rdPartyEmployeeId>
+    <FullName>劉德華4 ANDY4 LAU</FullName>
+    <CnName>劉德華4</CnName>
+    <FirstName>LAU</FirstName>
+    <LastName>ANDY4</LastName>
+    <PhoneNumber>12112614</PhoneNumber>
+    <IdNumber>P234233(A)4</IdNumber>
+    <AccessCardId>22232123</AccessCardId>
+    <ContractorId>Con002</ContractorId>
+    <SiteId>S004</SiteId>
+    <DepartmentId>007</DepartmentId>
+    <JobId>J000110</JobId>
+    <PositionId>001</PositionId>
+  </Table1>
+  <Table1>
+    <synchronizeMode>0</synchronizeMode>
+    <The3rdPartyEmployeeId> The3rd3</The3rdPartyEmployeeId>
+    <FullName>劉德華5 ANDY5 LAU5</FullName>
+    <CnName>劉德華5</CnName>
+    <FirstName>LAU5</FirstName>
+    <LastName>ANDY5</LastName>
+    <PhoneNumber>12112615</PhoneNumber>
+    <IdNumber>P234233(A)5</IdNumber>
+    <AccessCardId>222321235</AccessCardId>
+    <ContractorId>Con002</ContractorId>
+    <SiteId>S004</SiteId>
+    <DepartmentId>007</DepartmentId>
+    <JobId>J000110</JobId>
+    <PositionId>001</PositionId>
+  </Table1>
+  <Table1>
+    <synchronizeMode>0</synchronizeMode>
+    <The3rdPartyEmployeeId> The3rd6</The3rdPartyEmployeeId>
+    <FullName>劉德華6 ANDY LAU6</FullName>
+    <CnName>劉德華6</CnName>
+    <FirstName>LAU6</FirstName>
+    <LastName>ANDY</LastName>
+    <PhoneNumber>12112616</PhoneNumber>
+    <IdNumber>P234233(A)6</IdNumber>
+    <AccessCardId>222321236</AccessCardId>
+    <ContractorId>Con002</ContractorId>
+    <SiteId>S004</SiteId>
+    <DepartmentId>007</DepartmentId>
+    <JobId>J000110</JobId>
+    <PositionId>001</PositionId>
+  </Table1>
+</NewDataSet>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "UVFrlO3PmwtKAKjYgSrDWqx7QPE6OfDIbZ7QU+hcE197e17SV6CINVh9h9S//n8nweIB1LJn+GJJwYVzH4fI/Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\caiha\\DESKTOP\\STARON\\DataGuardMainComII\\DataGuardVI\\zDataGuardTest\\zDataGuardTest.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\caiha\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.22\\microsoft.netcore.app.host.win-x64.3.1.22.nupkg.sha512"
+  ],
+  "logs": []
+}

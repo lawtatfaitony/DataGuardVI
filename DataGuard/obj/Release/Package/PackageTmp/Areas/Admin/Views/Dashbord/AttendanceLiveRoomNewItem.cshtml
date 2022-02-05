@@ -1,0 +1,41 @@
+﻿@using LanguageResource
+@using Common
+@using AttendanceBussiness
+@using DataGuard.Utilities 
+@using DataGuard.Models.BusinessDataModel
+@{
+    Layout = null;
+}
+
+@model AttendanceBussiness.Attendance.ReturnNewAttendanceLiveRoom
+ 
+<tr id='@string.Format("tr{0}",Model.AttendanceLiveRoom.AttendanceLogId)' class="bg-danger-gradient">
+    <td id='@string.Format("td{0}",Model.AttendanceLiveRoom.AttendanceLogId)' class='text-omit small' data-toggle='tooltip' title='@Html.DisplayFor(model => Model.AttendanceLiveRoom.AttendanceLogId)'>
+        <div id='@string.Format("div{0}",Model.AttendanceLiveRoom.AttendanceLogId)' class='text-nowrap d-flex flex-row' style='cursor:pointer;'>
+            <div class='mr-1'>
+                <div id='@string.Format("CLIDBOARD{0}",Model.AttendanceLiveRoom.AttendanceLogId)' class='p-1 btn btn-warning text-bold text-white clipboard h5' style='cursor:pointer;' title='@Lang.GeneralUI_ClickToCopy' onclick='getClipboardText()' data-clipboard-text='@Model.AttendanceLiveRoom.AttendanceLogId'>@CommonBase.Substr2(Model.AttendanceLiveRoom.AttendanceLogId.ToString(), 6, 5)</div>
+            </div> 
+        </div>
+    </td>
+    <td class='' data-toggle='tooltip' title='@Html.DisplayFor(model => Model.AttendanceLiveRoom.DeviceName)'>
+        <div class='h5 p-2 mt-1 ' style='border-color:darkorange;border-width:2px;border-radius:6px;border-style:dashed;'>@Html.DisplayFor(model => model.AttendanceLiveRoom.DeviceName)</div>
+    </td>
+    <td class='text-omit small' data-toggle='tooltip' title='@Html.DisplayFor(model => model.AttendanceLiveRoom.EmployeeId)'>
+        <div class='d-flex flex-column bd-highlight'>
+            <div class='p-1 bd-highlight h4'><span class='h4 text-bold badge badge-primary'><i class='fas fa-user-clock'></i>@string.Format("{0:yyyy-MM-dd HH:mm:ss}", Model.AttendanceLiveRoom.ConvetToDateTime())  </span></div>
+            <div class='p-1 bd-highlight h5'> @CommonBase.Substr(Model.AttendanceLiveRoom.CnName, 8)</div>
+            <div class='p-1 bd-highlight h6'>@Html.DisplayFor(model => model.AttendanceLiveRoom.EmployeeId)</div>
+        </div>
+    </td>
+    <td data-toggle='tooltip' title='@Html.DisplayFor(model => model.AttendanceLiveRoom.CatchPictureFileName)'>
+        <div class='text-nowrap' style='max-width:160px;max-height:160px;overflow:hidden'>
+            <a href='@Url.Content(string.Format("{0}",Model.AttendanceLiveRoom.CatchPictureFileName))' target='_blank'><img src='@string.Format("{0}",Model.AttendanceLiveRoom.CatchPictureFileName)' class='img-responsive img-thumbnail' /></a>
+        </div>
+    <td>
+        <div class='text-nowrap' data-toggle='tooltip' title='@Model.AttendanceLiveRoom.OccurDateTime'>
+            <div class='text-nowrap' style='max-width:100px;max-height:100px;overflow:hidden'>
+                <a href='@Url.Content(string.IsNullOrEmpty(Model.AttendanceLiveRoom.UserIconOfEmployee.UserIcon1)?"-":Model.AttendanceLiveRoom.UserIconOfEmployee.UserIcon1)' target='_blank'><img src='@string.Format("{0}",Model.AttendanceLiveRoom.UserIconOfEmployee.UserIcon1)' class='img-responsive img-thumbnail' /></a>
+            </div>
+        </div>
+    </td>
+</tr>

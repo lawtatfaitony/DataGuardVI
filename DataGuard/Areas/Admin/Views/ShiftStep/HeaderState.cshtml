@@ -1,0 +1,142 @@
+﻿
+@using LanguageResource
+@model AttApiViewModal.ShiftModule.ShiftHeaderState
+@{
+    Layout = null;
+    object routeValues = new object();
+    if (string.IsNullOrEmpty(Model.ShiftId))
+    {
+        routeValues = null;
+    }
+    else
+    {
+        routeValues = new { ShiftId = Model.ShiftId };
+    }
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!--Step1-->
+        <div class="col-6 col-sm-6 col-xs-6 col-md-2">
+            <div class="info-box @Model.IconOfShiftBasic.IconStyle">
+                <span class="info-box-icon @Model.HeaderOfShiftBusinessMode.IconBgClass elevation-1 @Model.HeaderOfShiftBusinessMode.IconColorAndClass"><i class="@Model.HeaderOfShiftBusinessMode.IconClass m-1"></i></span>
+                <div class="info-box-content">
+                    <a href="@Url.Action("Basic", "ShiftStep", routeValues)" class="info-box-text">
+                        <span style="border-radius: 50%;height:28px;width:28px;display: inline-block;background: #f30303; vertical-align:central;">
+                            <span style="display: block;color: #FFFFFF; height:28px;line-height:28px;text-align: center" class="h5"><strong>@Model.IconOfShiftBasic.StepIndex</strong></span>
+                        </span><span class="h4 @Model.IconOfShiftBasic.TextStyle"><strong>@Model.IconOfShiftBasic.HeaderName</strong></span>
+                    </a>
+                    <span class="info-box-number" data-toggle="tooltip" title="@Model.IconOfShiftBasic.HeaderDesc">
+                        <small><i class="fa fa-angle-double-right"></i> Step @Model.IconOfShiftBasic.StepIndex</small>
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <!--Step2-->
+        <div class="col-6 col-sm-6  col-xs-6 col-md-2">
+            <div class="info-box mb-3 @Model.IconOfShiftWork.IconStyle">
+                <span class="info-box-icon bg-primary-gradient elevation-1"><i class="fas fa-truck-monster m-1"></i></span> <!-- fa-cogs-->
+                <div class="info-box-content">
+                    <a href="@Url.Action("Work", "ShiftStep", routeValues)" class="info-box-text">
+                        <span style="border-radius: 50%;height:28px;width:28px;display: inline-block;background: #f30303; vertical-align:central;">
+                            <span style="display: block;color: #FFFFFF; height:28px;line-height:28px;text-align: center" class="h5"><strong>@Model.IconOfShiftWork.StepIndex</strong></span>
+                        </span><span class="h4 @Model.IconOfShiftWork.TextStyle"><strong>@Model.IconOfShiftWork.HeaderName</strong></span>
+                    </a>
+                    <span class="info-box-number" data-toggle="tooltip" title="@Model.IconOfShiftWork.HeaderDesc">
+                        <small><i class="fa fa-angle-double-right"></i> Step @Model.IconOfShiftWork.StepIndex</small>
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <!-- fix for small devices only -->
+        <div class="clearfix hidden-md-up"></div> 
+        <!--Step3-->
+        <div class="col-6 col-sm-6  col-xs-6 col-md-2">
+            <div class="info-box @Model.IconOfShiftLunch.IconStyle">
+                <span class="info-box-icon bg-primary-gradient elevation-1 text-white"><i class="fas fa-utensils  m-1"></i></span>
+                <div class="info-box-content">
+                    <a href="@Url.Action("Lunch", "ShiftStep", routeValues)" class="info-box-text">
+                        <span style="border-radius: 50%;height:28px;width:28px;display: inline-block;background: #f30303; vertical-align:central;">
+                            <span style="display: block;color: #FFFFFF; height:28px;line-height:28px;text-align: center" class="h5"><strong>@Model.IconOfShiftLunch.StepIndex</strong></span>
+                        </span><span class="h4 @Model.IconOfShiftLunch.TextStyle"><strong>@Model.IconOfShiftLunch.HeaderName</strong></span>
+                    </a>
+                    <span class="info-box-number" data-toggle="tooltip" title="@Model.IconOfShiftLunch.HeaderDesc">
+                        <small><i class="fa fa-angle-double-right"></i> Step @Model.IconOfShiftLunch.StepIndex</small>
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <!--Step4-->
+        <div class="col-6 col-sm-6  col-xs-6 col-md-2">
+            <div class="info-box mb-3 @Model.IconOfShiftOverTime.IconStyle">
+                <span class="info-box-icon bg-primary-gradient elevation-1"><i class="fas fa-fast-forward  m-1"></i></span>
+
+                <div class="info-box-content">
+                    <a href="@Url.Action("OverTime", "ShiftStep", routeValues)" class="info-box-text">
+                        <span style="border-radius: 50%;height:28px;width:28px;display: inline-block;background: #f30303; vertical-align:central;">
+                            <span style="display: block;color: #FFFFFF; height:28px;line-height:28px;text-align: center" class="h5"><strong>@Model.IconOfShiftOverTime.StepIndex</strong></span>
+                        </span><span class="h4 @Model.IconOfShiftOverTime.TextStyle"><strong>@Model.IconOfShiftOverTime.HeaderName</strong></span>
+                    </a>
+                    <span class="info-box-number" data-toggle="tooltip" title="@Model.IconOfShiftOverTime.HeaderDesc">
+                        <small><i class="fa fa-angle-double-right"></i> Step @Model.IconOfShiftOverTime.StepIndex</small>
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <!--Step5-->
+        <div class="col-6 col-sm-6  col-xs-6 col-md-2">
+            <div class="info-box mb-3 @Model.IconOfSpecialAndExclude.IconStyle">
+                <span class="info-box-icon bg-primary-gradient elevation-1"><i class="fas fa-magic  m-1"></i></span>
+
+                <div class="info-box-content">
+                    <a href="@Url.Action("Logic", "ShiftStep", routeValues)" class="info-box-text">
+                        <span style="border-radius: 50%;height:28px;width:28px;display: inline-block;background: #f30303; vertical-align:central;">
+                            <span style="display: block;color: #FFFFFF; height:28px;line-height:28px;text-align: center" class="h5"><strong>@Model.IconOfSpecialAndExclude.StepIndex</strong></span>
+                        </span><span class="h4 @Model.IconOfSpecialAndExclude.TextStyle"><strong>@Model.IconOfSpecialAndExclude.HeaderName</strong></span>
+                    </a>
+                    <span class="info-box-number" data-toggle="tooltip" title="@Model.IconOfSpecialAndExclude.HeaderDesc">
+                        <small><i class="fa fa-angle-double-right"></i> Step @Model.IconOfSpecialAndExclude.StepIndex</small>
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <!--Step6-->
+        <div class="col-6 col-sm-6  col-xs-6 col-md-2">
+            <div class="info-box mb-3 @Model.IconOfMissingCalc.IconStyle">
+                <span class="info-box-icon bg-primary-gradient elevation-1"><i class="fab fa-algolia  m-1"></i></span>
+
+                <div class="info-box-content">
+                    <a href="@Url.Action("MissingCalc", "ShiftStep", routeValues)" class="info-box-text">
+                        <span style="border-radius: 50%;height:28px;width:28px;display: inline-block;background: #f30303; vertical-align:central;">
+                            <span style="display: block;color: #FFFFFF; height:28px;line-height:28px;text-align: center" class="h5"><strong>@Model.IconOfMissingCalc.StepIndex</strong></span>
+                        </span><span class="h4 @Model.IconOfMissingCalc.TextStyle"><strong>@Model.IconOfMissingCalc.HeaderName</strong></span>
+                    </a><span class="info-box-number" data-toggle="tooltip" title="@Model.IconOfMissingCalc.HeaderDesc">
+                        <small><i class="fa fa-angle-double-right"></i> Step @Model.IconOfMissingCalc.StepIndex</small>
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <div class="progress bg-warning-gradient" style="height:3px;" title="@Model.Progress %" data-toggle="tooltip">
+        <div class="progress-bar" role="progressbar" style="width: @string.Format("{0}%",Model.Progress);" aria-valuenow="@Model.Progress" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</div>
+   

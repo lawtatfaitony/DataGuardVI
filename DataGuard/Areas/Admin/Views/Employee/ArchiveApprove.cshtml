@@ -1,0 +1,72 @@
+﻿@using LanguageResource
+@using X.PagedList
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Bootstrap4
+@model DataGuard.Areas.Admin.ModelView.ArchiveApprove
+@{ 
+    Layout = null;
+} 
+<div  ng-controller="ArchiveApproveCtrl" class="modal fade" id="ArchiveApprove1Modal" tabindex="-1" role="dialog" aria-labelledby="ArchiveApprove1Modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content"> 
+               @using (Ajax.BeginForm("ArchiveApprove", "Employee", new AjaxOptions { HttpMethod = "post", OnSuccess = "handleArchiveApprove", OnFailure = "errArchiveApprove", LoadingElementId = "Loading" }, new { @class = "form-horizontal", name = "ArchiveApprove", id = "ArchiveApprove" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="modal-header pt-2 pb-2">
+                        <h5 class="modal-title" id="editLanguageTitle"><i class="fas fa-archive text-danger"></i>@Lang.Employee_ArchiveApprovePanel_Title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body  pt-2 pb-2 pl-5">
+                        <div class="form-group">
+                            <label class="control-label col-12" for="IndustryId">@Lang.Employee_EmployeeId</label>
+                            <div class="">
+                                @Html.TextBox("EmployeeId", "", new { list = "List_SelectEmployeeListJson", onclick = "javascript:this.value='';", @class = "bold  form-control form-control-sm col-9" })
+                                <datalist id="List_SelectEmployeeListJson">
+                                    <option ng-repeat="x in serchingEmployeeListJson" value="{{x.EmployeeId}}">{{x.Name }}</option>
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-12" for="IndustryId">@Lang.Employee_LeaveDate</label>
+                            <div class="">
+                                @Html.TextBox("LeaveDate", "", new { onclick = "javascript:this.value='';", @class = "datepicker bold form-control form-control-sm col-9", autocomplete="off" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer pt-2 pb-2">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" id="AddNewComfirmed2" class="btn btn-primary"> @Lang.GeneralUI_Comfirmed </button>
+                    </div>
+                }
+        </div>
+    </div>
+</div>
+
+<script>
+    app.controller('ArchiveApproveCtrl', function ($scope, $http) {
+        $http({
+                method: 'GET',
+                url: '/'+'@LangUtilities.LanguageCode'+'/Admin/Employee/SelectEmployeeListJson'
+            }).then(function successCallback(response) {
+                $scope.serchingEmployeeListJson = response.data;
+                 
+            }, function errorCallback(response) {
+                console.log("/en-US/Admin/Employee/SelectEmployeeListJson : \n\r" + response.data);
+            });
+    });
+    function handleArchiveApprove(result)
+    {  
+        layer.open({
+            title: '@Lang.GeneralUI_ReturnResult'
+            , content: result.meta.Message
+        });
+        if (result.meta.Success === true) {
+            setTimeout(function () {
+                 $("#ArchiveApprove1Modal").modal('hide'); 
+            }, 3000);
+        } 
+    }
+</script>

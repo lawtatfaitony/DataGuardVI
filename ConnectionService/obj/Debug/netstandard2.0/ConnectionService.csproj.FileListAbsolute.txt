@@ -1,0 +1,13 @@
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\bin\Debug\netstandard2.0\ConnectionService.deps.json
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\bin\Debug\netstandard2.0\ConnectionService.dll
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\bin\Debug\netstandard2.0\ConnectionService.pdb
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\bin\Debug\netstandard2.0\CommonBase.dll
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\bin\Debug\netstandard2.0\CommonBase.pdb
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\obj\Debug\netstandard2.0\ConnectionService.csproj.AssemblyReference.cache
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\obj\Debug\netstandard2.0\ConnectionService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\obj\Debug\netstandard2.0\ConnectionService.AssemblyInfoInputs.cache
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\obj\Debug\netstandard2.0\ConnectionService.AssemblyInfo.cs
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\obj\Debug\netstandard2.0\ConnectionService.csproj.CoreCompileInputs.cache
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\obj\Debug\netstandard2.0\ConnectionService.csproj.CopyComplete
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\obj\Debug\netstandard2.0\ConnectionService.dll
+C:\Users\caiha\DESKTOP\STARON\DataGuardMainComII\DataGuardVI\ConnectionService\obj\Debug\netstandard2.0\ConnectionService.pdb

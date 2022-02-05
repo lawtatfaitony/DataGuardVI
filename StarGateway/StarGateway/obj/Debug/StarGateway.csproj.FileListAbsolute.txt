@@ -1,0 +1,54 @@
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\bin\Debug\StarGateway.dll
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\bin\Debug\StarGateway.pdb
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.dll
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.xml
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\obj\Debug\ResolveAssemblyReference.cache
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\obj\Debug\StarGateway.dll
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\obj\Debug\StarGateway.pdb
+D:\Ritnu\STAR\CIC_GATEWAY\StarGateway\StarGateway\bin\Debug\StarGateway.dll
+D:\Ritnu\STAR\CIC_GATEWAY\StarGateway\StarGateway\bin\Debug\StarGateway.pdb
+D:\Ritnu\STAR\CIC_GATEWAY\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.dll
+D:\Ritnu\STAR\CIC_GATEWAY\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.xml
+D:\Ritnu\STAR\CIC_GATEWAY\StarGateway\StarGateway\obj\Debug\ResolveAssemblyReference.cache
+D:\Ritnu\STAR\CIC_GATEWAY\StarGateway\StarGateway\obj\Debug\StarGateway.dll
+D:\Ritnu\STAR\CIC_GATEWAY\StarGateway\StarGateway\obj\Debug\StarGateway.pdb
+D:\Visual Studio 2010\Projects\CIC_GATEWAY\StarGateway\StarGateway\bin\Debug\StarGateway.dll
+D:\Visual Studio 2010\Projects\CIC_GATEWAY\StarGateway\StarGateway\bin\Debug\StarGateway.pdb
+D:\Visual Studio 2010\Projects\CIC_GATEWAY\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.dll
+D:\Visual Studio 2010\Projects\CIC_GATEWAY\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.xml
+D:\Visual Studio 2010\Projects\CIC_GATEWAY\StarGateway\StarGateway\obj\Debug\ResolveAssemblyReference.cache
+D:\Visual Studio 2010\Projects\CIC_GATEWAY\StarGateway\StarGateway\obj\Debug\StarGateway.dll
+D:\Visual Studio 2010\Projects\CIC_GATEWAY\StarGateway\StarGateway\obj\Debug\StarGateway.pdb
+D:\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\bin\Debug\StarGateway.dll
+D:\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\bin\Debug\StarGateway.pdb
+D:\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.dll
+D:\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.xml
+D:\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\obj\Debug\ResolveAssemblyReference.cache
+D:\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\obj\Debug\StarGateway.dll
+D:\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\obj\Debug\StarGateway.pdb
+C:\Users\StarOn System\Documents\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\bin\Debug\StarGateway.dll
+C:\Users\StarOn System\Documents\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\bin\Debug\StarGateway.pdb
+C:\Users\StarOn System\Documents\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\StarOn System\Documents\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\obj\Debug\StarGateway.dll
+C:\Users\StarOn System\Documents\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\obj\Debug\StarGateway.pdb
+C:\Users\StarOn System\Documents\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.dll
+C:\Users\StarOn System\Documents\Visual Studio 2010\Projects\CIC_GATEWAY_2010\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\bin\Debug\StarGateway.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\bin\Debug\StarGateway.pdb
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\obj\Debug\StarGateway.csprojResolveAssemblyReference.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\obj\Debug\StarGateway.csproj.CoreCompileInputs.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\obj\Debug\StarGateway.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\obj\Debug\StarGateway.pdb
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Debug\StarGateway.dll
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Debug\StarGateway.pdb
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.dll
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Debug\Newtonsoft.Json.xml
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Debug\StarGateway.csprojAssemblyReference.cache
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Debug\StarGateway.csproj.CopyComplete
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Debug\StarGateway.dll
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Debug\StarGateway.pdb
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Debug\CommonBase.dll
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Debug\CommonBase.pdb
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Debug\StarGateway.csproj.CoreCompileInputs.cache

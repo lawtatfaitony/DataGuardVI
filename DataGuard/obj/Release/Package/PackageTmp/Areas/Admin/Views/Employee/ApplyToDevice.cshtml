@@ -1,0 +1,138 @@
+﻿@using LanguageResource
+@using X.PagedList
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Bootstrap4
+@model AttendanceBussiness.EmployBusiness.ApplyToDevice
+@{ 
+    Layout = null;
+}
+<div ng-controller="ApplyToDeviceCtrl" class="modal fade" id="ApplyToDeviceModal" tabindex="-1"  role="dialog" aria-labelledby="ApplyToDeviceModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginForm("ApplyToDevice", "Employee", new AjaxOptions { HttpMethod = "post", OnSuccess = "handleApplyToDevice", OnFailure = "errApplyToDevice" }, new { @class = "form-horizontal", name = "ApplyToDevice", id = "ApplyToDevice" }))
+            {
+                @Html.HiddenFor(model => model.SearchMode)
+                <div class="modal-header pt-2 pb-2">
+                    <h5 class="modal-title" id="editLanguageTitle"><i class="fas fa-map-signs text-danger"></i> @Lang.Employee_ApplyToDevice</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body  pt-2 pb-2 pl-5">
+                    <div class="form-group">
+                        <label class="control-label col-12" for="EmployeeId">@Lang.Employee_EmployeeId</label>
+                        <div class="pl-1">
+                            @Html.TextBoxFor(model => model.EmployeeId, new { list = "List_SelectEmployeeListJson", @class = "form-control form-control-sm col-9 ApplyToDevice_EmployeeId", enable= ViewBag.EmployeeIdSelectLock })
+                            <datalist id="List_SelectEmployeeListJson">
+                                <option ng-repeat="x in serchingEmployeeListJson" value="{{x.EmployeeId}}">{{x.EmployeeId + " " + x.Name}}</option>
+                            </datalist>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!--SystemModule-->
+                    <div class="form-group">
+                        <label class="control-label col-12" for="SysModuleId">@Lang.SysModule_SysModuleName</label>
+                        <div class="pl-1">
+                            <input id="SysModuleId" list="List_SelectSysModuleListJson" ng-model="SysModuleId" ng-change="moduleChange();" ondblclick="javascript: this.value = '';" class="form-control form-control-sm col-9" />
+                            <datalist id="List_SelectSysModuleListJson">
+                                <option ng-repeat="j in selectSysModuleListJson" value="{{j.SysModuleId}}">{{j.SysModuleName}}</option>
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <!--SystemModule-->
+                    <div class="form-group">
+                        <label class="control-label col-12" for="DeviceId">@Lang.Device_DeviceName</label>
+                        <div class="pl-1">
+                            @Html.TextBoxFor(model => model.DeviceId, new { list = "List_SelectDeviceListJson", @class = "form-control form-control-sm  col-9" })
+                            <datalist id="List_SelectDeviceListJson">
+                                <option ng-repeat="x in SelectDeviceListJson" value="{{x.DeviceId}}">{{x.DeviceName}}</option>
+                            </datalist>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DeviceId, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+                <div class="modal-footer pt-1 pb-1">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="AddNewComfirmed2" class="btn btn-sm btn-primary"> @Lang.GeneralUI_Comfirmed </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    var EmployeeListJson = {};
+    var SysModuleListJson = {};
+    var DeviceListJson = {};
+
+    app.controller('ApplyToDeviceCtrl', function ($scope, $http) {
+        $http({
+                method: 'GET',
+                url: '/'+'@LangUtilities.LanguageCode'+'/Admin/Employee/SelectEmployeeListJson'
+            }).then(function successCallback(response) {
+                $scope.serchingEmployeeListJson = response.data;
+                EmployeeListJson = response.data.data;
+
+            }, function errorCallback(response) {
+                console.log("/en-US/Admin/Employee/SelectEmployeeListJson : \n\r" + response.data);
+            });
+
+        $http({
+                method: 'GET',
+            url: '/' + '@LangUtilities.LanguageCode' +'/Admin/SysModule/GetList'
+        }).then(function successCallback(response) {
+
+            if (response.data.meta.Success == true) {
+
+                $scope.selectSysModuleListJson = response.data.data;
+                SysModuleListJson = response.data.data;
+                //toastr["success"]("Success to Get System Module List");
+
+                } else {
+                    toastr["warning"]("Fail to Get System Module List");
+                }
+            }, function errorCallback(response) {
+                console.log("/en-US/Admin/Employee/SelectEmployeeListJson : \n\r" + response.data);
+        });
+        $scope.moduleChange = function () {
+            var sysModuleId = $scope.SysModuleId; 
+
+            $http({
+                method: 'GET',
+                url: '/' + '@LangUtilities.LanguageCode' + '/Admin/SysModule/GetDeviceList?sysModuleId=' + sysModuleId
+            }).then(function successCallback(response) {
+
+                if (response.data.meta.Success == true) {
+
+                    $scope.SelectDeviceListJson = response.data.data;
+                    DeviceListJson = response.data.data;
+                    $("#DeviceId").val(""); 
+                }
+                else {
+                    toastr["warning"]("Fail to Get DEVICE List");
+                }
+            }, function errorCallback(response) {
+                console.log("/en-US/Admin/SysModule/GetDeviceList : \n\r" + response.data);
+            });
+        };
+    });
+    function handleApplyToDevice(result)
+    {
+        layer.open({
+            title: '@Lang.GeneralUI_ReturnResult'
+            , content: result.meta.Message
+        });
+        if (result.meta.Success === true) {
+            setTimeout(function () {
+                $("#ApplyToDeviceModal").modal('hide');
+            }, 3000);
+        }
+    }
+    function errApplyToDevice() {
+        alert('@Lang.GeneralUI_ServerError');
+    }
+</script>
+

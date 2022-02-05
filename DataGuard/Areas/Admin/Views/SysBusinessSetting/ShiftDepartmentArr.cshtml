@@ -1,0 +1,89 @@
+﻿@using LanguageResource
+@using AttendanceBussiness.ScheduleBusiness
+@{
+    //Layout = null;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutBlank.cshtml";
+}
+@using (Ajax.BeginForm("ShiftDepartmentArr", "SysBusinessSetting", new { shiftId = ViewBag.CurrentShiftId }, new AjaxOptions { HttpMethod = "post", OnSuccess = "HandleShiftDepartmentArrSuccDialog", OnFailure = "errShiftDepartmentArr", LoadingElementId = "Loading" }, new { @class = "form-horizontal", id = "form_ShiftDepartmentArr" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.AntiForgeryToken()
+
+    List<AssignedDepartment> assignedDepartments = ViewBag.AssignedDepartments;
+    foreach (var item in assignedDepartments)
+    {
+        string badge = "badge-success";
+        if (item.DepartmentId == "DEPARTMENT_ALL")
+        {
+            badge = "badge-danger";
+        }
+        @:<div class="form-group  mb-1">
+              <input type="checkbox" id="DepartmentIdArr" class="checkbox @item.DepartmentId" name="DepartmentIdArr"
+                     value="@item.DepartmentId"
+                     @(Html.Raw(item.Assigned ? "checked=\"checked\"" : "")) />
+              <p class="text-left badge @badge margin-right10">@item.DepartmentName </p>
+        @:</div>
+    }
+     
+    <div class="form-group mb-0 mt-3">
+        <button type="submit" id="btnComfirmed" class="btn btn-primary btn-sm">
+            @Lang.GeneralUI_OK
+        </button>
+    </div>
+}
+
+<script>
+  
+        function checkboxedShiftDept(objName) {
+            var objNameList = $(objName);
+            if (null != objNameList) {
+
+                for (var i = 0; i < objNameList.length; i++) {
+                    objNameList[i].checked = "checked";
+                }
+            }
+        }
+        function uncheckboxedShiftDept(objName) {
+            var objNameList = $(objName);
+            if (null != objNameList) {
+                for (var i = 0; i < objNameList.length; i++) {
+                    objNameList[i].checked = "";
+                }
+            }
+        }
+        $('.DEPARTMENT_ALL').click(function () {
+            console.log("DEPARTMENT_ALL");
+            if ($(this).is(':checked')) {
+                checkboxedShiftDept(".checkbox")
+            }
+            else {
+                uncheckboxedShiftDept(".checkbox")
+            }
+        });
+               
+    function HandleShiftDepartmentArrSuccDialog(data)
+    {
+       
+        console.log(data);
+
+        if (data.meta.Success) {
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: data.meta.Message
+            });
+            
+        } else {
+            layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: data.meta.Message
+            });
+        } 
+        return;
+    }
+
+        function errShiftDepartmentArr(data) {
+        console.log(JSON.stringify(data));
+        alert("@Lang.GeneralUI_ServerError");
+    }
+
+</script>

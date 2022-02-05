@@ -1,0 +1,35 @@
+﻿@using LanguageResource
+@using System.Threading
+@{
+    ViewBag.Title = "Home Page";
+}
+<div style="min-height:800px;">
+    <div class="" style="min-height:800px;">
+        <br />
+        <br />
+        <span class="h1 mb-3 mt-3">@Lang.GeneralUI_PleaseSelectLanguage</span>
+        <br /> <br />
+        <table class="mt-2">
+            <tr class="table table-hover table-responsive">
+                <td class="p-3 m-2">
+                    <a href="@Url.Action("index","Dashbord",new { Language = "en-US" ,Area="Admin"})" class="btn btn-primary btn-md m-2">&nbsp; English &raquo;&nbsp;</a></p>
+                </td>
+                <td class="p-3 m-2">
+                    &nbsp;
+                    <a href="@Url.Action("index","Dashbord",new { Language = "zh-HK",Area="Admin" })" class="btn btn-primary btn-md m-2">&nbsp; 繁體 &raquo;&nbsp;</a>
+                </td>
+
+                <td class="p-3 m-2">
+                    &nbsp;
+                    <a href="@Url.Action("index","Dashbord",new { Language = "zh-CN" ,Area="Admin"})" class="btn btn-primary btn-md m-2">&nbsp; 简体 &raquo;&nbsp;</a>
+                </td>
+                <td class="p-3 m-2">
+                    &nbsp;
+                    <a href="@Url.Action("index","Dashbord",new { Language = LangUtilities.LanguageCode,Area="Admin" })" class="btn btn-primary btn-md m-2">&nbsp; @Lang.GeneralUI_SysemLanguage &raquo; &nbsp;</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+

@@ -1,0 +1,75 @@
+﻿@using DataGuard.Models
+@using LanguageResource
+@model DataGuard.Models.LoginViewModel
+@{
+    Layout = null;
+    ViewBag.Title = LanguageResource.Lang.Account_LoginViewModel_Title;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    @Styles.Render("~/Content/bootstrap3.7")
+    @Styles.Render("~/AdminLTE3/dist/css")
+    @Styles.Render("~/Content/mainStyle")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href='@Url.Action("Index","Dashbord",new { Language =ViewBag.Language,area ="Admin"})'>
+                @Lang.RegisterViewModel_Welcome
+            </a>
+              @Html.RouteLink(Lang.RegisterViewModel_Welcome, "Admin_default", new { Language = ViewBag.Language, action = "Index", controller = "Dashbord" }, htmlAttributes: new { @class = "h1" }) 
+        </div>
+        <div class="login-box-body center-block">
+
+            @using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.returnUrl }, FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control  input-sm", type = "Text", placeholder = Lang.LoginViewModel_UserName }) 
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control input-sm", type = "password", placeholder = Lang.AspNetUser_Password })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback"> 
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">@Lang.GeneralUI_Login</button> 
+                </div>
+            }
+
+            <a href="@Url.Action("ForgotPassword", "Account")">@Lang.Account_LoginViewModel_ForgetPassword</a><br>
+            <a href="@Url.Action("Register", "Account",new { returnUrl = ViewBag.returnUrl })" class="text-center">@Lang.GeneralUI_Register</a>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap3.7")
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+</body>
+</html> 

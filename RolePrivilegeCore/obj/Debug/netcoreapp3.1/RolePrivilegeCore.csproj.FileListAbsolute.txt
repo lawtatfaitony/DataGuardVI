@@ -1,0 +1,13 @@
+F:\STAR\DataGuardIII\RolePrivilegeCore\bin\Debug\netcoreapp3.1\RolePrivilegeCore.deps.json
+F:\STAR\DataGuardIII\RolePrivilegeCore\bin\Debug\netcoreapp3.1\RolePrivilegeCore.dll
+F:\STAR\DataGuardIII\RolePrivilegeCore\obj\Debug\netcoreapp3.1\RolePrivilegeCore.csprojAssemblyReference.cache
+F:\STAR\DataGuardIII\RolePrivilegeCore\obj\Debug\netcoreapp3.1\RolePrivilegeCore.AssemblyInfoInputs.cache
+F:\STAR\DataGuardIII\RolePrivilegeCore\obj\Debug\netcoreapp3.1\RolePrivilegeCore.AssemblyInfo.cs
+F:\STAR\DataGuardIII\RolePrivilegeCore\obj\Debug\netcoreapp3.1\RolePrivilegeCore.csproj.CopyComplete
+F:\STAR\DataGuardIII\RolePrivilegeCore\bin\Debug\netcoreapp3.1\RolePrivilegeCore.pdb
+F:\STAR\DataGuardIII\RolePrivilegeCore\bin\Debug\netcoreapp3.1\AttDataCore.dll
+F:\STAR\DataGuardIII\RolePrivilegeCore\bin\Debug\netcoreapp3.1\AttDataCore.pdb
+F:\STAR\DataGuardIII\RolePrivilegeCore\obj\Debug\netcoreapp3.1\RolePrivilegeCore.csproj.CoreCompileInputs.cache
+F:\STAR\DataGuardIII\RolePrivilegeCore\obj\Debug\netcoreapp3.1\RolePrivilegeCore.dll
+F:\STAR\DataGuardIII\RolePrivilegeCore\obj\Debug\netcoreapp3.1\RolePrivilegeCore.pdb
+F:\STAR\DataGuardIII\RolePrivilegeCore\bin\Debug\netcoreapp3.1\AttDataCore.exe

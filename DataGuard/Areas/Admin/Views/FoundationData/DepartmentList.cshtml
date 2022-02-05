@@ -1,0 +1,326 @@
+﻿@using LanguageResource
+@using Common
+@using AttendanceBussiness
+@using DataGuard.Utilities
+@using X.PagedList
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Bootstrap4
+@using DataGuard.Models.BusinessDataModel
+@using DataGuard.Areas
+@model DataGuard.Areas.DepartmentListView
+
+@{
+    ViewBag.Title = Lang.DepartmentList_Title;
+}
+
+@using (Html.BeginForm("DepartmentList", "FoundationData", FormMethod.Get, new { @class = "form-inline " }))
+{
+    <div class="row padding-bottom10">
+        <div class="col-10">
+            <div class="input-group input-group-sm">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control form-control-navbar", placeholder = "Search" })
+                <span class="input-group-append">
+                    <button type="submit" class="btn btn-primary btn-flat "><i class="fa fa-search"></i> Go!</button>
+                </span>
+            </div>
+        </div>
+        <div class="col-2 d-inline pull-right">
+            <button type="button" class="btn btn-primary btn-sm text-white ml-1" title="@Lang.GeneralUI_AddNew" data-toggle="modal" data-target="#addNewDepartmentPanel">
+                &nbsp;<i class="fa fa-plus-circle font-weight-bold"></i>&nbsp;
+            </button>
+        </div>
+    </div>
+}
+
+<div class="box-body  table-responsive" style="min-height:600px;">
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>
+                <div class="text-nowrap" title="@Lang.Department_DepartmentId" data-toggle="tooltip">
+                    <span><i class="fas fa-id-card" style="color:mediumslateblue"> </i> @Lang.Department_DepartmentId </span>
+                </div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.Department_DepartmentName" data-toggle="tooltip"><span><i class="fas fa-users" style="color:mediumslateblue"> </i> @Lang.Department_DepartmentName </span></div>
+            </th>
+            <th>
+                <div class="text-nowrap" title="@Lang.Department_DepartmentAbbrName" data-toggle="tooltip"><span><i class="fas fa-file" style="color:mediumslateblue"> </i> @Lang.Department_DepartmentAbbrName </span></div>
+            </th>
+            <th>
+                <div class="text-nowrap">
+                    @Html.ActionLink(" " + Lang.GeneralUI_OrderBy, "DepartmentList", "FoundationData", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter }, htmlAttributes: new { @class = "fa fa-sort pull-right margin-top5", title = Lang.GeneralUI_OrderByLetter })
+                </div>
+            </th>
+        </tr>
+        @{int x = 0;}
+        @foreach (var item in Model.DepartmentList)
+        {
+            x++;
+            <tr id="@string.Format("tr{0}",item.DepartmentId)">
+                <td id="@string.Format("td{0}",item.DepartmentId)" class="small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.DepartmentId)">
+                    <span id="@string.Format("sp{0}",item.DepartmentId)" class="badge badge-dark" data-toggle="tooltip" style="cursor:pointer;">@x</span>
+                    <label id="@string.Format("lbl{0}",item.DepartmentId)" class="text-dark">
+                        @item.DepartmentId.ToString()
+                    </label>
+                </td>
+                <td class="small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.DepartmentName)">
+                    @if (String.IsNullOrEmpty(item.EnDepartmentName))
+                    {
+                        <span class="span1">@item.DepartmentName</span>
+                    }
+                    else
+                    {
+
+                        <div class="bd-example">
+                            <details open="open">
+                                <summary class="">  @item.DepartmentName </summary>
+                                <p> @item.EnDepartmentName</p>
+                            </details>
+                        </div>
+                    }
+
+                </td>
+                <td class="small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.DepartmentAbbrName)">
+                    @Html.DisplayFor(modelItem => item.DepartmentAbbrName)
+                </td>
+                <td>
+                    <div class="btn btn-group-justified">
+                        <button type="button" class="btn btn-success btn-sm pl-1 pl-1" onclick="@string.Format("javascript:BindDepartmentDetailsData('{0}','{1}');","Edit", item.DepartmentId)" data-toggle="modal" data-target="#editDepartmentPanel">
+                            &nbsp; &nbsp;<i class="fas fa-pen"></i>&nbsp;
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm pl-1 ml-2" onclick="@string.Format("javascript:DeleteDepartmentDetailsData('{0}');", item.DepartmentId)">
+                            &nbsp; &nbsp;<i class="fas fa-trash"></i> &nbsp;
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div class="btn-xs">
+    @Html.PagedListPager((IPagedList)Model.DepartmentList, page => Url.Action("DepartmentList", "FoundationData", new { sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, occurDateTimeRange = ViewBag.CurrentOccurDateTimeRange , page = page }), new PagedListRenderOptions
+    {
+        ContainerDivClasses = new[] { "pagination pagination-sm" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        MaximumPageNumbersToDisplay = 20
+    })
+</div>
+
+
+
+<!--Edit Modal -->
+<div class="modal fade" id="editDepartmentPanel" tabindex="-1" role="dialog" aria-labelledby="editDepartmentPanel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginForm("DepartmentDetails", "FoundationData", new AjaxOptions { HttpMethod = "post", OnSuccess = "handleDepartmentDetails", OnFailure = "errDepartmentDetails", LoadingElementId = "Loading" }, new { @class = "form-horizontal", name = "form_DepartmentDetails", id = "form_DepartmentDetails" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.DepartmentNew.DepartmentId)
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDepartmentTitle">@Lang.Department_EditDepartmentDetails_Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label col-12" for="IndustryId">@Lang.Department_DepartmentName</label>
+                        <div class="row pl-2 pr-1">
+                            <div class=" input-group">
+                                @Html.TextBox("DepartmentId", "", new { @readonly = "readonly", @class = "EditDepartmentId bold  form-control form-control-sm col-sm-2 border-right-0" })
+                                @Html.TextBoxFor(model => model.DepartmentNew.DepartmentName, new { id = "DepartmentName", Name = "DepartmentName", @class = "EditDepartmentName form-control form-control-sm bold col-sm-10 border-left-0 input-group-append" })
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DepartmentNew.DepartmentName, "", new { @class = "text-danger", data_valmsg_for = "DepartmentName" })
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label col-12" for="ZhCn">@Lang.Department_EnDepartmentName</label>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.DepartmentNew.EnDepartmentName, new { id = "EnDepartmentName", Name = "EnDepartmentName", @class = "EditEnDepartmentName form-control form-control-sm bold col-sm-12" })
+                            @Html.ValidationMessageFor(model => model.DepartmentNew.EnDepartmentName, "", new { @class = "text-danger", data_valmsg_for = "EnDepartmentName" })
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label col-12" for="ZhHk">@Lang.Department_DepartmentAbbrName</label>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.DepartmentNew.DepartmentAbbrName, new { id = "DepartmentAbbrName", Name = "DepartmentAbbrName", @class = "EditDepartmentAbbrName form-control form-control-sm bold col-sm-12" })
+                            @Html.ValidationMessageFor(model => model.DepartmentNew.DepartmentAbbrName, "", new { @class = "text-danger", data_valmsg_for = "DepartmentAbbrName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="editComfirmed" class="btn btn-primary">@string.Format("{0} {1}", Lang.GeneralUI_Comfirmed, Lang.GeneralUI_OK)</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!--AddNew Modal -->
+<div class="modal fade" id="addNewDepartmentPanel" tabindex="-1" role="dialog" aria-labelledby="addNewDepartmentPanel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginForm("DepartmentAddNew", "FoundationData", new AjaxOptions { HttpMethod = "post", OnSuccess = "handleDepartmentAddNew", OnFailure = "errDepartmentAddNew", LoadingElementId = "Loading" }, new { @class = "form-horizontal", name = "form_DepartmentAddNew", id = "form_DepartmentAddNew" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.DepartmentNew.DepartmentId)
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editLanguageTitle">@Lang.Department_DepartmentAddNew_Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label col-12" for="IndustryId">@Lang.Department_DepartmentName</label>
+                        <div class="row pl-2 pr-1">
+                            <div class=" input-group">
+                                @Html.TextBox("DepartmentId", "D", new { @readonly = "readonly", @class = "AddNewDepartmentId bold  form-control form-control-sm col-sm-1 border-right-0" })
+                                @Html.TextBoxFor(model => model.DepartmentNew.DepartmentName, new { id = "DepartmentName", Name = "DepartmentName", @class = "AddNewDepartmentName form-control form-control-sm bold col-sm-11 border-left-0 input-group-append" })
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DepartmentNew.DepartmentName, "", new { @class = "text-danger", data_valmsg_for = "DepartmentName" })
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label col-12" for="ZhCn">@Lang.Department_EnDepartmentName</label>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.DepartmentNew.EnDepartmentName, new { id = "EnDepartmentName", Name = "EnDepartmentName", @class = "AddNewEnDepartmentName form-control form-control-sm bold col-sm-12" })
+                            @Html.ValidationMessageFor(model => model.DepartmentNew.EnDepartmentName, "", new { @class = "text-danger", data_valmsg_for = "EnDepartmentName" })
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label col-12" for="ZhHk">@Lang.Department_DepartmentAbbrName</label>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.DepartmentNew.DepartmentAbbrName, new { id = "DepartmentAbbrName", Name = "DepartmentAbbrName", @class = "AddNewDepartmentAbbrName form-control form-control-sm bold col-sm-12" })
+                            @Html.ValidationMessageFor(model => model.DepartmentNew.DepartmentAbbrName, "", new { @class = "text-danger", data_valmsg_for = "DepartmentAbbrName" })
+                        </div>
+                    </div> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="AddNewComfirmed" class="btn btn-primary"> @Lang.GeneralUI_AddNew </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+ 
+<script>
+    function BindDepartmentDetailsData(Prefix, DepartmentId) {
+
+        var httpGetUrl = "/@LangUtilities.LanguageCode/Admin/FoundationData/DepartmentDetails";
+        Prefix = "." + Prefix;
+        var txtBoxDepartmentId = Prefix + "DepartmentId";
+        var DepartmentName = Prefix + "DepartmentName";
+        var EnDepartmentName = Prefix + "EnDepartmentName";
+        var DepartmentAbbrName = Prefix + "DepartmentAbbrName";
+        console.log(DepartmentName + " | " + EnDepartmentName + " | " + DepartmentAbbrName );
+        var myparamsObject = { "DepartmentId": DepartmentId};
+        $.ajax({
+            url: httpGetUrl,
+            data: myparamsObject,
+            type: "get",
+            dataType: "json",
+            error: function (data) {
+                console.log(JSON.stringify(data));
+            },
+            success: function (data) {
+                $(txtBoxDepartmentId).val(data.DepartmentId);
+                $(DepartmentName).val(data.DepartmentName);
+                $(EnDepartmentName).val(data.EnDepartmentName);
+                $(DepartmentAbbrName).val(data.DepartmentAbbrName);
+            }
+        });
+    }
+    //AddNew ----------------------------
+    function handleDepartmentAddNew(data) {
+        layer.open({
+                title: '@Lang.GeneralUI_ReturnResult'
+                , content: data.Message
+                , btn:'@Lang.GeneralUI_OK'
+        });
+        if (data.MsgCode != "0") {
+            redirectLocaleUrl = "@Url.Action("DepartmentList", "FoundationData", new { Area = "Admin"})";
+            setTimeout(
+                function() {
+                    window.location = redirectLocaleUrl + "?searchString=" + data.MsgCode;
+                }
+            , 3000);
+        }
+
+    }
+
+    function errDepartmentAddNew() {
+        alert('@Lang.GeneralUI_ServerError'+ "--client AddNew");
+    }
+
+    //Update ----------------------------
+    function handleDepartmentDetails(data) {
+        layer.open({
+            title: '@Lang.GeneralUI_ReturnResult'
+            , content: data.Message
+            , btn: '@Lang.GeneralUI_OK'
+        });
+        if (data.MsgCode != "0") {
+            redirectLocaleUrl = "@Url.Action("DepartmentList", "FoundationData", new { Area = "Admin"})";
+            setTimeout(
+                function() {
+                    window.location = redirectLocaleUrl + "?searchString=" + data.MsgCode;
+                }
+            , 3000);
+        } 
+    }
+
+    function errDepartmentDetails() {
+        alert('@Lang.GeneralUI_ServerError'+ "--client");
+    }
+
+    function DeleteDepartmentDetailsData(DepartmentId)
+    {
+        console.log(DepartmentId);
+
+        layer.confirm('@Lang.DepartmentList_ComfirmTips \n\r <br> @Lang.DepartmentList_ComfirmTips2 ', {
+            title:'@Lang.GeneralUI_InfoTips',
+            btn: ['@Lang.GeneralUI_Yes', '@Lang.GeneralUI_NO'] //btn
+        }, function () {
+            //TODO
+            var httpDelUrl = "/@LangUtilities.LanguageCode/Admin/FoundationData/DeleteDepartment";
+
+            var myparamsObject = { "DepartmentId": DepartmentId};
+            $.ajax({
+                url: httpDelUrl,
+                data: myparamsObject,
+                type: "get",
+                dataType: "json",
+                error: function (data) {
+                    console.log(JSON.stringify(data));
+                },
+                success: function (data) {
+                    layer.open({
+                        title: '@Lang.GeneralUI_ReturnResult'
+                        , content: data.Message
+                    , btn:'@Lang.GeneralUI_OK'
+                    });
+                    if (data.MsgCode == "1") {
+                        var pr_obj = "#td" + DepartmentId;
+                        $(pr_obj).parent().addClass("bg-warning-gradient");
+                        setTimeout(function () {
+                            $(pr_obj).parent().remove();
+                        }, 3000);
+                    }
+                }
+            });
+
+            }, function () {
+                layer.msg('@Lang.DepartmentList_ComfirmNoTips', { icon: 1 }, {
+                    time: 80000,
+                    btn: ['@Lang.GeneralUI_Isee']
+                });
+            });
+    }
+
+</script>
+ 

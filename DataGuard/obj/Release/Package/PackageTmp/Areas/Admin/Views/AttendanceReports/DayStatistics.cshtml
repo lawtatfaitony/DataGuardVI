@@ -1,0 +1,517 @@
+﻿@using LanguageResource
+@using Common
+@using AttendanceBussiness
+@using DataGuard.Utilities
+@using X.PagedList
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Bootstrap4
+@using DataGuard.Models.BusinessDataModel
+@model IEnumerable<AttendanceBussiness.DbFirst.AttendanceByDay>
+
+@{
+    ViewBag.Title = Lang.DayStatistics_Title;
+}
+
+<script>
+
+    function AttendanceByDayChkDataRecruitment(AttendanceByDayId) {
+        var path = "/" + "@LangUtilities.LanguageCode" + "/Admin/AttendanceReports/AttendanceByDayChkDataRecruitment/" + AttendanceByDayId;
+
+        $.ajax({
+            url: path,
+            type: "get",
+            success: function (data) {
+
+                if (data.MsgCode == '0') {
+                    AttendanceByDayId = "#td" + AttendanceByDayId;
+                    $(AttendanceByDayId).attr("title", data.Message);
+                    layer.open({
+                        title: '@Lang.GeneralUI_Warning'
+                        , content: data.Message
+                        , btn: ['OK']
+                    });
+                } else {
+                    AttendanceByDayId = "#td" + AttendanceByDayId;
+                    $(AttendanceByDayId).attr("title", data.Message);
+                    layer.msg( data.Message);
+                }
+            }
+        });
+       AttChkDataRecruitmentLoading(AttendanceByDayId);
+    }
+
+    function AttChkDataRecruitmentLoading(AttendanceByDayId) {
+        var path = "/" + "@LangUtilities.LanguageCode" + "/Admin/AttendanceReports/AttendanceByDayChkDataRecruitment/"+ AttendanceByDayId;
+
+        $.ajax({
+            url: path,
+            type: "get",
+            success: function (data) {
+                console.log(data);
+                sp_AttendanceByDayId = "#sp" + AttendanceByDayId;
+
+                $(sp_AttendanceByDayId).removeClass("badge");
+                $(sp_AttendanceByDayId).removeClass("badge-danger");
+                $(sp_AttendanceByDayId).removeClass("badge-dark");
+                $(sp_AttendanceByDayId).removeClass("badge-warning");
+
+                $(sp_AttendanceByDayId).addClass("badge");
+                $(sp_AttendanceByDayId).addClass("badge-warning");
+
+                setTimeout(function () {
+                    if (data.MsgCode == '1')
+                    {
+
+                        $(sp_AttendanceByDayId).addClass("badge");
+                        $(sp_AttendanceByDayId).addClass("badge-danger");
+
+                    } else {
+                        $(sp_AttendanceByDayId).addClass("badge");
+                        $(sp_AttendanceByDayId).addClass("badge-dark");
+                    }
+                }, 400);
+            }
+        });
+    }
+</script>
+@using (Html.BeginForm("DayStatistics", "AttendanceReports", FormMethod.Get, new { @class = "form-inline " }))
+{
+    <div class="row padding-bottom10">
+        <div class="col-8">
+            <div class="input-group input-group-sm">
+                @Html.TextBox("scheduleDateRange", ViewBag.CurrentOccurDateTimeRange as string, new { @class = "form-control  bg-light-gradient", style = "width:300px;border-right-width:0;", title = Lang.AttendanceLog_occurDateTimeRangeTips, @data_toggle = "tooltip", placeholder = Lang.AttendanceLog_occurDateTimeRange, autocomplete = "off" })
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control form-control-navbar", style = "border-left-width:0;", onclick = "javascript:this.value='';", placeholder = "Search" })
+                <span class="input-group-append">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        More <i class="fas fa-angle-down font-weight-bold"></i>
+                    </button>
+                    <button type="submit" class="btn btn-primary"> <i class="fas fa-search"></i>Go!</button>
+                </span>
+            </div>
+
+            <div class="collapse" id="collapseExample">
+                <div class="padding-top5">
+                    @Html.DropDownList("ContractorId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_ContractorId, title = Lang.Employee_ContractorId })
+                    @Html.DropDownList("SiteId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_SiteId, title = Lang.Employee_SiteId })
+                    @Html.DropDownList("DepartmentId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_Department, title = Lang.Employee_Department })
+                    @Html.DropDownList("PositionId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_Position, title = Lang.Employee_Position })
+                    @Html.DropDownList("JobId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_JobId, title = Lang.Employee_JobId })
+                </div>
+            </div>
+        </div>
+        <div class="col-4 d-inline">
+            @Html.ActionLink(" PDF", "ScheduleIndexRpt", "AttendanceReports", new { scheduleDateRange = ViewBag.CurrentScheduleDateRange, SearchString = ViewBag.CurrentFilter, ContractorId = ViewBag.CurrentContractorId, SiteId = ViewBag.CurrentSiteId, DepartmentId = ViewBag.CurrentDepartmentId, PositionId = ViewBag.CurrentPositionId, JobId = ViewBag.CurrentJobId, intExportFormatType = 5 }, new { @class = "btn btn-warning btn-sm text-white ml-1 fas fa-file-pdf-o font-weight-bold" })
+            @Html.ActionLink(" EXCEL", "ScheduleIndexRpt", "AttendanceReports", new { scheduleDateRange = ViewBag.CurrentScheduleDateRange, SearchString = ViewBag.CurrentFilter, ContractorId = ViewBag.CurrentContractorId, SiteId = ViewBag.CurrentSiteId, DepartmentId = ViewBag.CurrentDepartmentId, PositionId = ViewBag.CurrentPositionId, JobId = ViewBag.CurrentJobId, intExportFormatType = 4 }, new { @class = "btn btn-warning btn-sm text-white ml-1 fas fa-file-excel-o font-weight-bold" })
+            @Html.ActionLink(" CHART", "ScheduleChartSearching", "AttendanceReports", new { scheduleDateRange = ViewBag.CurrentScheduleDateRange, SearchString = ViewBag.CurrentFilter, ContractorId = ViewBag.CurrentContractorId, SiteId = ViewBag.CurrentSiteId, DepartmentId = ViewBag.CurrentDepartmentId, PositionId = ViewBag.CurrentPositionId, JobId = ViewBag.CurrentJobId }, new { @class = "btn btn-danger btn-sm text-white ml-1 fas fa-area-chart font-weight-bold" })
+        </div>
+    </div>
+}
+
+<div class="box-body  table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                    <div class="text-nowrap " style="max-width:100px;overflow-x:hidden" title="@Lang.AttendanceByDay_AttendanceByDayId" data-toggle="tooltip">
+                        <span class="small"><i class="fas fa-id-badge" style="color:mediumslateblue"></i>@Lang.AttendanceByDay_AttendanceByDayId </span>
+                    </div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByDay_DayShiftNameList" data-toggle="tooltip"><span class="small"><i class="fas fa-cog" style="color:mediumslateblue"> </i>@Lang.AttendanceByDay_DayShiftNameList </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByShift_EmployeeName" data-toggle="tooltip" style="min-width:100px;overflow-x:hidden"><span class="small"><i class="fas fa-cog" style="color:mediumslateblue"> </i>@Lang.AttendanceByShift_EmployeeName </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@string.Format("{0}{1}",Lang.AttendanceByShift_ScheduleDate,Lang.AttendanceByShift_IsWorkDay)" data-toggle="tooltip" style="max-width:60px;overflow-x:hidden"><span class="small"><i class="fas fa-external-link-alt" style="color:mediumslateblue"></i>@Lang.AttendanceByShift_ScheduleDate </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceDay_IsAbsentDay" data-toggle="tooltip" style="max-width:40px;overflow-x:hidden"><span class="small"><i class="far fa-sun" style="color:mediumslateblue"></i>@Lang.AttendanceByShift_IsAbsentDay</span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByDay_DayTotalWorkNetTimeSpan" data-toggle="tooltip" style="max-width:60px;overflow-x:hidden"><span class="small"><i class="fas fa-clock" style="color:mediumslateblue"> </i>@Lang.AttendanceByDay_DayTotalWorkNetTimeSpan </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByDay_DayLateInTimeSpan" data-toggle="tooltip" style="max-width:60px;overflow-x:hidden"><span class="small"><i class="fas fa-clock" style="color:mediumslateblue"> </i>@Lang.AttendanceByDay_DayLateInTimeSpan </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByDay_DayIsLateTimez" data-toggle="tooltip" style="max-width:60px;overflow-x:hidden"><span class="small"><i class="fas fa-stopwatch" style="color:mediumslateblue"></i>@Lang.AttendanceByDay_DayIsLateTimez</span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByDay_DayEarlyOutTimeSpan" data-toggle="tooltip" style="max-width:60px;overflow-x:hidden"><span class="small"><i class="fas fa-history" style="color:mediumslateblue"></i>@Lang.AttendanceByDay_DayEarlyOutTimeSpan</span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByDay_DayIsEarlyTimez" data-toggle="tooltip" style="max-width:60px;overflow-x:hidden"><span class="small"><i class="fas fa-history" style="color:mediumslateblue"></i>@Lang.AttendanceByDay_DayIsEarlyTimez</span></div>
+                </th> 
+             
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByDay_Leave" data-toggle="tooltip" style="max-width:50px;overflow-x:hidden"><span class="small"><i class="fas fa-calendar-check" style="color:chocolate"></i>@Lang.AttendanceByDay_Leave</span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByDay_Holiday" data-toggle="tooltip" style="max-width:50px;overflow-x:hidden"><span class="small"><i class="fas fa-calendar-check" style="color:chocolate"></i>@Lang.AttendanceByDay_Holiday</span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByDay_Ratio" data-toggle="tooltip" style="max-width:50px;overflow-x:hidden"><span class="small"><i class="fas fa-percentage" style="color:mediumslateblue"></i>@Lang.AttendanceByDay_Ratio</span></div>
+                </th> 
+                <th> 
+                    <div class="text-nowrap d-inline-flex bd-highlight" title="@Lang.AttendanceByShift_SysCalcDateTime" data-toggle="tooltip">
+                        <span class="small m-0 mr-2 pt-0 pl-2"><i class="fas  fa-hourglass-end" style="color:mediumslateblue"> </i> </span>
+                        @Html.ActionLink(" ", "DayStatistics", "AttendanceReports", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, occurDateTimeRange = ViewBag.CurrentOccurDateTimeRange }, htmlAttributes: new { @class = "fa fa-sort pull-right", title = Lang.GeneralUI_OrderByDatetime })
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int x = 0;}
+            @foreach (var item in Model)
+            {
+                x++;
+            <tr id="@string.Format("tr{0}",item.AttendanceByDayId)">
+                <!--1 AttendanceByDayId-->
+                <td id="@string.Format("td{0}",item.AttendanceByDayId)" class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.AttendanceByDayId)">
+
+                    <div id="@string.Format("div{0}",item.AttendanceByDayId)" class="text-nowrap d-flex flex-row" style="cursor:pointer;">
+                        <div class="mr-1" data-toggle="tooltip" title="@Lang.GeneralUI_CheckDataSecurity">
+                            <span id="@string.Format("sp{0}",item.AttendanceByDayId)" class="badge badge-dark" onclick="javascript:AttendanceByDayChkDataRecruitment('@item.AttendanceByDayId')" data-toggle="tooltip" style="cursor:pointer;">@x</span>
+                        </div>
+                        <div id="@string.Format("CLIDBOARD{0}",item.AttendanceByDayId)" class="p-0 text-dark clipboard" style="cursor:pointer;" title="@Lang.GeneralUI_ClickToCopy" onclick="getClipboardText()" data-clipboard-text="@item.AttendanceByDayId">
+                            @CommonBase.Substr2(item.AttendanceByDayId, 8, 3)
+                        </div>
+                    </div>
+                    <script>
+
+                            $(document).ready(function () {
+                                setTimeout(function () { AttChkDataRecruitmentLoading('@item.AttendanceByDayId'); },@x * 600);
+                            });
+                    </script>
+                </td>
+                <!--2 DayShiftNameList-->
+                <td class="text-omit" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.DayShiftNameList)">
+                    <span class="badge badge-primary p-1">@Html.DisplayFor(modelItem => item.DayShiftNameList)</span>
+                </td>
+                <!--3 EmployeeName-->
+                <td class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.EmployeeName)">
+                    <details class="p-0 m-0">
+                        <!--class="open" or <details open>-->
+                        <summary class="pb-0 mb-0 mb-1">@item.EmployeeName </summary>
+                        <div class="small-box p-1">
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.DepartmentName</p>
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.ContractorName</p>
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.JobName</p>
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.SiteName</p>
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.PositionTitle</p>
+                        </div>
+                    </details>
+                </td>
+                <!--4 IsWorkDay-->
+                <td class="small">
+                    @if (item.IsWorkDay)
+                    {
+                        <div class="">
+                            <!--d-inline-flex d-flex-->
+                            <span class="fas fa-check-square text-success text-nowrap" data-toggle="tooltip" title="@String.Format("{0:yyyy-MM-dd} | {1} | {2}",item.OccurDate,Lang.GeneralUI_TRUE ,Lang.AttendanceByShift_IsWorkDay)"> <label class="badge badge-success"> @Lang.GeneralUI_TRUE</label></span><br />
+                            <span class="fas fa-calendar text-success  text-nowrap"> <label class="badge badge-primary">@String.Format("{0:yyyy-MM-dd}", item.OccurDate)</label></span>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="">
+                            <span class="fas fa-exclamation-circle text-danger  text-nowrap" data-toggle="tooltip" title="@String.Format("{0:yyyy-MM-dd} | {2} = {1}",item.OccurDate,Lang.GeneralUI_FALSE ,Lang.AttendanceByShift_IsWorkDay)"> <label class="badge badge-danger"> @Lang.GeneralUI_FALSE</label> </span><br />
+                            <span class="fas fa-calendar text-success  text-nowrap"> <label class="badge badge-primary">@String.Format("{0:yyyy-MM-dd}", item.OccurDate)</label></span>
+                        </div>
+                    }
+                </td>
+                <!--5 IsAbsentDay -->
+                <td class="text-capitalize small">
+                    @if (item.IsAbsentDay)
+                    {
+                        <span class="badge badge-danger"> @Lang.GeneralUI_TRUE</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-success"> @Lang.GeneralUI_FALSE</span>
+                    }
+                </td>
+                <!--6 DayTotalWorkNetTimeSpan-->
+                <td>
+                    <div class="p-0 m-0">
+                        <details class="p-0 ml-0">
+                            <summary class="text-nowrap p-0">
+                                <span class="pl-0 text-bold fas fa-clock" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayTotalWorkNetTimeSpan"> @string.Format("{0:F2}", item.DayTotalWorkNetTimeSpan.TotalHours) </span><span class="small p-0"> @Lang.GeneralUI_DateTime_Hour</span>
+                            </summary>
+                            <p class="">
+                                <span class="text-bold  text-nowrap text-success" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayTotalWorkTimeSpan"><i class="fas fa-clock"></i> @string.Format("{0:F2}", item.DayTotalWorkTimeSpan.TotalHours)</span> <span class="small p-0"> @Lang.GeneralUI_DateTime_Hour</span>
+                            </p>
+                        </details>
+                    </div>
+                </td>
+                <!--7 DayLateInTimeSpan-->
+                <td>
+                    @if (item.DayLateInTimeSpan > 0)
+                    {
+                        <div class="small text-nowrap  text-danger"><span class="text-bold" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayLateInTimeSpan"><i class="fas fa-clock"></i> @string.Format("{0}", item.DayLateInTimeSpan) </span>@Lang.GeneralUI_DateTime_Minute</div>
+                    }
+                    else
+                    {
+                        <div class="small text-nowrap"><span class="text-bold" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayLateInTimeSpan"><i class="fas fa-clock"></i> @string.Format("{0}", item.DayLateInTimeSpan) </span>@Lang.GeneralUI_DateTime_Minute</div>
+
+                    }
+                </td>
+                <!--8 DayIsLateTimez-->
+                <td>
+                    @if (item.DayIsLateTimez > 0)
+                    {
+                        <div class="small  text-nowrap text-danger"><span class="text-bold" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayIsLateTimez"><i class="fas fa-stopwatch"></i> @string.Format("{0}", item.DayIsLateTimez)</span> @Lang.GeneralUI_Times</div>
+                    }
+                    else
+                    {
+                        <div class="small  text-nowrap"><span class="text-bold" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayIsLateTimez"><i class="fas fa-stopwatch"></i> @string.Format("{0}", item.DayIsLateTimez)</span> @Lang.GeneralUI_Times</div>
+                    }
+                </td>
+                <!--9 DayEarlyOutTimeSpan-->
+                <td>
+                    @if (item.DayEarlyOutTimeSpan > 0)
+                    {
+                        <div class="small  text-nowrap text-danger"><span class="text-bold" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayEarlyOutTimeSpan"><i class="fas fa-stopwatch"></i> @string.Format("{0}", item.DayEarlyOutTimeSpan)</span> @Lang.GeneralUI_DateTime_Minute</div>
+                    }
+                    else
+                    {
+                        <div class="small  text-nowrap"><span class="text-bold" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayEarlyOutTimeSpan"><i class="fas fa-stopwatch"></i> @string.Format("{0}", item.DayEarlyOutTimeSpan)</span> @Lang.GeneralUI_DateTime_Minute</div>
+                    }
+                </td>
+                <!--10 DayIsEarlyTimez-->
+                <td>
+                    @if (item.DayIsEarlyTimez > 0)
+                    {
+                        <div class="small  text-nowrap  text-danger"><span class="text-bold" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayIsEarlyTimez"><i class="fas fa-stopwatch"></i> @string.Format("{0}", item.DayIsEarlyTimez)</span> @Lang.GeneralUI_Times</div>
+                    }
+                    else
+                    {
+                        <div class="small  text-nowrap"><span class="text-bold" data-toggle="tooltip" title="@Lang.AttendanceByDay_DayIsEarlyTimez"><i class="fas fa-stopwatch"></i> @string.Format("{0}", item.DayIsEarlyTimez)</span> @Lang.GeneralUI_Times</div>
+                    }
+                </td>
+                
+                <!--13 Leave-->
+                <!--Leave-->
+                <td>
+                    <details class="p-0 m-0">
+                        <summary class="text-nowrap text-primary pb-0 mb-0 ">
+
+                            @if (!string.IsNullOrEmpty(item.LeaveId))
+                            {
+                                <span class=" text-success small"><i class="fas fa-user-clock"></i>@string.Format("{0}{1}", item.LeaveId, item.LeaveTypeName) </span>
+                            }
+                            else
+                            {
+                                <span class=" text-warning small"><i class="fas fa-user-clock"></i>@Lang.GeneralUI_NO </span>
+                            }
+                        </summary>
+                        @if (!string.IsNullOrEmpty(item.LeaveId))
+                        {
+                            <p class="text-nowrap pb-0 pt-0 mb-0">
+                                <span class="small" data-target="tooltip" title="@Lang.AttendanceByDay_LeaveType @item.LeaveType"><i class="fas fa-user-clock"></i> @DataGuard.Utilities.EnumHelper.GetEnumDescription((ShiftBusiness.LeaveType)item.LeaveType)</span>
+                            </p>
+                            <p class="text-nowrap pb-0 pt-0 mb-0">
+                                <span class="small" data-target="tooltip" title="@Lang.AttendanceByDay_LeaveTypeName"><i class="fas fa-user-clock"></i> @item.LeaveTypeName</span>
+                            </p>
+
+                            <p class="text-nowrap pb-0 pt-0 mb-0">
+                                <span class="small" data-target="tooltip" title="@Lang.AttendanceByDay_LeavePaidType"><i class="fas fa-user-clock"></i> @DataGuard.Utilities.EnumHelper.GetEnumDescription((ShiftBusiness.LeavePaidType)item.LeavePaidType)</span>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="text-nowrap pb-0 pt-0 mb-0">
+                                <i class="far fa-user-circle"></i><span class="small">  @Lang.GeneralUI_NO</span>
+                            </p>
+
+                        }
+                    </details>
+                </td>
+                <!--14 HolidayName-->
+                <!--Holiday-->
+                <td>
+                    <details class="p-0 m-0">
+                        <summary class="text-nowrap text-primary pb-0 mb-0 ">
+                            @if (!string.IsNullOrEmpty(item.HolidayId))
+                            {
+                                <span class="text-success small" style="max-width:80px;overflow-x:hidden;"><i class="fas fa-plane-departure"></i>@string.Format("{0}{1}", item.HolidayId, item.HolidayName) </span>
+                            }
+                            else
+                            {
+                                <span class="text-warning small "><i class="fas fa-plane-departure"></i>@Lang.GeneralUI_NO </span>
+                            }
+                        </summary>
+                        @if (!string.IsNullOrEmpty(item.HolidayId))
+                        {
+                            <p class="text-wrap pb-0 pt-0 mb-0">
+                                <span class="fas fa-caret-square-right small" data-target="tooltip" title="@Lang.AttendanceByDay_HolidayName"><i class="fas fa-plane-departure"></i> @item.HolidayName</span>
+                            </p>
+                        }
+                    </details>
+                </td>
+                <!--15 OnDutyPaidRatioAvg-->
+                <!--Ratio-->
+                <td>
+                    <details class="p-0 m-0">
+                        <summary class="text-nowrap text-primary pb-0 mb-0 ">
+                            <span class="text-success small fas fa-calendar-check" data-target="tooltip" title="@Lang.AttendanceByDay_OnDutyWorkRatioAvg">@string.Format("{0:F2}%", item.OnDutyWorkRatioAvg * 100) </span>
+                        </summary>
+
+                        <p class="text-wrap pb-0 pt-0 mb-0">
+                            <span class="fas fa-caret-square-right small" data-target="tooltip" title="@Lang.AttendanceByDay_OnDutyWorkRatioAvg"> @string.Format("{0:F2}%", item.OnDutyWorkRatioAvg * 100)</span>
+                        </p>
+                        <p class="text-wrap pb-0 pt-0 mb-0">
+                            <span class="fas fa-caret-square-right small" data-target="tooltip" title="@Lang.AttendanceByDay_OnDutyPaidRatioAvg"> @string.Format("{0:F2}%", item.OnDutyPaidRatioAvg * 100)</span>
+                        </p>
+                    </details>
+                </td>
+                <!--16 SysCalcDateTime-->
+                <td>
+                    <div class="text-nowrap small-box">
+                        <div class="d-flex flex-row-reverse bd-highlight">
+                            <div class="pr-1 pl-1 pt-0 bd-highlight small">
+                                @Html.Raw(string.Format("<span class='text-nowrap'>{0:yyyy-MM-dd</span><br><Span class='text-nowrap'>HH:mm:ss</Span>}", item.SysCalcDateTime))
+                            </div>
+                            <div class="p-1 bd-highlight">
+                                @if (!item.IsCompleted)
+                                {
+                                    <button class="btn btn-success btn-sm" id="@string.Format("BtnIsCompleted{0}",item.AttendanceByDayId)" data-iscompleted="@item.IsCompleted" onclick="javascript:RefreshAttendanceByDay('@item.AttendanceByDayId');" data-toggle="tooltip" title="@string.Format("{0} = {1}",Lang.AttendanceByDay_IsCompleted,item.IsCompleted.ToString().ToUpper())">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger btn-sm" id="@string.Format("BtnIsCompleted{0}",item.AttendanceByDayId)" data-iscompleted="@item.IsCompleted" onclick="javascript:RefreshAttendanceByDay('@item.AttendanceByDayId');" data-toggle="tooltip" title="@string.Format("{0} = {1}",Lang.AttendanceByDay_IsCompleted,item.IsCompleted.ToString().ToUpper())">
+                                        <i class="fas fa-hourglass-end"></i>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="btn-xs">
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("DayStatistics", "AttendanceReports", new { sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, occurDateTimeRange = ViewBag.CurrentOccurDateTimeRange, page = page }), new PagedListRenderOptions
+    {
+        ContainerDivClasses = new[] { "pagination pagination-sm" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        MaximumPageNumbersToDisplay = 5
+    })
+    <!--Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast, classic option-->
+</div>
+<script>
+    $(document).ready(function () {
+
+         $('#scheduleDateRange').daterangepicker({
+            format: '@Lang.GeneralUI_DateTimeRangeFormatJS',
+            language:'@LangUtilities.LanguageCode',
+            timePicker: false,
+            separator: '-',
+            ranges: {
+                //'最近1小时': [moment().subtract('hours',1), moment()],
+                '@Lang.GeneralUI_DateTime_Today': [moment().startOf('day'), moment()],
+                '@Lang.GeneralUI_DateTime_Yesterday': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                '@Lang.GeneralUI_DateTime_Last7Days': [moment().subtract('days', 6), moment()],
+                '@Lang.GeneralUI_DateTime_Last30Days': [moment().subtract('days', 29), moment()]
+            },
+             locale: {
+                format:  '@Lang.GeneralUI_DateTimeRangeFormatJS',
+                applyLabel: '@Lang.GeneralUI_Comfirmed',
+                cancelLabel: '@Lang.GeneralUI_Cancel',
+                fromLabel: '@Lang.GeneralUI_DateTime_StartTime',
+                toLabel: '@Lang.GeneralUI_DateTime_EndTime',
+                customRangeLabel: '@Lang.GeneralUI_DateTime_CustomDate',
+                daysOfWeek: ['@Lang.GeneralUI_DayOfWeekAbbr_Sunday', '@Lang.GeneralUI_DayOfWeekAbbr_Monday', '@Lang.GeneralUI_DayOfWeekAbbr_Tuesday', '@Lang.GeneralUI_DayOfWeekAbbr_Wednesday', '@Lang.GeneralUI_DayOfWeekAbbr_Thursday', '@Lang.GeneralUI_DayOfWeekAbbr_Friday', '@Lang.GeneralUI_DayOfWeekAbbr_Saturday'],
+                monthNames: ['@Lang.GeneralUI_Month_January', '@Lang.GeneralUI_Month_February', '@Lang.GeneralUI_Month_March', '@Lang.GeneralUI_Month_April', '@Lang.GeneralUI_Month_May', '@Lang.GeneralUI_Month_June',
+                     '@Lang.GeneralUI_Month_July', '@Lang.GeneralUI_Month_August', '@Lang.GeneralUI_Month_September', '@Lang.GeneralUI_Month_October', '@Lang.GeneralUI_Month_November', '@Lang.GeneralUI_Month_December'
+                ],
+                firstDay: 1
+            },
+            dateLimit: {
+                days: 30
+            }, //maxDateRange
+        });
+
+        $(".table-responsive").css("min-height",window.innerHeight);
+    });
+</script>
+
+<script>
+
+    function RefreshAttendanceByDay(AttendanceByDayId)
+    {
+        console.log(AttendanceByDayId);
+        var idx = "#BtnIsCompleted" + AttendanceByDayId;
+        console.log("idx = " + idx);
+
+        layer.confirm('@Lang.GeneralUI_Comfirmed', {
+            title:'@Lang.GeneralUI_InfoTips',
+            btn: ['@Lang.GeneralUI_Yes', '@Lang.GeneralUI_NO'] //btn
+        }, function () {
+            //TODO
+                var IsCompleted = $(idx).data("iscompleted");
+                console.log(IsCompleted);
+                if (IsCompleted) {
+                    var httpUrl = "/@LangUtilities.LanguageCode/AttendanceReports/RefreshAttendanceByDay";
+                    var myparamsObject = { "AttendanceByDayId": AttendanceByDayId };
+
+                    $.ajax({
+                        url: httpUrl,
+                        data: myparamsObject,
+                        type: "post",
+                        dataType: "json",
+                        error: function (data) {
+                            layer.msg('@Lang.GeneralUI_ServerError');
+                            console.log(JSON.stringify(data));
+                        },
+                        success: function (data) {
+                            console.log(JSON.stringify(data));
+                            layer.open({
+                                title: '@Lang.GeneralUI_ReturnResult'
+                                , content: data.meta.Message
+                                , btn: '@Lang.GeneralUI_OK'
+                            });
+                            if (data.meta.Success == true) {
+                                var pr_obj = "#tr" + AttendanceByDayId;
+                                $(pr_obj).addClass("bg-warning-gradient");
+                                setTimeout(function () {
+                                    if (!IsCompleted) {
+                                        $(idx).data("iscompleted", "False");
+                                        $(idx).html("<i class='fas fa-hourglass-end'></i>");
+                                        $(idx).removeClass("btn-success");
+                                        $(idx).addClass("btn-danger");
+
+                                    } else {
+                                        $(idx).data("iscompleted", "True");
+                                        $(idx).html("<i class='fas fa-sync-alt'></i>");
+                                        $(idx).removeClass("btn-danger");
+                                        $(idx).addClass("btn-success");
+                                    }
+                                }, 2000);
+
+                                console.log($(idx).html());
+                            }
+                        }
+                    });
+                } else {
+                    layer.msg('@Lang.GeneralUI_OK');
+                }
+
+
+        }, function () {
+            layer.msg('@Lang.GeneralUI_OK', { icon: 1 }, {
+                time: 6000,
+                btn: ['@Lang.GeneralUI_Isee']
+            });
+        });
+    }
+</script>

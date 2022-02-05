@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TaskRunningPlan": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

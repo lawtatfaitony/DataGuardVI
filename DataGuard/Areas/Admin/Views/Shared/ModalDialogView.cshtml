@@ -1,0 +1,16 @@
+﻿@model DataGuard.ModalDialogView
+@using Utilities
+@{
+    Layout = null;
+    ViewBag.Message = Html.DisplayFor(model => model.Message);
+}
+<!--  失败= 0 成功 =1  -->
+<div class="block visible-lg-inline">
+    <h3><i class="icon-ok icon-2x" style="color:#0e972a"></i>@Html.Raw(mvcCommeBase.HtmlDecode(Html.DisplayFor(model => model.Message).ToString()))  </h3> <em class="h5 hidden">@Html.DisplayFor(model => model.MsgCode)</em>
+</div>
+ 
+
+
+
+
+

@@ -1,0 +1,59 @@
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\bin\Release\StarGateway.dll
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\bin\Release\StarGateway.pdb
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\bin\Release\Newtonsoft.Json.dll
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\bin\Release\Newtonsoft.Json.xml
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\obj\Release\ResolveAssemblyReference.cache
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\obj\Release\StarGateway.dll
+D:\Visual Studio 2010\Projects\StarGateway\StarGateway\obj\Release\StarGateway.pdb
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\bin\Release\StarGateway.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\bin\Release\StarGateway.pdb
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\bin\Release\Newtonsoft.Json.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\bin\Release\Newtonsoft.Json.xml
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\obj\Release\StarGateway.csproj.CoreCompileInputs.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\obj\Release\StarGateway.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\obj\Release\StarGateway.pdb
+C:\Users\Stephen\Documents\Visual Studio 2017\Project\CIC_GATEWAY_2017\StarGateway\StarGateway\obj\Release\StarGateway.csprojResolveAssemblyReference.cache
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Release\StarGateway.dll
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Release\StarGateway.pdb
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Release\Newtonsoft.Json.dll
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Release\Newtonsoft.Json.xml
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.csprojAssemblyReference.cache
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.csproj.CopyComplete
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.dll
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.pdb
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Release\CommonBase.dll
+D:\STARON\DataGuard\StarGateway\StarGateway\bin\Release\CommonBase.pdb
+D:\STARON\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.csproj.CoreCompileInputs.cache
+H:\STAR\DataGuard\StarGateway\StarGateway\bin\Release\StarGateway.dll
+H:\STAR\DataGuard\StarGateway\StarGateway\bin\Release\StarGateway.pdb
+H:\STAR\DataGuard\StarGateway\StarGateway\bin\Release\CommonBase.dll
+H:\STAR\DataGuard\StarGateway\StarGateway\bin\Release\CommonBase.pdb
+H:\STAR\DataGuard\StarGateway\StarGateway\bin\Release\Newtonsoft.Json.xml
+H:\STAR\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.csprojAssemblyReference.cache
+H:\STAR\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.csproj.CoreCompileInputs.cache
+H:\STAR\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.csproj.CopyComplete
+H:\STAR\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.dll
+H:\STAR\DataGuard\StarGateway\StarGateway\obj\Release\StarGateway.pdb
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\StarGateway.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\StarGateway.pdb
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\AttApiViewModal.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\AttDataSupport.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\CommonBase.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\AttEnumCode.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\LanguageResource.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\EntityFramework.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\ConnectionService.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\AttApiViewModal.pdb
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\AttDataSupport.pdb
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\CommonBase.pdb
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\AttEnumCode.pdb
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\LanguageResource.pdb
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\LanguageResource.dll.config
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\EntityFramework.xml
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\ConnectionService.pdb
+D:\STARON\DataGuardIII\StarGateway\StarGateway\bin\Release\zh-Hans\EntityFramework.resources.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\obj\Release\StarGateway.csproj.AssemblyReference.cache
+D:\STARON\DataGuardIII\StarGateway\StarGateway\obj\Release\StarGateway.csproj.CoreCompileInputs.cache
+D:\STARON\DataGuardIII\StarGateway\StarGateway\obj\Release\StarGateway.csproj.CopyComplete
+D:\STARON\DataGuardIII\StarGateway\StarGateway\obj\Release\StarGateway.dll
+D:\STARON\DataGuardIII\StarGateway\StarGateway\obj\Release\StarGateway.pdb

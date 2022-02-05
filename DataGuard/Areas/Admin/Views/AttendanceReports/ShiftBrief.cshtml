@@ -1,0 +1,456 @@
+﻿@using LanguageResource
+@using Common
+@using AttendanceBussiness
+@using DataGuard.Utilities
+@using X.PagedList
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Bootstrap4
+@using DataGuard.Models.BusinessDataModel
+@model IEnumerable<AttendanceBussiness.DbFirst.AttendanceByShift>
+
+@{
+    ViewBag.Title = Lang.ShiftBrief_Title;
+}
+ 
+<script>
+    function AttendanceByShiftChkDataRecruitment(AttendanceByShiftId) {
+        var path = "/" + "@LangUtilities.LanguageCode" + "/Admin/AttendanceReports/AttendanceByShiftChkDataRecruitment/"+ AttendanceByShiftId;
+        
+        $.ajax({
+            url: path,
+            type: "get", 
+            success: function (data) {
+
+                if (data.MsgCode == '0') {
+                    AttendanceByShiftId = "#td" + AttendanceByShiftId;
+                    $(AttendanceByShiftId).attr("title", data.Message);
+                    layer.open({
+                        title: '@Lang.GeneralUI_Warning'
+                        , content: data.Message
+                        , btn: ['OK']
+                    });
+                } else {
+                    AttendanceByShiftId = "#td" + AttendanceByShiftId;
+                    $(AttendanceByShiftId).attr("title", data.Message);
+                    layer.msg( data.Message);
+                }
+            }
+        });
+       AttChkDataRecruitmentLoading(AttendanceByShiftId);
+    }
+
+    function AttChkDataRecruitmentLoading(AttendanceByShiftId) {
+        var path = "/" + "@LangUtilities.LanguageCode" + "/Admin/AttendanceReports/AttendanceByShiftChkDataRecruitment/"+ AttendanceByShiftId;
+         
+        $.ajax({
+            url: path,
+            type: "get", 
+            success: function (data) {
+                console.log(data);
+                sp_AttendanceByShiftId = "#sp" + AttendanceByShiftId;
+
+                $(sp_AttendanceByShiftId).removeClass("badge");
+                $(sp_AttendanceByShiftId).removeClass("badge-danger");
+                $(sp_AttendanceByShiftId).removeClass("badge-dark");
+                $(sp_AttendanceByShiftId).removeClass("badge-warning");
+
+                $(sp_AttendanceByShiftId).addClass("badge");
+                $(sp_AttendanceByShiftId).addClass("badge-warning");
+
+                setTimeout(function () {
+                    if (data.MsgCode == '1')
+                    {
+                        $(sp_AttendanceByShiftId).addClass("badge");
+                        $(sp_AttendanceByShiftId).addClass("badge-danger");
+
+                    } else { 
+                        $(sp_AttendanceByShiftId).addClass("badge");
+                        $(sp_AttendanceByShiftId).addClass("badge-dark");
+                    }
+                }, 400);
+
+                
+            }
+        });
+    }
+</script>
+@using (Html.BeginForm("ShiftBrief", "AttendanceReports", FormMethod.Get, new { @class = "form-inline " }))
+{
+    <div class="row padding-bottom10">
+        <div class="col-8">
+            <div class="input-group input-group-sm">
+                @Html.TextBox("scheduleDateRange", ViewBag.CurrentOccurDateTimeRange as string, new { @class = "form-control  bg-light-gradient", style = "width:300px;border-right-width:0;", title = Lang.AttendanceLog_occurDateTimeRangeTips, @data_toggle = "tooltip", placeholder = Lang.AttendanceLog_occurDateTimeRange, autocomplete = "off" })
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control form-control-navbar", style = "border-left-width:0;", onclick = "javascript:this.value='';", placeholder = "Search" })
+                <span class="input-group-append">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        More <i class="fas fa-angle-down font-weight-bold"></i>
+                    </button>
+                    <button type="submit" class="btn btn-primary"> <i class="fas fa-search"></i>Go!</button>
+                </span>
+            </div>
+
+            <div class="collapse" id="collapseExample">
+                <div class="padding-top5">
+                    @Html.DropDownList("ContractorId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_ContractorId, title = Lang.Employee_ContractorId })
+                    @Html.DropDownList("SiteId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_SiteId, title = Lang.Employee_SiteId })
+                    @Html.DropDownList("DepartmentId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_Department, title = Lang.Employee_Department })
+                    @Html.DropDownList("PositionId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_Position, title = Lang.Employee_Position })
+                    @Html.DropDownList("JobId", null, Lang.GeneralUI_Select, new { @class = "form-control form-control-sm m-1", data_toggle = "tooltip", placeholder = Lang.Employee_JobId, title = Lang.Employee_JobId })
+                </div>
+            </div>
+        </div>
+        <div class="col-4 d-inline">
+            @Html.ActionLink(" PDF", "ScheduleIndexRpt", "AttendanceReports", new { scheduleDateRange = ViewBag.CurrentScheduleDateRange, SearchString = ViewBag.CurrentFilter, ContractorId = ViewBag.CurrentContractorId, SiteId = ViewBag.CurrentSiteId, DepartmentId = ViewBag.CurrentDepartmentId, PositionId = ViewBag.CurrentPositionId, JobId = ViewBag.CurrentJobId, intExportFormatType = 5 }, new { @class = "btn btn-warning btn-sm text-white ml-1 fas fa-file-pdf-o font-weight-bold" })
+            @Html.ActionLink(" EXCEL", "ScheduleIndexRpt", "AttendanceReports", new { scheduleDateRange = ViewBag.CurrentScheduleDateRange, SearchString = ViewBag.CurrentFilter, ContractorId = ViewBag.CurrentContractorId, SiteId = ViewBag.CurrentSiteId, DepartmentId = ViewBag.CurrentDepartmentId, PositionId = ViewBag.CurrentPositionId, JobId = ViewBag.CurrentJobId, intExportFormatType = 4 }, new { @class = "btn btn-warning btn-sm text-white ml-1 fas fa-file-excel-o font-weight-bold" })
+            @Html.ActionLink(" CHART", "ScheduleChartSearching", "AttendanceReports", new { scheduleDateRange = ViewBag.CurrentScheduleDateRange, SearchString = ViewBag.CurrentFilter, ContractorId = ViewBag.CurrentContractorId, SiteId = ViewBag.CurrentSiteId, DepartmentId = ViewBag.CurrentDepartmentId, PositionId = ViewBag.CurrentPositionId, JobId = ViewBag.CurrentJobId }, new { @class = "btn btn-danger btn-sm text-white ml-1 fas fa-area-chart font-weight-bold" })
+        </div>
+    </div>
+}
+
+<div class="box-body  table-responsive">
+    <table class="table table-striped table-hover"  >
+        <thead>
+            <tr>
+                <th>
+                    <div class="text-nowrap " style="max-width:100px;overflow-x:hidden" title="@Lang.AttendanceByShift_AttendanceByShiftId" data-toggle="tooltip">
+                        <span class="small"><i class="fas fa-id-badge" style="color:mediumslateblue"></i>@Lang.AttendanceByShift_AttendanceByShiftId </span>
+                    </div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByShift_ShiftName" data-toggle="tooltip"><span class="small"><i class="fas fa-cog" style="color:mediumslateblue"> </i>@Lang.AttendanceByShift_ShiftName </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByShift_EmployeeName" data-toggle="tooltip" style="min-width:120px;overflow-x:hidden"><span class="small"><i class="fas fa-cog" style="color:mediumslateblue"> </i>@Lang.AttendanceByShift_EmployeeName </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@string.Format("{0}{1}",Lang.AttendanceByShift_ScheduleDate,Lang.AttendanceByShift_IsWorkDay)" data-toggle="tooltip" style="max-width:55px;overflow-x:hidden"><span class="small"><i class="fas fa-external-link-alt" style="color:mediumslateblue"></i>@Lang.AttendanceByShift_ScheduleDate </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByShift_IsAbsentDay" data-toggle="tooltip" style="max-width:80px;overflow-x:hidden"><span class="small"><i class="far fa-sun" style="color:mediumslateblue"></i>@Lang.AttendanceByShift_IsAbsentDay</span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByShift_WorkStart" data-toggle="tooltip" style="max-width:80px;overflow-x:hidden"><span class="small"><i class="fas fa-clock" style="color:mediumslateblue"> </i>@Lang.AttendanceByShift_WorkStart </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByShift_WorkEnd" data-toggle="tooltip" style="max-width:80px;overflow-x:hidden"><span class="small"><i class="fas fa-clock" style="color:mediumslateblue"> </i>@Lang.AttendanceByShift_WorkEnd </span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByShift_WorkTimeSpan" data-toggle="tooltip" style="max-width:100px;overflow-x:hidden"><span class="small"><i class="fas fa-history" style="color:mediumslateblue"></i>@Lang.AttendanceByShift_WorkTimeSpan</span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByShift_IsLate" data-toggle="tooltip" style="max-width:100px;overflow-x:hidden"><span class="small"><i class="fas fa-history" style="color:mediumslateblue"></i>@Lang.AttendanceByShift_IsLate</span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap" title="@Lang.AttendanceByShift_IsEarly" data-toggle="tooltip" style="max-width:100px;overflow-x:hidden"><span class="small"><i class="fas fa-history" style="color:mediumslateblue"></i>@Lang.AttendanceByShift_IsEarly</span></div>
+                </th> 
+
+                <th>
+                    <div class="text-nowrap" title="@Lang.Shift_IsAutoCalcMissing" data-toggle="tooltip" style="max-width:50px;overflow-x:hidden"><span class="small"><i class="fas fa-door-open" style="color:mediumslateblue"></i>@Lang.AttendanceByShift_IsAutoCalcMissing</span></div>
+                </th>
+                <th>
+                    <div class="text-nowrap d-inline-flex bd-highlight" title="@Lang.AttendanceByShift_SysCalcDateTime" data-toggle="tooltip">
+                        <span class="small"><i class="fas fa-user" style="color:mediumslateblue"> </i>@Lang.AttendanceByShift_SysCalcDateTime </span>
+                        @Html.ActionLink(" ", "ShiftReports", "AttendanceReports", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, occurDateTimeRange = ViewBag.CurrentOccurDateTimeRange }, htmlAttributes: new { @class = "fa fa-sort pull-right", title = Lang.GeneralUI_OrderByDatetime })
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int x = 0;}
+            @foreach (var item in Model)
+            {
+                x++;
+            <tr  id="@string.Format("tr{0}",item.AttendanceByShiftId)"> 
+                <td id="@string.Format("td{0}",item.AttendanceByShiftId)" class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.AttendanceByShiftId)">
+                    
+                    <div id="@string.Format("div{0}",item.AttendanceByShiftId)" class="text-nowrap d-flex flex-row" style="cursor:pointer;">
+                        <div class="mr-1" data-toggle="tooltip" title="@Lang.GeneralUI_CheckDataSecurity">
+                            <span id="@string.Format("sp{0}",item.AttendanceByShiftId)" class="badge badge-dark" onclick="javascript:AttendanceByShiftChkDataRecruitment('@item.AttendanceByShiftId')" data-toggle="tooltip" style="cursor:pointer;">@x</span>
+                        </div>
+                        <div  id="@string.Format("CLIDBOARD{0}",item.AttendanceByShiftId)"  class="p-0 text-dark clipboard" style="cursor:pointer;" title="@Lang.GeneralUI_ClickToCopy" onclick="getClipboardText()" data-clipboard-text="@item.AttendanceByShiftId">@CommonBase.Substr2(item.AttendanceByShiftId.ToString(), 8, 6)</div>
+                    </div>
+                    <script> 
+                        $(document).ready(function () {
+                            setTimeout(function () { AttChkDataRecruitmentLoading('@item.AttendanceByShiftId'); },@x * 600);
+                        });
+                    </script>
+                </td>
+                <td class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.ShiftName)">
+                    @Html.DisplayFor(modelItem => item.ShiftName) <span class="badge badge-primary">@Html.DisplayFor(modelItem => item.ShiftAbbrId)</span>
+                </td>
+                <td class="text-omit small" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.EmployeeName)">
+                    <details class="p-0 m-0">
+                        <!--class="open" or <details open>-->
+                        <summary class="pb-0 mb-0 mb-1">@item.EmployeeName </summary>
+                        <div class="small-box p-1">
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.DepartmentName</p>
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.ContractorName</p>
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.JobName</p>
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.SiteName</p>
+                            <p class="small pb-0 pt-0 mb-0 h6" style="border-bottom-color:#ff6a00;border-bottom-width:1px;border-bottom-style:dashed;padding-bottom:3px;"> @item.PositionTitle</p>
+                        </div>
+                    </details>
+                </td>
+                <td class="small">
+                    @if (item.IsWorkDay)
+                    {
+                        <span class="fas fa-check-square text-success" data-toggle="tooltip" title="@String.Format("{0:yyyy-MM-dd}{1}{2}",item.ScheduleDate,Lang.GeneralUI_TRUE ,Lang.AttendanceByShift_IsWorkDay)"> <label class="badge badge-success"> @Lang.GeneralUI_TRUE</label><label class="badge badge-primary">@String.Format("{0:yyyy-MM-dd}", item.ScheduleDate)</label></span>
+                    }
+                    else
+                    {
+                        <span class="fas fa-exclamation-circle text-danger" data-toggle="tooltip" title="@String.Format("{0:yyyy-MM-dd} {2} = {1}",item.ScheduleDate,Lang.GeneralUI_FALSE ,Lang.AttendanceByShift_IsWorkDay)"> <label class="badge badge-danger"> @Lang.GeneralUI_FALSE</label> <label class="badge badge-primary">@String.Format("{0:yyyy-MM-dd}", item.ScheduleDate)</label></span>
+                    }
+                </td>
+                <td class="text-omit small">
+                    @if (item.IsAbsentDay)
+                    {
+                        <span class="small badge  badge-danger"> @Lang.GeneralUI_TRUE</span>
+                    }
+                    else
+                    {
+                        <span class="small badge badge-success"> @Lang.GeneralUI_FALSE</span>
+                    }
+                </td>
+                <td data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.WorkStart)">
+                    <div class="d-flex flex-column bd-highlight mb-0">
+                        @if (item.IsRegularManualMissingWorkOn)
+                        {
+                            <div class="pb-0 bd-highlight"> <span class="fas fa-exclamation-triangle text-nowrap badge badge-success" MANUAL = 4  title="@string.Format("{0}",Lang.AutoCalcMissingType_ManualWorkOnMissing)">@Lang.AutoCalcMissingType_ManualWorkOnMissing) </span></div>
+                        }
+                        @if (item.IsAutoMissingWorkOn)
+                        {
+                            <div class="pb-0 bd-highlight"> <span class="fas fa-tractor text-nowrap  badge badge-danger" AUTO = 1 title="@string.Format("{0} {1}",Lang.Shift_IsAutoCalcMissing,Lang.AutoCalcMissingType_AutoMissingWorkOn)">@Lang.AutoCalcMissingType_AutoMissingWorkOn </span></div>
+                        }
+                    <div class="pb-0 bd-highlight"> 
+                        <span class="far fa-clock font-red small text-bold text-nowrap">
+                            @AttendanceBussiness.DateTimeHelp.DateTimeFormat(item.WorkStart, true)
+                        </span>
+                    </div>
+                    </div>
+                </td>
+                <td class="" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.WorkEnd)">
+                    <div class="d-flex flex-column bd-highlight mb-0">
+                        @if (item.IsRegularManualMissingWorkOff)
+                        {
+                            <div class="pb-0 bd-highlight"> <span MANUAL="5" class="fas fa-exclamation-triangle text-nowrap badge badge-success" data-toggle="tooltip" title="@string.Format("{0}",Lang.AutoCalcMissingType_ManualWorkOffMissing)">@Lang.AutoCalcMissingType_ManualWorkOffMissing) </span></div>
+                        }
+                        @if (item.IsAutoMissingWorkOff)
+                        {
+                            <div class="pb-0 bd-highlight"> <span AUTO="2" class="fas fa-tractor text-nowrap  badge badge-danger" data-toggle="tooltip" title="@string.Format("{0} {1}",Lang.Shift_IsAutoCalcMissing,Lang.AutoCalcMissingType_AutoMissingWorkOff)">@Lang.AutoCalcMissingType_AutoMissingWorkOff </span></div>
+                        }
+                        <div class="pb-0 bd-highlight">
+                            <span class="far fa-clock font-red small text-bold text-nowrap">
+                                @AttendanceBussiness.DateTimeHelp.DateTimeFormat(item.WorkEnd, true)
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td class="small" data-toggle="tooltip" title="@string.Format("{0}-{1}" ,Lang.AttendanceByShift_WorkTimeSpan,Lang.AttendanceByShift_WorkActualNetTimeSpan)">
+                    <div class="d-flex flex-column bd-highlight">
+                        <div class="p-1 bd-highlight" data-toggle="tooltip" title="@Lang.AttendanceByShift_WorkTimeSpan "><span class="fa fa-hourglass-start font-red text-nowrap"> @string.Format("{0:f2}{1}", item.WorkTimeSpan, Lang.GeneralUI_DateTime_Hour)</span></div>
+                        <div class="p-1 bd-highlight" data-toggle="tooltip" title="@Lang.AttendanceByShift_WorkActualNetTimeSpan "><span class="fa fa-hourglass-end font-red text-nowrap"> @string.Format("{0:f2}{1}", item.WorkActualNetTimeSpan, Lang.GeneralUI_DateTime_Hour)</span></div>
+                    </div>
+
+                </td>
+                <td class="info" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.IsLate)">
+                    <div class="d-flex flex-column bd-highlight mb-0">
+                        <div class="p-0">
+                            <i class="fas fa-sign-in-alt text-success"></i>
+                            <span class="font-red text-nowrap small">
+                                @DataGuard.Utilities.EnumHelper.GetEnumDescription((ShiftBusiness.AttendanceType)item.IsLate)
+                            </span>
+                        </div>
+                        <div class="p-0 bd-highlight">
+                            @if (item.IsLate == 1)
+                            {
+                                <label class="label badge badge-danger"><i class="fas fa-user-clock"> </i>@string.Format(" {0} {1}", item.LateIn, Lang.GeneralUI_DateTime_Minute)</label>
+                            }
+                            else
+                            {
+                                <label class="label badge badge-primary"><i class="fas fa-user-clock"> </i>@string.Format(" {0} {1}", item.LateIn, Lang.GeneralUI_DateTime_Minute)</label>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td class="info" data-toggle="tooltip" title="@Html.DisplayFor(modelItem => item.IsEarly)">
+                    <div class="d-flex flex-column bd-highlight mb-0">
+                        <div class="p-0 text-nowrap">
+                            <i class="fas fa-sign-out-alt text-success"></i>
+                            <span class="font-red small">
+                                @DataGuard.Utilities.EnumHelper.GetEnumDescription((ShiftBusiness.AttendanceType)item.IsEarly)
+                            </span>
+                        </div>
+                        <div class="p-0 bd-highlight">
+                            @if (item.IsEarly == 2)
+                            {
+                                <label class="label badge badge-danger"><i class="fas fa-user-clock"> </i>@string.Format(" {0} {1}", item.EarlyOut, Lang.GeneralUI_DateTime_Minute)</label>
+                            }
+                            else
+                            {
+                                <label class="label badge badge-primary"><i class="fas fa-user-clock"> </i>@string.Format(" {0} {1}", item.EarlyOut, Lang.GeneralUI_DateTime_Minute)</label>
+                            }
+                        </div>
+                    </div>
+                </td>
+                 
+                <td>
+                    <div  class="text-omit" data-toggle="tooltip" title='@Lang.Shift_IsAutoCalcMissing'>
+                        @if (item.IsAutoCalcMissing)
+                        {
+                            <span class="align-middle badge badge-danger p-1" title="@string.Format("{0} {1}",Lang.Shift_IsAutoCalcMissing,Lang.AutoCalcMissingType_ManualWorkOnMissing)">
+                                <i class="fas fa-exclamation-triangle"></i> @Lang.GeneralUI_TRUE
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="align-middle badge badge-success p-1" title="@string.Format("{0}:{1}",Lang.AutoCalcMissingType_ManualWorkOnMissing,Lang.GeneralUI_FALSE)">
+                                <i class="fas fa-user-slash"></i> @Lang.GeneralUI_FALSE
+                            </span>
+                        }
+                    </div>
+                </td> 
+                <td class="small">
+                    <div class="d-flex flex-row-reverse bd-highlight small-box">
+                        <div class="pr-1 pl-1 pt-0 bd-highlight">
+                            @Html.Raw(string.Format("<span class='text-nowrap'>{0:yyyy-MM-dd</span><br><Span class='text-nowrap'>HH:mm:ss</Span>}", item.SysCalcDateTime))
+                        </div>
+                        <div class="p-1 bd-highlight">
+                            @if (item.IsCompleted)
+                            {
+                                <button class="btn btn-success btn-sm" id="@string.Format("BtnIsCompleted{0}",item.AttendanceByShiftId)" data-iscompleted="@item.IsCompleted" onclick="javascript:RefreshAttendanceByShift('@item.AttendanceByShiftId');" data-toggle="tooltip" title="@Lang.AttendanceByShift_IsCompleted">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-danger btn-sm" id="@string.Format("BtnIsCompleted{0}",item.AttendanceByShiftId)" data-iscompleted="@item.IsCompleted" onclick="javascript:RefreshAttendanceByShift('@item.AttendanceByShiftId');" data-toggle="tooltip" title="@Lang.AttendanceByShift_IsCompleted">
+                                    <i class="fas  fa-hourglass-end"></i>
+                                </button>
+                            }
+                        </div>
+                    </div> 
+                </td>
+            </tr>
+            }
+        </tbody>
+          
+    </table>
+</div>
+
+<div class="btn-xs">
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("ShiftBrief", "AttendanceReports", new { sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, occurDateTimeRange = ViewBag.CurrentOccurDateTimeRange, page = page }), new PagedListRenderOptions
+    {
+        ContainerDivClasses = new[] { "pagination pagination-sm" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        MaximumPageNumbersToDisplay = 5
+    })
+    <!--Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast, classic option-->
+</div>
+<script>
+    $(document).ready(function () {
+      
+         $('#scheduleDateRange').daterangepicker({
+            format: '@Lang.GeneralUI_DateTimeRangeFormatJS',
+            language:'@LangUtilities.LanguageCode',
+            timePicker: false,
+            separator: '-',
+            ranges: {
+                //'最近1小时': [moment().subtract('hours',1), moment()],
+                '@Lang.GeneralUI_DateTime_Today': [moment().startOf('day'), moment()],
+                '@Lang.GeneralUI_DateTime_Yesterday': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                '@Lang.GeneralUI_DateTime_Last7Days': [moment().subtract('days', 6), moment()],
+                '@Lang.GeneralUI_DateTime_Last30Days': [moment().subtract('days', 29), moment()]
+            },
+             locale: {
+                format:  '@Lang.GeneralUI_DateTimeRangeFormatJS',
+                applyLabel: '@Lang.GeneralUI_Comfirmed',
+                cancelLabel: '@Lang.GeneralUI_Cancel',
+                fromLabel: '@Lang.GeneralUI_DateTime_StartTime',
+                toLabel: '@Lang.GeneralUI_DateTime_EndTime',
+                customRangeLabel: '@Lang.GeneralUI_DateTime_CustomDate',
+                daysOfWeek: ['@Lang.GeneralUI_DayOfWeekAbbr_Sunday', '@Lang.GeneralUI_DayOfWeekAbbr_Monday', '@Lang.GeneralUI_DayOfWeekAbbr_Tuesday', '@Lang.GeneralUI_DayOfWeekAbbr_Wednesday', '@Lang.GeneralUI_DayOfWeekAbbr_Thursday', '@Lang.GeneralUI_DayOfWeekAbbr_Friday', '@Lang.GeneralUI_DayOfWeekAbbr_Saturday'],
+                monthNames: ['@Lang.GeneralUI_Month_January', '@Lang.GeneralUI_Month_February', '@Lang.GeneralUI_Month_March', '@Lang.GeneralUI_Month_April', '@Lang.GeneralUI_Month_May', '@Lang.GeneralUI_Month_June',
+                     '@Lang.GeneralUI_Month_July', '@Lang.GeneralUI_Month_August', '@Lang.GeneralUI_Month_September', '@Lang.GeneralUI_Month_October', '@Lang.GeneralUI_Month_November', '@Lang.GeneralUI_Month_December'
+                ],
+                firstDay: 1
+            },
+            dateLimit: {
+                days: 30
+            }, //maxDateRange
+        });
+        
+        $(".table-responsive").css("min-height",window.innerHeight);  
+         
+    });
+</script>
+ 
+<script>
+
+    function RefreshAttendanceByShift(AttendanceByShiftId)
+    {
+        console.log(AttendanceByShiftId);
+        var idx = "#BtnIsCompleted" + AttendanceByShiftId;
+        console.log("idx = " + idx);
+        
+        layer.confirm('@Lang.GeneralUI_Comfirmed', {
+            title:'@Lang.GeneralUI_InfoTips',
+            btn: ['@Lang.GeneralUI_Yes', '@Lang.GeneralUI_NO'] //btn
+        }, function () {
+            //TODO
+                var IsCompleted = $(idx).data("iscompleted");
+                console.log(IsCompleted);
+                if (IsCompleted) {
+                    var httpUrl = "/@LangUtilities.LanguageCode/AttendanceReports/RefreshAttendanceByShift";
+                    var myparamsObject = { "AttendanceByShiftId": AttendanceByShiftId };
+
+                    $.ajax({
+                        url: httpUrl,
+                        data: myparamsObject,
+                        type: "post",
+                        dataType: "json",
+                        error: function (data) {
+                            layer.msg('@Lang.GeneralUI_ServerError');
+                            console.log(JSON.stringify(data));
+                        },
+                        success: function (data) {
+                            console.log(JSON.stringify(data));
+                            layer.open({
+                                title: '@Lang.GeneralUI_ReturnResult'
+                                , content: data.meta.Message
+                                , btn: '@Lang.GeneralUI_OK'
+                            });
+                            if (data.meta.Success == true) {
+                                var pr_obj = "#tr" + AttendanceByShiftId;
+                                $(pr_obj).addClass("bg-warning-gradient");
+                                setTimeout(function () {
+                                    if (data.meta.Success == true) {
+                                        $(idx).data("iscompleted", "False");
+                                        $(idx).html("<i class='fas fa-hourglass-end'></i>");
+                                        $(idx).removeClass("btn-success");
+                                        $(idx).addClass("btn-danger");
+
+                                    } else {
+                                        $(idx).data("iscompleted", "True");
+                                        $(idx).html("<i class='fas fa-sync-alt'></i>");
+                                        $(idx).removeClass("btn-danger");
+                                        $(idx).addClass("btn-success");
+                                    }
+                                }, 3000);
+                                console.log("data-iscompleted:" + $(idx).data("iscompleted"));
+                                console.log($(idx).html());
+                            }
+                        }
+                    });
+                } else {
+                    layer.msg('@Lang.GeneralUI_OK');
+                }
+        }, function () {
+            layer.msg('@Lang.GeneralUI_OK', { icon: 1 }, {
+                time: 6000,
+                btn: ['@Lang.GeneralUI_Isee']
+            });
+        });
+    }
+</script>
+

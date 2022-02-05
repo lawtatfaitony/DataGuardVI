@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="NetWorkTime\**" />
+    <EmbeddedResource Remove="NetWorkTime\**" />
+    <None Remove="NetWorkTime\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Program - 複製.cs" />
+    <Compile Remove="Program.cs" />
+    <Compile Remove="Program1.cs" />
+    <Compile Remove="TaskFactoryProgram.cs" />
+    <Compile Remove="TaskProgramMain - 复制.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="McApp.QuartzCore" Version="3.5.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.1.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
+    <PackageReference Include="TimedJob" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\netcoreapp3.1\ConnectionConfig.conf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bussiness\AttendanceBussiness\AttendanceBussiness.csproj" />
+    <ProjectReference Include="..\CommonBase\CommonBase.csproj" />
+    <ProjectReference Include="..\LanguageResource\LanguageResource.csproj" />
+    <ProjectReference Include="..\LoggerHelper\LoggerHelper.csproj" />
+  </ItemGroup>
+
+</Project>

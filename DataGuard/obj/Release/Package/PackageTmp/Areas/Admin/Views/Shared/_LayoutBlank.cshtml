@@ -1,0 +1,100 @@
+﻿
+@using LanguageResource
+<!DOCTYPE html>
+<html  ng-app="layout_app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.CompanyName @ViewBag.Title</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- jQuery -->
+    <script src="~/AdminLTE3/plugins/jquery/jquery.min.js"></script>
+    <!--angularJS 1.75 To Top-->
+    <script src="~/Scripts/angular.js"></script>
+
+    <!--jquery-validation-->
+    <script src="~/AdminLTE3/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/AdminLTE3/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <!--clipboard-->
+    <script src="~/AdminLTE3/plugins/clipboard/dist/clipboard.min.js"></script>
+    <!-- modernizr-2.8.3 -->
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <!--popper 1.14.3 -->
+    <script src="~/AdminLTE3/plugins/popper/umd/popper.min.js"></script>
+    <!--layer-v3.1.1-->
+    <script src="~/AdminLTE3/plugins/layer-v3.1.1/layer/layer.js"></script>
+
+    <!-- Bootstrap v4.1.0 -->
+    <link href="~/AdminLTE3/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <!-- Bootstrap v4.1.0 -->
+    <script src="~/AdminLTE3/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/AdminLTE3/plugins/fontawesome-free/css/all.min.css">
+
+    <!-- Theme style -->
+    <link href="~/AdminLTE3/dist/css/adminlte.min.css" rel="stylesheet" />
+    <!-- AdminLTE3-->
+    <script src="~/AdminLTE3/dist/js/adminlte.js"></script>
+    <!--slimscroll-->
+    <script src="~/AdminLTE3/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+
+    <!--toastr-->
+    <link href="~/AdminLTE3/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <script src="~/AdminLTE3/plugins/toastr/toastr.min.js"></script>
+
+    <style>
+        .modal-backdrop {
+            z-index: 0;
+        }
+        /* Set width on the form input elements since they're 100% wide by default */
+        input,
+        select,
+        textarea {
+            max-width: 280px;
+        }
+    </style>
+    <link href="~/Content/mainStyle.css" rel="stylesheet" />
+    <script>
+        var app = angular.module('layout_app', []);
+    </script>
+    <script src="~/JS/Main.js"></script>
+</head>
+
+<body class="m-0 p-0">
+    <div class="container no-padding no-margin m-0 p-0">
+        @RenderBody()
+    </div>
+
+    <script>
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+
+        //#sidebar-leftmenu
+        $(".sidebar").slimscroll({
+            disableFadeOut: false,
+            height: window.innerHeight - 15
+        });
+
+        // wheel event 
+        window.addEventListener("touchmove", function (event) {
+            event.preventDefault();
+        }, { passive: true });
+
+
+        var bootstrapButton = $.fn.button.noConflict(); // return $.fn.button to previously assigned value
+        $.fn.bootstrapBtn = bootstrapButton;            // give $().bootstrapBtn the Bootstrap functionality
+
+       
+    </script>
+</body>
+</html>
