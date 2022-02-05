@@ -130,4 +130,3 @@ Provide a list of financial details.
 ### Personal financial overview
 Personal financial accounts and all detailed items are clear at a glance.
 
-# Architecture by Tony
