@@ -10,6 +10,8 @@
   
   ![image](sample/sampleData4.jpg)
   
+  ![image](sample/sampleData5.jpg)
+  
  ### It can be applied to all of Industies.
 
 ###Overview of Attendance and Salary System Functions
