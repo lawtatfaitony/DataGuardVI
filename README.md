@@ -12,6 +12,8 @@
   
   ![image](sample/sampleData5.jpg)
   
+  ![image](sample/System Basic Flow-Eng.jpg)
+  
  ### It can be applied to all of Industies.
 
 ###Overview of Attendance and Salary System Functions
@@ -132,3 +134,6 @@ Provide a list of financial details.
 ### Personal financial overview
 Personal financial accounts and all detailed items are clear at a glance.
 
+### BASIC FLOW
+
+![image](sample/System Basic Flow-Eng.jpg)
