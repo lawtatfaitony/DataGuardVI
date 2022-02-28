@@ -14,7 +14,7 @@
   
   ### BASIC FLOW
   
-  ![image](https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/System%20Basic%20Flow-Eng.jpg?raw=true)
+  ![image](https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/SystemBasicFlow_ENG.jpg)
   
  ### It can be applied to all of Industies.
 
