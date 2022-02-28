@@ -12,7 +12,9 @@
   
   ![image](sample/sampleData5.jpg)
   
-  ![image](sample/System Basic Flow-Eng.jpg)
+  ### BASIC FLOW
+  
+  ![image](https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/System%20Basic%20Flow-Eng.jpg?raw=true)
   
  ### It can be applied to all of Industies.
 
@@ -134,6 +136,6 @@ Provide a list of financial details.
 ### Personal financial overview
 Personal financial accounts and all detailed items are clear at a glance.
 
-### BASIC FLOW
 
-![image](sample/System Basic Flow-Eng.jpg)
+
+ 
