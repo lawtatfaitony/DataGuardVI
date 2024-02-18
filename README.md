@@ -1,6 +1,6 @@
 # Attendance and Salary System Bisic on Cloud 
                                               Architecture by Tony Law
-  # 僅僅用於個人展示 禁止商業用途 
+  # 僅僅用於個人展示 禁止商業用途 For personal demo only, commercial use prohibited.
   
   ![image](sample/sampleData.jpg)
   
