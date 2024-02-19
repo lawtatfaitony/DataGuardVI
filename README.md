@@ -136,6 +136,18 @@ Provide a list of financial details.
 ### Personal financial overview
 Personal financial accounts and all detailed items are clear at a glance.
 
+### CIC API 
+![image](sample/1CIC.jpg)
+  
+![image](sample/2CIC.jpg)
+
+![image](sample/3CIC.jpg)
+  
+![image](sample/4CIC.jpg)
+  
+![image](sample/5CIC.jpg)
+
+![image](sample/6CIC.jpg)
 
 
  
