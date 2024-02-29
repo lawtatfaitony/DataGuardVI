@@ -9,7 +9,7 @@
   ### AI EVENT (Triger the swicth) AI BOX (Pyhton + VUE.JS)
   ![image](/sample/AIBOX_LOT_CONNECTION%201.jpeg)
   ![image](/sample/AI_BOX115.jpg)  ---------[THIS IS TONY LAW]---------------------
-  [DEMO AI_BOX.mp4] (/sample/AI_BOX1156_2.mp4)
+  [mpeg] (/sample/AI_BOX1156_2.mp4)
   [政府指定垃圾袋 AI 解決方案 AI BOX EDGE COMPUTING]
    ![image](/sample/AI_BOX_EnglishVersion1.png)
    ![image](/sample/AI_BOX_EnglishVersion2.png)
@@ -163,6 +163,7 @@ Personal financial accounts and all detailed items are clear at a glance.
 ![image](sample/4CIC.jpg)
   
 ![image](sample/5CIC.jpg)
+![image](FaceDetect cpp FACE_RECOG_PYTHON.jpg)
 
 ![image](sample/6CIC.jpg)
 
