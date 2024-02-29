@@ -10,6 +10,11 @@
   ![image](/sample/AIBOX_LOT_CONNECTION%201.jpeg)
   ![image](/sample/AI_BOX115.jpg)
   DEMO AI_BOX.mp4 (/sample/AI_BOX1156_2.mp4)
+
+   ![image](/sample/AI_BOX_EnglishVersion1.png)
+   ![image](/sample/AI_BOX_EnglishVersion2.png)
+   ![image](/sample/AI_BOX_EnglishVersion3.png)
+   ![image](/sample/Engine_py_code.png)
    
   ### HIKVISON SYNC 海康數據同步
   ![image](/sample/HIK_SINGLE_SYNC123.jpg)
