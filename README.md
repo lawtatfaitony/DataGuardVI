@@ -8,8 +8,8 @@
 
   ### AI EVENT (Triger the swicth) AI BOX (Pyhton + VUE.JS)
   ![image](/sample/AIBOX_LOT_CONNECTION%201.jpeg)
-  ![image](/sample/AI_BOX115.jpg)
-  DEMO AI_BOX.mp4 (/sample/AI_BOX1156_2.mp4)
+  ![image](/sample/AI_BOX115.jpg)  ---------[THIS IS TONY LAW]---------------------
+  [DEMO AI_BOX.mp4] (/sample/AI_BOX1156_2.mp4)
 
    ![image](/sample/AI_BOX_EnglishVersion1.png)
    ![image](/sample/AI_BOX_EnglishVersion2.png)
