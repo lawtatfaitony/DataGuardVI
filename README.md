@@ -12,10 +12,14 @@
   
   ![image](sample/sampleData5.jpg)
   
-  ### BASIC FLOW
+  ### CAR PLATE TIME CACULATION (The Last Solution)
   
-  ![image](https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/SystemBasicFlow_ENG.jpg)
-  
+  ![image]([https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/SystemBasicFlow_ENG.jpg](https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/14.jpeg))
+
+  ### AI EVENT (Triger the swicth)
+  https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/AIBOX_LOT_CONNECTION%201.jpeg
+    ![image](/sample/AIBOX_LOT_CONNECTION%201.jpeg)
+    
  ### It can be applied to all of Industies.
 
 ###Overview of Attendance and Salary System Functions
