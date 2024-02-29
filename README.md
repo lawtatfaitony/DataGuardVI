@@ -13,7 +13,7 @@
 
    ![image](/sample/AI_BOX_EnglishVersion1.png)
    ![image](/sample/AI_BOX_EnglishVersion2.png)
-   ![image](/sample/AI_BOX_EnglishVersion3.png)
+   ![image](/sample/AI_BOX_EnglishVersion3A.png)
    ![image](/sample/Engine_py_code.png)
    
   ### HIKVISON SYNC 海康數據同步
