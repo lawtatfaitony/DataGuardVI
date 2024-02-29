@@ -1,5 +1,27 @@
   # 僅僅用於個人展示 禁止商業用途 For personal demo only, commercial use prohibited.
   
+ 
+  ### CAR PLATE TIME CACULATION (The Last Solution) 
+  New energy parking spaces with the best timing plan(AI 車牌識別方案) C++(VIDEO),Python(AI),WEB APP(C#)
+  
+  ![image](sample/14.jpeg))
+
+  ### AI EVENT (Triger the swicth) AI BOX (Pyhton + VUE.JS)
+  ![image](/sample/AIBOX_LOT_CONNECTION%201.jpeg)
+  ![image](/sample/AI_BOX115.jpg)
+  DEMO AI_BOX.mp4 (/sample/AI_BOX1156_2.mp4)
+  ![image](/sample/AI_BOX115.jpg)
+ 
+  ### HIKVISON SYNC 海康數據同步
+  ![image](/sample/HIK_SINGLE_SYNC123.jpg)
+  
+ ### It can be applied to all of Industies.
+
+# Attendance and Salary System Bisic on Cloud 
+                                              Architecture by Tony Law
+ ----------------------------------------------------------------------------------------------
+  ![image](/sample/CIC3.jpg)
+  
   ![image](sample/sampleData.jpg)
   
   ![image](sample/sampleData2.jpg)
@@ -8,24 +30,7 @@
   
   ![image](sample/sampleData4.jpg)
   
-  ![image](sample/sampleData5.jpg)
-  
-  ### CAR PLATE TIME CACULATION (The Last Solution) 
-  New energy parking spaces with the best timing plan(AI 車牌識別方案)
-  
-  ![image](sample/14.jpeg))
-
-  ### AI EVENT (Triger the swicth) 
-  ![image](/sample/AIBOX_LOT_CONNECTION%201.jpeg)
-
-  ### HIKVISON SYNC 海康數據同步
-  ![image](/sample/HIK_SINGLE_SYNC123.jpg)
-  
- ### It can be applied to all of Industies.
-
-# Attendance and Salary System Bisic on Cloud 
-                                              Architecture by Tony Law
-                                              
+  ![image](sample/sampleData5.jpg)                                         
 ###Overview of Attendance and Salary System Functions
 ### System Authority
 Authority management and function appointment.
