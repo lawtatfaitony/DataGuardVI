@@ -12,14 +12,17 @@
   
   ![image](sample/sampleData5.jpg)
   
-  ### CAR PLATE TIME CACULATION (The Last Solution)
+  ### CAR PLATE TIME CACULATION (The Last Solution) 
+  New energy parking spaces with the best timing plan(AI 車牌識別方案)
   
-  ![image]([https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/SystemBasicFlow_ENG.jpg](https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/14.jpeg))
+  ![image](sample/14.jpeg))
 
-  ### AI EVENT (Triger the swicth)
-  https://github.com/lawtatfaitony/DataGuardVI/blob/main/sample/AIBOX_LOT_CONNECTION%201.jpeg
-    ![image](/sample/AIBOX_LOT_CONNECTION%201.jpeg)
-    
+  ### AI EVENT (Triger the swicth) 
+  ![image](/sample/AIBOX_LOT_CONNECTION%201.jpeg)
+
+  ### HIKVISON SYNC 海康數據同步
+  ![image](/sample/HIK_SINGLE_SYNC123.jpg)
+  
  ### It can be applied to all of Industies.
 
 ###Overview of Attendance and Salary System Functions
