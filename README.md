@@ -1,5 +1,3 @@
-# Attendance and Salary System Bisic on Cloud 
-                                              Architecture by Tony Law
   # 僅僅用於個人展示 禁止商業用途 For personal demo only, commercial use prohibited.
   
   ![image](sample/sampleData.jpg)
@@ -25,6 +23,9 @@
   
  ### It can be applied to all of Industies.
 
+# Attendance and Salary System Bisic on Cloud 
+                                              Architecture by Tony Law
+                                              
 ###Overview of Attendance and Salary System Functions
 ### System Authority
 Authority management and function appointment.
