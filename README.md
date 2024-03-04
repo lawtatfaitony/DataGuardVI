@@ -163,6 +163,9 @@ Personal financial accounts and all detailed items are clear at a glance.
 ![image](sample/4CIC.jpg)
   
 ![image](sample/5CIC.jpg)
+
+![image](sample/chunho9.jpg)
+
 ![image](FaceDetect cpp FACE_RECOG_PYTHON.jpg)
 
 ![image](sample/6CIC.jpg)
